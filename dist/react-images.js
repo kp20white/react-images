@@ -1906,7 +1906,6 @@ var Lightbox = (function (_Component) {
 					'video',
 					{
 						controls: true,
-						preload: 'none',
 						className: (0, _aphroditeNoImportant.css)(classes.image),
 						onClick: !!onClickImage && onClickImage,
 						style: {
