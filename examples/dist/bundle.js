@@ -2946,6 +2946,8 @@ var Lightbox = (function (_Component) {
 				renderImageOrVideo = renderImageOrVideo = _react2['default'].createElement(
 					'video',
 					{
+						controls: true,
+						preload: 'none',
 						className: (0, _aphroditeNoImportant.css)(classes.image),
 						onClick: !!onClickImage && onClickImage,
 						style: {
@@ -2954,7 +2956,7 @@ var Lightbox = (function (_Component) {
 						} },
 					_react2['default'].createElement('source', { key: image.src, src: image.src }),
 					image.srcset.map(function (src) {
-						return _react2['default'].createElement('source', { src: src });
+						return _react2['default'].createElement('source', { key: src, src: src });
 					})
 				);
 			} else {

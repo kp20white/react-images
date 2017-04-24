@@ -212,6 +212,8 @@ class Lightbox extends Component {
 		if(image.src.lastIndexOf('.mp4') > -1) {
 			renderImageOrVideo = renderImageOrVideo = (
 				<video
+					controls
+					preload="none"
 					className={css(classes.image)}
 					onClick={!!onClickImage && onClickImage}				
 					style={{
@@ -221,7 +223,7 @@ class Lightbox extends Component {
 						<source key={image.src} src={image.src}/>
 						{
 							image.srcset.map((src) => {
-								return <source src={src} />
+								return <source key={src} src={src} />
 							})
 						}
 						
