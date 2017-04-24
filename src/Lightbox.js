@@ -206,25 +206,35 @@ class Lightbox extends Component {
 
 		const image = images[currentImage];
 
-		let srcset;
-		let sizes;
-
-		if (image.srcset) {
-			srcset = image.srcset.join();
-			sizes = '100vw';
-		}
-
 		const thumbnailsSize = showThumbnails ? theme.thumbnail.size : 0;
 		const heightOffset = `${theme.header.height + theme.footer.height + thumbnailsSize + (theme.container.gutter.vertical)}px`;
+		let renderImageOrVideo;
+		if(image.src.lastIndexOf('.mp4') > -1) {
+			renderImageOrVideo = renderImageOrVideo = (
+				<video
+					className={css(classes.image)}
+					onClick={!!onClickImage && onClickImage}				
+					style={{
+						cursor: this.props.onClickImage ? 'pointer' : 'auto',
+						maxHeight: `calc(100vh - ${heightOffset})`,
+					}}>
+						<source key={image.src} src={image.src}/>
+						{
+							image.srcset.map((src) => {
+								return <source src={src} />
+							})
+						}
+						
+					</video>);
+		} else {
+			let srcset;
+			let sizes;
 
-		return (
-			<figure className={css(classes.figure)}>
-				{/*
-					Re-implement when react warning "unknown props"
-					https://fb.me/react-unknown-prop is resolved
-					<Swipeable onSwipedLeft={this.gotoNext} onSwipedRight={this.gotoPrev} />
-				*/}
-				<img
+			if (image.srcset) {
+				srcset = image.srcset.join();
+				sizes = '100vw';
+			}
+			renderImageOrVideo = (<img
 					className={css(classes.image)}
 					onClick={!!onClickImage && onClickImage}
 					sizes={sizes}
@@ -235,7 +245,16 @@ class Lightbox extends Component {
 						cursor: this.props.onClickImage ? 'pointer' : 'auto',
 						maxHeight: `calc(100vh - ${heightOffset})`,
 					}}
-				/>
+				/>);
+		}
+		return (
+			<figure className={css(classes.figure)}>
+				{/*
+					Re-implement when react warning "unknown props"
+					https://fb.me/react-unknown-prop is resolved
+					<Swipeable onSwipedLeft={this.gotoNext} onSwipedRight={this.gotoPrev} />
+				*/}
+				{ renderImageOrVideo }				
 				<Footer
 					caption={images[currentImage].caption}
 					countCurrent={currentImage + 1}
