@@ -148,32 +148,27 @@ var theme = {
 	_react2['default'].createElement(
 		'h3',
 		null,
-		'Default Options'
+		'Videos'
 	),
-	_react2['default'].createElement(_componentsGallery2['default'], { images: DEFAULT_IMAGES.map(function (_ref) {
-			var caption = _ref.caption;
-			var id = _ref.id;
-			var orientation = _ref.orientation;
-			var useForDemo = _ref.useForDemo;
-			return {
-				src: makeUnsplashSrc(id),
-				thumbnail: makeUnsplashThumbnail(id, orientation),
-				srcset: [makeUnsplashSrcSet(id, 1024), makeUnsplashSrcSet(id, 800), makeUnsplashSrcSet(id, 500), makeUnsplashSrcSet(id, 320)],
-				caption: caption,
-				orientation: orientation,
-				useForDemo: useForDemo
-			};
-		}) }),
+	_react2['default'].createElement(_componentsGallery2['default'], { images: [{
+			thumbnail: "https://s3.amazonaws.com/aa-vision-images-development/06157df695c4b729/2017/03/06157df695c4b729-589e18d0a93b49aa489cf675-1489610944343-113x200.jpeg",
+			src: "https://s3.amazonaws.com/aa-vision-images-development/516D7F40-B36C-4727-9573-A0E7687F24AE/2017/03/516D7F40-B36C-4727-9573-A0E7687F24AE-5851d151e3509e1b119d3265-1490479631128.mp4",
+			useForDemo: true
+		}, {
+			thumbnail: "https://s3.amazonaws.com/aa-vision-images-development/06157df695c4b729/2017/03/06157df695c4b729-589e18d0a93b49aa489cf675-1489610944343-113x200.jpeg",
+			src: "https://s3.amazonaws.com/aa-vision-images-development/516D7F40-B36C-4727-9573-A0E7687F24AE/2017/03/516D7F40-B36C-4727-9573-A0E7687F24AE-5851d151e3509e1b119d3265-1490483909208.mp4",
+			useForDemo: true
+		}] }),
 	_react2['default'].createElement(
 		'h3',
 		null,
 		'With Thumbnails'
 	),
-	_react2['default'].createElement(_componentsGallery2['default'], { images: THUMBNAIL_IMAGES.map(function (_ref2) {
-			var caption = _ref2.caption;
-			var id = _ref2.id;
-			var orientation = _ref2.orientation;
-			var useForDemo = _ref2.useForDemo;
+	_react2['default'].createElement(_componentsGallery2['default'], { images: THUMBNAIL_IMAGES.map(function (_ref) {
+			var caption = _ref.caption;
+			var id = _ref.id;
+			var orientation = _ref.orientation;
+			var useForDemo = _ref.useForDemo;
 			return {
 				src: makeUnsplashSrc(id),
 				thumbnail: makeUnsplashThumbnail(id, orientation),
@@ -188,11 +183,11 @@ var theme = {
 		null,
 		'Themed Lightbox'
 	),
-	_react2['default'].createElement(_componentsGallery2['default'], { images: THEMED_IMAGES.map(function (_ref3) {
-			var caption = _ref3.caption;
-			var id = _ref3.id;
-			var orientation = _ref3.orientation;
-			var useForDemo = _ref3.useForDemo;
+	_react2['default'].createElement(_componentsGallery2['default'], { images: THEMED_IMAGES.map(function (_ref2) {
+			var caption = _ref2.caption;
+			var id = _ref2.id;
+			var orientation = _ref2.orientation;
+			var useForDemo = _ref2.useForDemo;
 			return {
 				src: makeUnsplashSrc(id),
 				thumbnail: makeUnsplashThumbnail(id, orientation),

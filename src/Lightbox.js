@@ -216,6 +216,8 @@ class Lightbox extends Component {
 		if(image.src.lastIndexOf('.mp4') > -1) {
 			renderImageOrVideo = renderImageOrVideo = (
 				<video
+					src={image.src} 
+					preload="metadata"
 					controls
 					className={css(classes.image)}
 					onClick={!!onClickImage && onClickImage}				

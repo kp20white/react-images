@@ -1908,6 +1908,8 @@ var Lightbox = (function (_Component) {
 				renderImageOrVideo = renderImageOrVideo = _react2['default'].createElement(
 					'video',
 					{
+						src: image.src,
+						preload: 'metadata',
 						controls: true,
 						className: (0, _aphroditeNoImportant.css)(classes.image),
 						onClick: !!onClickImage && onClickImage,

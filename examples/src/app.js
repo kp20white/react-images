@@ -107,21 +107,19 @@ render(
 		<div style={{ marginBottom: 40 }}>
 			<p>Photos courtesy of <a href="https://unsplash.com/" target="_blank">Unsplash</a>. Use your keyboard to navigate <kbd>left</kbd> <kbd>right</kbd> <kbd>esc</kbd> &mdash; Also, try resizing your browser window.</p>
 		</div>
-		<h3>Default Options</h3>
-		<Gallery images={DEFAULT_IMAGES.map(({ caption, id, orientation, useForDemo }) => ({
-			src: makeUnsplashSrc(id),
-			thumbnail: makeUnsplashThumbnail(id, orientation),
-			srcset: [
-				makeUnsplashSrcSet(id, 1024),
-				makeUnsplashSrcSet(id, 800),
-				makeUnsplashSrcSet(id, 500),
-				makeUnsplashSrcSet(id, 320),
-			],
-			caption,
-			orientation,
-			useForDemo,
-		}))} />
-
+		<h3>Videos</h3>
+		<Gallery images={[
+			{
+				thumbnail: "https://s3.amazonaws.com/aa-vision-images-development/06157df695c4b729/2017/03/06157df695c4b729-589e18d0a93b49aa489cf675-1489610944343-113x200.jpeg",
+				src: "https://s3.amazonaws.com/aa-vision-images-development/516D7F40-B36C-4727-9573-A0E7687F24AE/2017/03/516D7F40-B36C-4727-9573-A0E7687F24AE-5851d151e3509e1b119d3265-1490479631128.mp4",
+				useForDemo: true
+			},
+			{
+				thumbnail: "https://s3.amazonaws.com/aa-vision-images-development/06157df695c4b729/2017/03/06157df695c4b729-589e18d0a93b49aa489cf675-1489610944343-113x200.jpeg",
+				src: "https://s3.amazonaws.com/aa-vision-images-development/516D7F40-B36C-4727-9573-A0E7687F24AE/2017/03/516D7F40-B36C-4727-9573-A0E7687F24AE-5851d151e3509e1b119d3265-1490483909208.mp4",
+				useForDemo: true
+			}]} />
+		
 		<h3>With Thumbnails</h3>
 		<Gallery images={THUMBNAIL_IMAGES.map(({ caption, id, orientation, useForDemo }) => ({
 			src: makeUnsplashSrc(id),
