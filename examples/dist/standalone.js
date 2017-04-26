@@ -1909,10 +1909,11 @@ var Lightbox = (function (_Component) {
 					'video',
 					{
 						src: image.src,
-						preload: 'metadata',
+						preload: 'auto',
 						controls: true,
 						className: (0, _aphroditeNoImportant.css)(classes.image),
 						onClick: !!onClickImage && onClickImage,
+						poster: image.thumbnail,
 						style: {
 							cursor: this.props.onClickImage ? 'pointer' : 'auto',
 							maxHeight: 'calc(100vh - ' + heightOffset + ')'

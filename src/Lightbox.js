@@ -216,11 +216,12 @@ class Lightbox extends Component {
 		if(image.src.lastIndexOf('.mp4') > -1) {
 			renderImageOrVideo = renderImageOrVideo = (
 				<video
-					src={image.src} 
-					preload="metadata"
+					src={image.src}
+					preload="auto"			
 					controls
 					className={css(classes.image)}
-					onClick={!!onClickImage && onClickImage}				
+					onClick={!!onClickImage && onClickImage}
+					poster={image.thumbnail}
 					style={{
 						cursor: this.props.onClickImage ? 'pointer' : 'auto',
 						maxHeight: `calc(100vh - ${heightOffset})`,
