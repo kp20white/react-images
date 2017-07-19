@@ -2401,7 +2401,7 @@ var defaultStyles = {
 	header: {
 		display: 'flex',
 		justifyContent: 'space-between',
-		height: 0 },
+		height: 10 },
 	/*defaults.header.height,*/
 	close: {
 		background: 'none',
@@ -2409,15 +2409,15 @@ var defaultStyles = {
 		cursor: 'pointer',
 		outline: 'none',
 		position: 'relative',
-		top: -10,
-		left: 30,
+		top: 16,
+		left: 24,
 		verticalAlign: 'bottom',
 
 		// increase hit area
-		height: _theme2['default'].close.height + 20,
-		marginRight: -10,
-		padding: 10,
-		width: _theme2['default'].close.width + 20
+		height: 20,
+		marginRight: 0,
+		padding: 0,
+		width: 20
 	}
 };
 
