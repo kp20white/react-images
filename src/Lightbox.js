@@ -269,6 +269,7 @@ class Lightbox extends Component {
 					countTotal={images.length}
 					showCount={showImageCount}
 				/>
+				{ this.props.bottomControls ? this.props.bottomControls : null }
 			</figure>
 		);
 	}
@@ -300,6 +301,7 @@ Lightbox.propTypes = {
 	closeButtonTitle: PropTypes.string,
 	currentImage: PropTypes.number,
 	customControls: PropTypes.arrayOf(PropTypes.node),
+    bottomControls: PropTypes.arrayOf(PropTypes.node),
 	enableKeyboardInput: PropTypes.bool,
 	imageCountSeparator: PropTypes.string,
 	images: PropTypes.arrayOf(

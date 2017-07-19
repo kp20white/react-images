@@ -351,7 +351,12 @@ var Gallery = (function (_Component) {
 					onClickThumbnail: this.gotoImage,
 					onClose: this.closeLightbox,
 					showThumbnails: this.props.showThumbnails,
-					theme: this.props.theme
+					theme: this.props.theme,
+					bottomControls: [_react2['default'].createElement(
+						'div',
+						null,
+						_react2['default'].createElement('input', { type: 'text', value: 'bottomControls' })
+					)]
 				})
 			);
 		}

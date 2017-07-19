@@ -1954,7 +1954,8 @@ var Lightbox = (function (_Component) {
 					countSeparator: imageCountSeparator,
 					countTotal: images.length,
 					showCount: showImageCount
-				})
+				}),
+				this.props.bottomControls ? this.props.bottomControls : null
 			);
 		}
 	}, {
@@ -1995,6 +1996,7 @@ Lightbox.propTypes = {
 	closeButtonTitle: _react.PropTypes.string,
 	currentImage: _react.PropTypes.number,
 	customControls: _react.PropTypes.arrayOf(_react.PropTypes.node),
+	bottomControls: _react.PropTypes.arrayOf(_react.PropTypes.node),
 	enableKeyboardInput: _react.PropTypes.bool,
 	imageCountSeparator: _react.PropTypes.string,
 	images: _react.PropTypes.arrayOf(_react.PropTypes.shape({

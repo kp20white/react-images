@@ -92,6 +92,7 @@ class Gallery extends Component {
 					onClose={this.closeLightbox}
 					showThumbnails={this.props.showThumbnails}
 					theme={this.props.theme}
+					bottomControls={[ <div><input type="text" value="bottomControls" /></div> ]}
 				/>
 			</div>
 		);
