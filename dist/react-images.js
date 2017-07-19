@@ -2401,15 +2401,16 @@ var defaultStyles = {
 	header: {
 		display: 'flex',
 		justifyContent: 'space-between',
-		height: _theme2['default'].header.height
-	},
+		height: 0 },
+	/*defaults.header.height,*/
 	close: {
 		background: 'none',
 		border: 'none',
 		cursor: 'pointer',
 		outline: 'none',
 		position: 'relative',
-		top: 0,
+		top: -10,
+		left: 30,
 		verticalAlign: 'bottom',
 
 		// increase hit area
