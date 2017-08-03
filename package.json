@@ -1,13 +1,13 @@
 {
   "name": "react-images",
-  "version": "0.5.2",
-  "description": "A simple, responsive lightbox component for displaying an array of images with React.js",
+  "version": "0.5.4",
+  "description": "Cutomized for XOEYE,  simple and responsive lightbox component for displaying an array of images with React.js",
   "main": "lib/Lightbox.js",
   "author": "Joss Mackison",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/jossmac/react-images.git"
+    "url": "https://github.com/xitman78/react-images"
   },
   "dependencies": {
     "aphrodite": "^0.5.0",
@@ -45,9 +45,9 @@
     "watch": "gulp watch:lib"
   },
   "bugs": {
-    "url": "https://github.com/jossmac/react-images/issues"
+    "url": "https://github.com/xitman78/react-images/issues"
   },
-  "homepage": "http://jossmac.github.io/react-images",
+  "homepage": "https://github.com/xitman78/react-images",
   "keywords": [
     "react",
     "react-component",
