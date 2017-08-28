@@ -213,17 +213,57 @@ class Lightbox extends Component {
 
 		const image = images[currentImage];
 
-		let srcset;
-		let sizes;
+		const thumbnailsSize = showThumbnails ? theme.thumbnail.size : 0;
+		const heightOffset = `${theme.header.height + theme.footer.height + thumbnailsSize + (theme.container.gutter.vertical)}px`;
+		let renderImageOrVideo;
+
+		if (!image.srcset)
+			image.srcset = [];
+
+		if(image.src.lastIndexOf('.mp4') > -1) {
+			renderImageOrVideo = renderImageOrVideo = (
+				<video
+					src={image.src}
+					preload="auto"
+					controls
+					className={css(classes.image)}
+					onClick={!!onClickImage && onClickImage}
+					poster={image.thumbnail}
+					style={{
+						cursor: this.props.onClickImage ? 'pointer' : 'auto',
+						maxHeight: `calc(100vh - ${heightOffset})`,
+					}}>
+						<source key={image.src} src={image.src}/>
+						{
+							image.srcset.map((src) => {
+								return <source key={src} src={src} />
+							})
+						}
+					</video>);
+		} else {
+			let srcset;
+			let sizes;
 
 		if (image.srcset) {
 			srcset = image.srcset.join();
 			sizes = '100vw';
 		}
 
-		const thumbnailsSize = showThumbnails ? this.theme.thumbnail.size : 0;
-		const heightOffset = `${this.theme.header.height + this.theme.footer.height + thumbnailsSize
-			+ (this.theme.container.gutter.vertical)}px`;
+		const thumbnailsSize = showThumbnails ? theme.thumbnail.size : 0;
+		const heightOffset = `${theme.header.height + theme.footer.height + thumbnailsSize + (theme.container.gutter.vertical)}px`;
+
+        renderImageOrVideo = (<img
+        className={css(classes.image)}
+        onClick={!!onClickImage && onClickImage}
+        sizes={sizes}
+        alt={image.alt}
+        src={image.src}
+        srcSet={srcset}
+        style={{
+            cursor: this.props.onClickImage ? 'pointer' : 'auto',
+                maxHeight: `calc(100vh - ${heightOffset})`,
+        }}
+        />);
 
 		return (
 			<figure className={css(classes.figure)}>
@@ -243,7 +283,16 @@ class Lightbox extends Component {
 						cursor: this.props.onClickImage ? 'pointer' : 'auto',
 						maxHeight: `calc(100vh - ${heightOffset})`,
 					}}
-				/>
+				/>);
+		}
+		return (
+			<figure className={css(classes.figure)}>
+				{/*
+					Re-implement when react warning "unknown props"
+					https://fb.me/react-unknown-prop is resolved
+					<Swipeable onSwipedLeft={this.gotoNext} onSwipedRight={this.gotoPrev} />
+				*/}
+				{ renderImageOrVideo }
 				<Footer
 					caption={images[currentImage].caption}
 					countCurrent={currentImage + 1}
@@ -251,6 +300,7 @@ class Lightbox extends Component {
 					countTotal={images.length}
 					showCount={showImageCount}
 				/>
+				{ this.props.bottomControls ? this.props.bottomControls : null }
 			</figure>
 		);
 	}
@@ -282,6 +332,7 @@ Lightbox.propTypes = {
 	closeButtonTitle: PropTypes.string,
 	currentImage: PropTypes.number,
 	customControls: PropTypes.arrayOf(PropTypes.node),
+    bottomControls: PropTypes.arrayOf(PropTypes.node),
 	enableKeyboardInput: PropTypes.bool,
 	imageCountSeparator: PropTypes.string,
 	images: PropTypes.arrayOf(
