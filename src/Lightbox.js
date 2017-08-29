@@ -213,15 +213,15 @@ class Lightbox extends Component {
 
 		const image = images[currentImage];
 
-		const thumbnailsSize = showThumbnails ? theme.thumbnail.size : 0;
-		const heightOffset = `${theme.header.height + theme.footer.height + thumbnailsSize + (theme.container.gutter.vertical)}px`;
+		const thumbnailsSize = showThumbnails ? this.theme.thumbnail.size : 0;
+		const heightOffset = `${this.theme.header.height + this.theme.footer.height + thumbnailsSize + (this.theme.container.gutter.vertical)}px`;
 		let renderImageOrVideo;
 
 		if (!image.srcset)
 			image.srcset = [];
 
-		if(image.src.lastIndexOf('.mp4') > -1) {
-			renderImageOrVideo = renderImageOrVideo = (
+		if(image.src && image.src.toLowerCase().lastIndexOf('.mp4') > -1) {
+			renderImageOrVideo = (
 				<video
 					src={image.src}
 					preload="auto"
@@ -231,7 +231,7 @@ class Lightbox extends Component {
 					poster={image.thumbnail}
 					style={{
 						cursor: this.props.onClickImage ? 'pointer' : 'auto',
-						maxHeight: `calc(100vh - ${heightOffset})`,
+						maxHeight: `calc(100vh - ${heightOffset})`
 					}}>
 						<source key={image.src} src={image.src}/>
 						{
@@ -244,46 +244,22 @@ class Lightbox extends Component {
 			let srcset;
 			let sizes;
 
-		if (image.srcset) {
-			srcset = image.srcset.join();
-			sizes = '100vw';
-		}
-
-		const thumbnailsSize = showThumbnails ? theme.thumbnail.size : 0;
-		const heightOffset = `${theme.header.height + theme.footer.height + thumbnailsSize + (theme.container.gutter.vertical)}px`;
-
-        renderImageOrVideo = (<img
-        className={css(classes.image)}
-        onClick={!!onClickImage && onClickImage}
-        sizes={sizes}
-        alt={image.alt}
-        src={image.src}
-        srcSet={srcset}
-        style={{
-            cursor: this.props.onClickImage ? 'pointer' : 'auto',
-                maxHeight: `calc(100vh - ${heightOffset})`,
-        }}
-        />);
-
-		return (
-			<figure className={css(classes.figure)}>
-				{/*
-					Re-implement when react warning "unknown props"
-					https://fb.me/react-unknown-prop is resolved
-					<Swipeable onSwipedLeft={this.gotoNext} onSwipedRight={this.gotoPrev} />
-				*/}
-				<img
-					className={css(classes.image)}
-					onClick={!!onClickImage && onClickImage}
-					sizes={sizes}
-					alt={image.alt}
-					src={image.src}
-					srcSet={srcset}
-					style={{
-						cursor: this.props.onClickImage ? 'pointer' : 'auto',
-						maxHeight: `calc(100vh - ${heightOffset})`,
-					}}
-				/>);
+            if (image.srcset) {
+                srcset = image.srcset.join();
+                sizes = '100vw';
+            }
+            renderImageOrVideo = (<img
+                className={css(classes.image)}
+                onClick={!!onClickImage && onClickImage}
+                sizes={sizes}
+                alt={image.alt}
+                src={image.src}
+                srcSet={srcset}
+                style={{
+                    cursor: this.props.onClickImage ? 'pointer' : 'auto',
+                        maxHeight: `calc(100vh - ${heightOffset})`,
+                }}
+            />);
 		}
 		return (
 			<figure className={css(classes.figure)}>
