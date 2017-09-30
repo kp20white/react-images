@@ -2740,6 +2740,11 @@ var Lightbox = (function (_Component) {
 			if (this.props.isOpen && this.props.enableKeyboardInput) {
 				window.addEventListener('keydown', this.handleKeyboardInput);
 			}
+
+			if (this.props.onLightBoxReady) {
+				console.log('did mount');
+				this.props.onLightBoxReady();
+			}
 		}
 	}, {
 		key: 'componentWillReceiveProps',
@@ -2775,6 +2780,14 @@ var Lightbox = (function (_Component) {
 			}
 			if (!nextProps.isOpen && nextProps.enableKeyboardInput) {
 				window.removeEventListener('keydown', this.handleKeyboardInput);
+			}
+		}
+	}, {
+		key: 'componentDidUpdate',
+		value: function componentDidUpdate() {
+			if (this.props.onLightBoxReady) {
+				console.log('did update');
+				this.props.onLightBoxReady();
 			}
 		}
 	}, {
@@ -3051,6 +3064,7 @@ Lightbox.propTypes = {
 	onClickNext: _propTypes2['default'].func,
 	onClickPrev: _propTypes2['default'].func,
 	onClose: _propTypes2['default'].func.isRequired,
+	onLightBoxReady: _propTypes2['default'].func,
 	preloadNextImage: _propTypes2['default'].bool,
 	rightArrowTitle: _propTypes2['default'].string,
 	showCloseButton: _propTypes2['default'].bool,

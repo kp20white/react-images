@@ -33,7 +33,12 @@ class Lightbox extends Component {
 		if (this.props.isOpen && this.props.enableKeyboardInput) {
 			window.addEventListener('keydown', this.handleKeyboardInput);
 		}
+
+		if (this.props.onLightBoxReady) {
+			this.props.onLightBoxReady();
+		}
 	}
+
 	componentWillReceiveProps (nextProps) {
 		if (!canUseDom) return;
 
@@ -68,6 +73,13 @@ class Lightbox extends Component {
 			window.removeEventListener('keydown', this.handleKeyboardInput);
 		}
 	}
+
+	componentDidUpdate () {
+		if (this.props.onLightBoxReady) {
+			this.props.onLightBoxReady();
+		}
+	}
+
 	componentWillUnmount () {
 		if (this.props.enableKeyboardInput) {
 			window.removeEventListener('keydown', this.handleKeyboardInput);
@@ -325,6 +337,7 @@ Lightbox.propTypes = {
 	onClickNext: PropTypes.func,
 	onClickPrev: PropTypes.func,
 	onClose: PropTypes.func.isRequired,
+	onLightBoxReady: PropTypes.func,
 	preloadNextImage: PropTypes.bool,
 	rightArrowTitle: PropTypes.string,
 	showCloseButton: PropTypes.bool,
