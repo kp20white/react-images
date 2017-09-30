@@ -3818,7 +3818,6 @@ var Lightbox = (function (_Component) {
 			}
 
 			if (this.props.onLightBoxReady) {
-				console.log('did mount');
 				this.props.onLightBoxReady();
 			}
 		}
@@ -3862,7 +3861,6 @@ var Lightbox = (function (_Component) {
 		key: 'componentDidUpdate',
 		value: function componentDidUpdate() {
 			if (this.props.onLightBoxReady) {
-				console.log('did update');
 				this.props.onLightBoxReady();
 			}
 		}
