@@ -3818,6 +3818,7 @@ var Lightbox = (function (_Component) {
 			}
 
 			if (this.props.onLightBoxReady) {
+				console.log('firing onLightBoxReady in componentDidMount');
 				this.props.onLightBoxReady();
 			}
 		}
@@ -3861,6 +3862,7 @@ var Lightbox = (function (_Component) {
 		key: 'componentDidUpdate',
 		value: function componentDidUpdate() {
 			if (this.props.onLightBoxReady) {
+				console.log('firing onLightBoxReady in componentDidUpdate');
 				this.props.onLightBoxReady();
 			}
 		}
