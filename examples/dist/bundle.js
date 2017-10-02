@@ -3813,13 +3813,17 @@ var Lightbox = (function (_Component) {
 	}, {
 		key: 'componentDidMount',
 		value: function componentDidMount() {
+			var _this = this;
+
 			if (this.props.isOpen && this.props.enableKeyboardInput) {
 				window.addEventListener('keydown', this.handleKeyboardInput);
 			}
 
 			if (this.props.onLightBoxReady) {
 				console.log('firing onLightBoxReady in componentDidMount');
-				this.props.onLightBoxReady();
+				setTimeout(function () {
+					_this.props.onLightBoxReady();
+				}, 0);
 			}
 		}
 	}, {
@@ -3861,9 +3865,13 @@ var Lightbox = (function (_Component) {
 	}, {
 		key: 'componentDidUpdate',
 		value: function componentDidUpdate() {
+			var _this2 = this;
+
 			if (this.props.onLightBoxReady) {
 				console.log('firing onLightBoxReady in componentDidUpdate');
-				this.props.onLightBoxReady();
+				setTimeout(function () {
+					_this2.props.onLightBoxReady();
+				}, 0);
 			}
 		}
 	}, {

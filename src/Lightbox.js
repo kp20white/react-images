@@ -36,7 +36,9 @@ class Lightbox extends Component {
 
 		if (this.props.onLightBoxReady) {
 			console.log('firing onLightBoxReady in componentDidMount');
-			this.props.onLightBoxReady();
+			setTimeout(() => {
+				this.props.onLightBoxReady();
+			}, 0);
 		}
 	}
 
@@ -78,7 +80,9 @@ class Lightbox extends Component {
 	componentDidUpdate () {
 		if (this.props.onLightBoxReady) {
 			console.log('firing onLightBoxReady in componentDidUpdate');
-			this.props.onLightBoxReady();
+			setTimeout(() => {
+				this.props.onLightBoxReady();
+			}, 0);
 		}
 	}
 
