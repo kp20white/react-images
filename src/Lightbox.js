@@ -34,10 +34,9 @@ class Lightbox extends Component {
 			window.addEventListener('keydown', this.handleKeyboardInput);
 		}
 
-		if (this.props.onLightBoxReady) {
-			console.log('firing onLightBoxReady in componentDidMount');
+		if (this.props.onLightboxReady) {
 			setTimeout(() => {
-				this.props.onLightBoxReady();
+				this.props.onLightboxReady();
 			}, 0);
 		}
 	}
@@ -78,10 +77,9 @@ class Lightbox extends Component {
 	}
 
 	componentDidUpdate () {
-		if (this.props.onLightBoxReady) {
-			console.log('firing onLightBoxReady in componentDidUpdate');
+		if (this.props.onLightboxReady) {
 			setTimeout(() => {
-				this.props.onLightBoxReady();
+				this.props.onLightboxReady();
 			}, 0);
 		}
 	}
@@ -343,7 +341,7 @@ Lightbox.propTypes = {
 	onClickNext: PropTypes.func,
 	onClickPrev: PropTypes.func,
 	onClose: PropTypes.func.isRequired,
-	onLightBoxReady: PropTypes.func,
+	onLightboxReady: PropTypes.func,
 	preloadNextImage: PropTypes.bool,
 	rightArrowTitle: PropTypes.string,
 	showCloseButton: PropTypes.bool,
