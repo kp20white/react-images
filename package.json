@@ -1,6 +1,6 @@
 {
   "name": "react-images",
-  "version": "0.5.5",
+  "version": "0.5.6",
   "description": "Customized for XOEYE,  simple and responsive lightbox component for displaying an array of images with React.js",
   "main": "lib/Lightbox.js",
   "author": "Joss Mackison",
@@ -11,20 +11,20 @@
   },
   "dependencies": {
     "aphrodite": "^0.5.0",
-    "prop-types": "^15.5.8",
-    "react-transition-group": "^1.1.3",
-    "react-scrolllock": "^1.0.5"
+    "prop-types": "^15.6.0",
+    "react-scrolllock": "^1.0.9",
+    "react-transition-group": "^1.2.1"
   },
   "devDependencies": {
-    "babel-eslint": "^6.0.4",
     "babel": "^6.5.2",
+    "babel-eslint": "^6.0.4",
+    "eslint": "2.9.0",
     "eslint-config-keystone": "2.2.0",
     "eslint-plugin-react": "5.1.1",
-    "eslint": "2.9.0",
     "gulp": "^3.9.0",
+    "react": "^15.6.2",
     "react-component-gulp-tasks": "^0.7.0",
-    "react-dom": "^15.3.0",
-    "react": "^15.3.0"
+    "react-dom": "^15.6.2"
   },
   "peerDependencies": {
     "react-dom": "^0.14 || ^15.0",
