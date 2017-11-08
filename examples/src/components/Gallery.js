@@ -91,9 +91,9 @@ class Gallery extends Component {
 					onClickPrev={this.gotoPrevious}
 					onClickThumbnail={this.gotoImage}
 					onClose={this.closeLightbox}
-					showThumbnails={this.props.showThumbnails}
+					showThumbnails={false}
 					theme={this.props.theme}
-					bottomControls={[ <div><input type="text" value="bottomControls" /></div> ]}
+					bottomControls={[ <div><textarea type="text" value="bottomControls" /></div> ]}
 				/>
 			</div>
 		);

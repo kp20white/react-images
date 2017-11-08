@@ -3000,8 +3000,9 @@ var defaultStyles = {
 		height: 10 },
 	/*defaults.header.height,*/
 	close: {
-		background: 'none',
+		backgroundColor: '#000000',
 		border: 'none',
+		borderRadius: 4,
 		cursor: 'pointer',
 		outline: 'none',
 		position: 'fixed',
