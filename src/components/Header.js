@@ -49,7 +49,7 @@ const defaultStyles = {
 		height: 10, /*defaults.header.height,*/
 	},
 	close: {
-		backgroundColor: '#000000',
+		backgroundColor: 'rgba(0,0,0,1)',
 		border: 'none',
 		borderRadius: 4,
 		cursor: 'pointer',
