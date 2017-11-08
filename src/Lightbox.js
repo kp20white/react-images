@@ -1,8 +1,9 @@
-import React, { Component, PropTypes } from 'react';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
 import { css, StyleSheet } from 'aphrodite/no-important';
 import ScrollLock from 'react-scrolllock';
 
-import theme from './theme';
+import defaultTheme from './theme';
 import Arrow from './components/Arrow';
 import Container from './components/Container';
 import Footer from './components/Footer';
@@ -10,28 +11,36 @@ import Header from './components/Header';
 import PaginatedThumbnails from './components/PaginatedThumbnails';
 import Portal from './components/Portal';
 
-import { bindFunctions, canUseDom } from './utils';
+import { bindFunctions, canUseDom, deepMerge } from './utils';
 
 class Lightbox extends Component {
-	constructor () {
-		super();
-
+	constructor (props) {
+		super(props);
+		this.theme = deepMerge(defaultTheme, props.theme);
 		bindFunctions.call(this, [
 			'gotoNext',
 			'gotoPrev',
+			'closeBackdrop',
 			'handleKeyboardInput',
 		]);
 	}
 	getChildContext () {
 		return {
-			theme: this.props.theme,
+			theme: this.theme,
 		};
 	}
 	componentDidMount () {
 		if (this.props.isOpen && this.props.enableKeyboardInput) {
 			window.addEventListener('keydown', this.handleKeyboardInput);
 		}
+
+		if (this.props.onLightboxReady) {
+			setTimeout(() => {
+				this.props.onLightboxReady();
+			}, 0);
+		}
 	}
+
 	componentWillReceiveProps (nextProps) {
 		if (!canUseDom) return;
 
@@ -66,6 +75,15 @@ class Lightbox extends Component {
 			window.removeEventListener('keydown', this.handleKeyboardInput);
 		}
 	}
+
+	componentDidUpdate () {
+		if (this.props.onLightboxReady) {
+			setTimeout(() => {
+				this.props.onLightboxReady();
+			}, 0);
+		}
+	}
+
 	componentWillUnmount () {
 		if (this.props.enableKeyboardInput) {
 			window.removeEventListener('keydown', this.handleKeyboardInput);
@@ -106,6 +124,11 @@ class Lightbox extends Component {
 		}
 		this.props.onClickPrev();
 
+	}
+	closeBackdrop (event) {
+		if (event.target.id === 'lightboxBackdrop') {
+			this.props.onClose();
+		}
 	}
 	handleKeyboardInput (event) {
 		if (event.keyCode === 37) { // left
@@ -167,14 +190,14 @@ class Lightbox extends Component {
 
 		let offsetThumbnails = 0;
 		if (showThumbnails) {
-			offsetThumbnails = theme.thumbnail.size + theme.container.gutter.vertical;
+			offsetThumbnails = this.theme.thumbnail.size + this.theme.container.gutter.vertical;
 		}
 
 		return (
 			<Container
 				key="open"
-				onClick={!!backdropClosesModal && onClose}
-				onTouchEnd={!!backdropClosesModal && onClose}
+				onClick={!!backdropClosesModal && this.closeBackdrop}
+				onTouchEnd={!!backdropClosesModal && this.closeBackdrop}
 			>
 				<div className={css(classes.content)} style={{ marginBottom: offsetThumbnails, maxWidth: width }}>
 					<Header
@@ -206,25 +229,25 @@ class Lightbox extends Component {
 
 		const image = images[currentImage];
 
-		const thumbnailsSize = showThumbnails ? theme.thumbnail.size : 0;
-		const heightOffset = `${theme.header.height + theme.footer.height + thumbnailsSize + (theme.container.gutter.vertical)}px`;
+		const thumbnailsSize = showThumbnails ? this.theme.thumbnail.size : 0;
+		const heightOffset = `${this.theme.header.height + this.theme.footer.height + thumbnailsSize + (this.theme.container.gutter.vertical)}px`;
 		let renderImageOrVideo;
-		
+
 		if (!image.srcset)
 			image.srcset = [];
 
-		if(image.src.lastIndexOf('.mp4') > -1) {
-			renderImageOrVideo = renderImageOrVideo = (
+		if(image.src && image.src.toLowerCase().lastIndexOf('.mp4') > -1) {
+			renderImageOrVideo = (
 				<video
 					src={image.src}
-					preload="auto"			
+					preload="auto"
 					controls
 					className={css(classes.image)}
 					onClick={!!onClickImage && onClickImage}
 					poster={image.thumbnail}
 					style={{
 						cursor: this.props.onClickImage ? 'pointer' : 'auto',
-						maxHeight: `calc(100vh - ${heightOffset})`,
+						maxHeight: `calc(100vh - ${heightOffset})`
 					}}>
 						<source key={image.src} src={image.src}/>
 						{
@@ -237,22 +260,22 @@ class Lightbox extends Component {
 			let srcset;
 			let sizes;
 
-			if (image.srcset) {
-				srcset = image.srcset.join();
-				sizes = '100vw';
-			}
-			renderImageOrVideo = (<img
-					className={css(classes.image)}
-					onClick={!!onClickImage && onClickImage}
-					sizes={sizes}
-					alt={image.alt}
-					src={image.src}
-					srcSet={srcset}
-					style={{
-						cursor: this.props.onClickImage ? 'pointer' : 'auto',
-						maxHeight: `calc(100vh - ${heightOffset})`,
-					}}
-				/>);
+            if (image.srcset) {
+                srcset = image.srcset.join();
+                sizes = '100vw';
+            }
+            renderImageOrVideo = (<img
+                className={css(classes.image)}
+                onClick={!!onClickImage && onClickImage}
+                sizes={sizes}
+                alt={image.alt}
+                src={image.src}
+                srcSet={srcset}
+                style={{
+                    cursor: this.props.onClickImage ? 'pointer' : 'auto',
+                        maxHeight: `calc(100vh - ${heightOffset})`,
+                }}
+            />);
 		}
 		return (
 			<figure className={css(classes.figure)}>
@@ -261,7 +284,7 @@ class Lightbox extends Component {
 					https://fb.me/react-unknown-prop is resolved
 					<Swipeable onSwipedLeft={this.gotoNext} onSwipedRight={this.gotoPrev} />
 				*/}
-				{ renderImageOrVideo }				
+				{ renderImageOrVideo }
 				<Footer
 					caption={images[currentImage].caption}
 					countCurrent={currentImage + 1}
@@ -318,6 +341,7 @@ Lightbox.propTypes = {
 	onClickNext: PropTypes.func,
 	onClickPrev: PropTypes.func,
 	onClose: PropTypes.func.isRequired,
+	onLightboxReady: PropTypes.func,
 	preloadNextImage: PropTypes.bool,
 	rightArrowTitle: PropTypes.string,
 	showCloseButton: PropTypes.bool,
