@@ -46,22 +46,25 @@ const defaultStyles = {
 	header: {
 		display: 'flex',
 		justifyContent: 'space-between',
-		height: defaults.header.height,
+		height: 10, /*defaults.header.height,*/
 	},
 	close: {
-		background: 'none',
+		backgroundColor: 'rgba(0,0,0,1)',
 		border: 'none',
+		borderRadius: 4,
 		cursor: 'pointer',
 		outline: 'none',
-		position: 'relative',
-		top: 0,
+		position: 'fixed',
+		zIndex: 1000,
+		top: 10,
+		right: 10,
 		verticalAlign: 'bottom',
 
 		// increase hit area
-		height: 40,
-		marginRight: -10,
-		padding: 10,
-		width: 40,
+		height: 20,
+		width: 20,
+		marginRight: 0,
+		padding: 0,
 	},
 };
 

@@ -33,7 +33,14 @@ class Lightbox extends Component {
 		if (this.props.isOpen && this.props.enableKeyboardInput) {
 			window.addEventListener('keydown', this.handleKeyboardInput);
 		}
+
+		if (this.props.onLightboxReady) {
+			setTimeout(() => {
+				this.props.onLightboxReady();
+			}, 0);
+		}
 	}
+
 	componentWillReceiveProps (nextProps) {
 		if (!canUseDom) return;
 
@@ -68,6 +75,15 @@ class Lightbox extends Component {
 			window.removeEventListener('keydown', this.handleKeyboardInput);
 		}
 	}
+
+	componentDidUpdate () {
+		if (this.props.onLightboxReady) {
+			setTimeout(() => {
+				this.props.onLightboxReady();
+			}, 0);
+		}
+	}
+
 	componentWillUnmount () {
 		if (this.props.enableKeyboardInput) {
 			window.removeEventListener('keydown', this.handleKeyboardInput);
@@ -213,18 +229,54 @@ class Lightbox extends Component {
 
 		const image = images[currentImage];
 
-		let srcset;
-		let sizes;
-
-		if (image.srcset) {
-			srcset = image.srcset.join();
-			sizes = '100vw';
-		}
-
 		const thumbnailsSize = showThumbnails ? this.theme.thumbnail.size : 0;
-		const heightOffset = `${this.theme.header.height + this.theme.footer.height + thumbnailsSize
-			+ (this.theme.container.gutter.vertical)}px`;
+		const heightOffset = `${this.theme.header.height + this.theme.footer.height + thumbnailsSize + (this.theme.container.gutter.vertical)}px`;
+		let renderImageOrVideo;
 
+		if (!image.srcset)
+			image.srcset = [];
+
+		if(image.src && image.src.toLowerCase().lastIndexOf('.mp4') > -1) {
+			renderImageOrVideo = (
+				<video
+					src={image.src}
+					preload="auto"
+					controls
+					className={css(classes.image)}
+					onClick={!!onClickImage && onClickImage}
+					poster={image.thumbnail}
+					style={{
+						cursor: this.props.onClickImage ? 'pointer' : 'auto',
+						maxHeight: `calc(100vh - ${heightOffset})`
+					}}>
+						<source key={image.src} src={image.src}/>
+						{
+							image.srcset.map((src) => {
+								return <source key={src} src={src} />
+							})
+						}
+					</video>);
+		} else {
+			let srcset;
+			let sizes;
+
+            if (image.srcset) {
+                srcset = image.srcset.join();
+                sizes = '100vw';
+            }
+            renderImageOrVideo = (<img
+                className={css(classes.image)}
+                onClick={!!onClickImage && onClickImage}
+                sizes={sizes}
+                alt={image.alt}
+                src={image.src}
+                srcSet={srcset}
+                style={{
+                    cursor: this.props.onClickImage ? 'pointer' : 'auto',
+                        maxHeight: `calc(100vh - ${heightOffset})`,
+                }}
+            />);
+		}
 		return (
 			<figure className={css(classes.figure)}>
 				{/*
@@ -232,18 +284,7 @@ class Lightbox extends Component {
 					https://fb.me/react-unknown-prop is resolved
 					<Swipeable onSwipedLeft={this.gotoNext} onSwipedRight={this.gotoPrev} />
 				*/}
-				<img
-					className={css(classes.image)}
-					onClick={!!onClickImage && onClickImage}
-					sizes={sizes}
-					alt={image.alt}
-					src={image.src}
-					srcSet={srcset}
-					style={{
-						cursor: this.props.onClickImage ? 'pointer' : 'auto',
-						maxHeight: `calc(100vh - ${heightOffset})`,
-					}}
-				/>
+				{ renderImageOrVideo }
 				<Footer
 					caption={images[currentImage].caption}
 					countCurrent={currentImage + 1}
@@ -251,6 +292,7 @@ class Lightbox extends Component {
 					countTotal={images.length}
 					showCount={showImageCount}
 				/>
+				{ this.props.bottomControls ? this.props.bottomControls : null }
 			</figure>
 		);
 	}
@@ -279,6 +321,7 @@ class Lightbox extends Component {
 
 Lightbox.propTypes = {
 	backdropClosesModal: PropTypes.bool,
+	bottomControls: PropTypes.arrayOf(PropTypes.node),
 	closeButtonTitle: PropTypes.string,
 	currentImage: PropTypes.number,
 	customControls: PropTypes.arrayOf(PropTypes.node),
@@ -298,6 +341,7 @@ Lightbox.propTypes = {
 	onClickNext: PropTypes.func,
 	onClickPrev: PropTypes.func,
 	onClose: PropTypes.func.isRequired,
+	onLightboxReady: PropTypes.func,
 	preloadNextImage: PropTypes.bool,
 	rightArrowTitle: PropTypes.string,
 	showCloseButton: PropTypes.bool,
