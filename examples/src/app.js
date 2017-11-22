@@ -109,13 +109,13 @@ render(
 		<h3>Videos</h3>
 		<Gallery images={[
 			{
-				thumbnail: "https://s3.amazonaws.com/aa-vision-images-development/06157df695c4b729/2017/03/06157df695c4b729-589e18d0a93b49aa489cf675-1489610944343-113x200.jpeg",
-				src: "https://s3.amazonaws.com/aa-vision-images-development/516D7F40-B36C-4727-9573-A0E7687F24AE/2017/03/516D7F40-B36C-4727-9573-A0E7687F24AE-5851d151e3509e1b119d3265-1490479631128.mp4",
+				thumbnail: "https://s3.amazonaws.com/xoi-content-upload-staging/bb06dac2/2017/11/bb06dac2-5681e1e837d67680832b71fb-1510615771386-267x150.jpeg",
+				src: "https://s3.amazonaws.com/xoi-content-upload-staging/bb06dac2/2017/11/bb06dac2-5681e1e837d67680832b71fb-1510615771386.mp4",
 				useForDemo: true
 			},
 			{
-				thumbnail: "https://s3.amazonaws.com/aa-vision-images-development/06157df695c4b729/2017/03/06157df695c4b729-589e18d0a93b49aa489cf675-1489610944343-113x200.jpeg",
-				src: "https://s3.amazonaws.com/aa-vision-images-development/516D7F40-B36C-4727-9573-A0E7687F24AE/2017/03/516D7F40-B36C-4727-9573-A0E7687F24AE-5851d151e3509e1b119d3265-1490483909208.mp4",
+				thumbnail: "https://s3.amazonaws.com/xoi-content-upload-production/M001001065/2016/07/M001001065-1469463389447-267x178.jpeg",
+				src: "https://s3.amazonaws.com/xoi-content-upload-production/M001001065/2016/07/M001001065-1469463389447.mp4",
 				useForDemo: true
 			}]} />
 		

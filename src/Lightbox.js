@@ -10,6 +10,7 @@ import Footer from './components/Footer';
 import Header from './components/Header';
 import PaginatedThumbnails from './components/PaginatedThumbnails';
 import Portal from './components/Portal';
+import Video from './components/Video';
 
 import { bindFunctions, canUseDom, deepMerge } from './utils';
 
@@ -238,24 +239,15 @@ class Lightbox extends Component {
 
 		if(image.src && image.src.toLowerCase().lastIndexOf('.mp4') > -1) {
 			renderImageOrVideo = (
-				<video
+				<Video
 					src={image.src}
-					preload="auto"
-					controls
 					className={css(classes.image)}
-					onClick={!!onClickImage && onClickImage}
 					poster={image.thumbnail}
 					style={{
-						cursor: this.props.onClickImage ? 'pointer' : 'auto',
+						cursor: 'pointer',
 						maxHeight: `calc(100vh - ${heightOffset})`
-					}}>
-						<source key={image.src} src={image.src}/>
-						{
-							image.srcset.map((src) => {
-								return <source key={src} src={src} />
-							})
-						}
-					</video>);
+					}}
+					srcset={image.srcset} />);
 		} else {
 			let srcset;
 			let sizes;

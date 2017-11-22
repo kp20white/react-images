@@ -2767,7 +2767,7 @@ var defaultStyles = {
 
 module.exports = Arrow;
 
-},{"../theme":53,"../utils":57,"./Icon":44,"aphrodite/no-important":6,"prop-types":undefined,"react":undefined}],41:[function(require,module,exports){
+},{"../theme":55,"../utils":59,"./Icon":44,"aphrodite/no-important":6,"prop-types":undefined,"react":undefined}],41:[function(require,module,exports){
 'use strict';
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
@@ -2830,7 +2830,7 @@ var defaultStyles = {
 
 module.exports = Container;
 
-},{"../theme":53,"../utils":57,"aphrodite/no-important":6,"prop-types":undefined,"react":undefined}],42:[function(require,module,exports){
+},{"../theme":55,"../utils":59,"aphrodite/no-important":6,"prop-types":undefined,"react":undefined}],42:[function(require,module,exports){
 'use strict';
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
@@ -2927,7 +2927,7 @@ var defaultStyles = {
 
 module.exports = Footer;
 
-},{"../theme":53,"../utils":57,"aphrodite/no-important":6,"prop-types":undefined,"react":undefined}],43:[function(require,module,exports){
+},{"../theme":55,"../utils":59,"aphrodite/no-important":6,"prop-types":undefined,"react":undefined}],43:[function(require,module,exports){
 'use strict';
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
@@ -3000,7 +3000,7 @@ var defaultStyles = {
 		height: 10 },
 	/*defaults.header.height,*/
 	close: {
-		backgroundColor: '#000000',
+		backgroundColor: 'rgba(0,0,0,1)',
 		border: 'none',
 		borderRadius: 4,
 		cursor: 'pointer',
@@ -3021,7 +3021,7 @@ var defaultStyles = {
 
 module.exports = Header;
 
-},{"../theme":53,"../utils":57,"./Icon":44,"aphrodite/no-important":6,"prop-types":undefined,"react":undefined}],44:[function(require,module,exports){
+},{"../theme":55,"../utils":59,"./Icon":44,"aphrodite/no-important":6,"prop-types":undefined,"react":undefined}],44:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -3070,7 +3070,7 @@ Icon.defaultProps = {
 exports['default'] = Icon;
 module.exports = exports['default'];
 
-},{"../icons":52,"prop-types":undefined,"react":undefined}],45:[function(require,module,exports){
+},{"../icons":53,"prop-types":undefined,"react":undefined}],45:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -3304,7 +3304,7 @@ PaginatedThumbnails.propTypes = {
 };
 module.exports = exports['default'];
 
-},{"../theme":53,"./Arrow":40,"./Thumbnail":48,"aphrodite/no-important":6,"prop-types":undefined,"react":undefined}],46:[function(require,module,exports){
+},{"../theme":55,"./Arrow":40,"./Thumbnail":48,"aphrodite/no-important":6,"prop-types":undefined,"react":undefined}],46:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -3548,7 +3548,119 @@ var defaultStyles = {
 exports['default'] = Thumbnail;
 module.exports = exports['default'];
 
-},{"../theme":53,"../utils":57,"aphrodite/no-important":6,"prop-types":undefined,"react":undefined}],49:[function(require,module,exports){
+},{"../theme":55,"../utils":59,"aphrodite/no-important":6,"prop-types":undefined,"react":undefined}],49:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, '__esModule', {
+  value: true
+});
+
+var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _iconsPlayButton = require('../icons/playButton');
+
+var _iconsPlayButton2 = _interopRequireDefault(_iconsPlayButton);
+
+var Video = (function (_Component) {
+  _inherits(Video, _Component);
+
+  function Video(props) {
+    _classCallCheck(this, Video);
+
+    _get(Object.getPrototypeOf(Video.prototype), 'constructor', this).call(this, props);
+    this.state = { play: false };
+  }
+
+  _createClass(Video, [{
+    key: 'onWrapperClick',
+    value: function onWrapperClick(e) {
+      e.stopPropagation();
+      if (this.state.play) {
+        this.refs.video_player.pause();
+      } else {
+        this.refs.video_player.play();
+      }
+    }
+  }, {
+    key: 'componentDidMount',
+    value: function componentDidMount() {
+      var self = this;
+      var video = this.refs.video_player;
+
+      video.addEventListener("play", function () {
+        self.setState({ play: true });
+      }, false);
+
+      video.addEventListener("pause", function () {
+        self.setState({ play: false });
+      }, false);
+    }
+  }, {
+    key: 'render',
+    value: function render() {
+      return _react2['default'].createElement(
+        'div',
+        { style: { position: 'relative', pointerEvents: 'auto' } },
+        _react2['default'].createElement(
+          'div',
+          { onClick: this.onWrapperClick.bind(this),
+            style: { position: 'absolute', top: 0, left: 0, width: '100%', height: '90%', zIndex: 100, cursor: this.props.style.cursor ? this.props.style.cursor : 'auto' } },
+          _react2['default'].createElement(_iconsPlayButton2['default'], {
+            fill: '#FFFFFF',
+            style: { position: 'absolute', top: 0, bottom: 0, left: 0, right: 0, width: '18%', height: '18%', margin: 'auto', opacity: this.state.play ? 0 : 0.8, cursor: 'pointer', transition: 'opacity 0.3s' }
+          })
+        ),
+        _react2['default'].createElement(
+          'video',
+          {
+            ref: 'video_player',
+            src: this.props.src,
+            preload: this.props.preload,
+            controls: true,
+            className: this.props.className,
+            poster: this.props.poster,
+            style: this.props.style },
+          _react2['default'].createElement('source', { key: this.props.src, src: this.props.src }),
+          this.props.srcset.map(function (src) {
+            return _react2['default'].createElement('source', { key: src, src: src });
+          })
+        )
+      );
+    }
+  }]);
+
+  return Video;
+})(_react.Component);
+
+exports['default'] = Video;
+
+Video.propTypes = {
+  className: _react.PropTypes.string.isRequired,
+  poster: _react.PropTypes.string.isRequired,
+  preload: _react.PropTypes.string,
+  src: _react.PropTypes.string.isRequired,
+  srcset: _react.PropTypes.array.isRequired,
+  style: _react.PropTypes.object.isRequired
+};
+
+Video.defaultProps = {
+  preload: "auto"
+};
+module.exports = exports['default'];
+
+},{"../icons/playButton":54,"react":undefined}],50:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -3561,7 +3673,7 @@ exports["default"] = function (fill) {
 
 module.exports = exports["default"];
 
-},{}],50:[function(require,module,exports){
+},{}],51:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -3574,7 +3686,7 @@ exports["default"] = function (fill) {
 
 module.exports = exports["default"];
 
-},{}],51:[function(require,module,exports){
+},{}],52:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -3587,7 +3699,7 @@ exports["default"] = function (fill) {
 
 module.exports = exports["default"];
 
-},{}],52:[function(require,module,exports){
+},{}],53:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -3596,7 +3708,41 @@ module.exports = {
 	close: require('./close')
 };
 
-},{"./arrowLeft":49,"./arrowRight":50,"./close":51}],53:[function(require,module,exports){
+},{"./arrowLeft":50,"./arrowRight":51,"./close":52}],54:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var PlayButton = function PlayButton(props) {
+	return _react2["default"].createElement(
+		"svg",
+		{
+			fill: props.fill,
+			style: props.style,
+			version: "1.1",
+			xmlns: "http://www.w3.org/2000/svg",
+			xmlnsXlink: "http://www.w3.org/1999/xlink", x: "0px", y: "0px", width: "100%", height: "100%", viewBox: "0 0 22 32", xmlSpace: "preserve" },
+		_react2["default"].createElement("path", { d: "M6 4l20 12-20 12z" })
+	);
+};
+
+PlayButton.propTypes = {
+	fill: _react.PropTypes.string.isRequired,
+	style: _react.PropTypes.object.isRequired
+};
+
+exports["default"] = PlayButton;
+module.exports = exports["default"];
+
+},{"react":undefined}],55:[function(require,module,exports){
 // ==============================
 // THEME
 // ==============================
@@ -3653,7 +3799,7 @@ theme.arrow = {
 
 module.exports = theme;
 
-},{}],54:[function(require,module,exports){
+},{}],56:[function(require,module,exports){
 /**
 	Bind multiple component methods:
 
@@ -3676,14 +3822,14 @@ module.exports = function bindFunctions(functions) {
 	});
 };
 
-},{}],55:[function(require,module,exports){
+},{}],57:[function(require,module,exports){
 // Return true if window + document
 
 'use strict';
 
 module.exports = !!(typeof window !== 'undefined' && window.document && window.document.createElement);
 
-},{}],56:[function(require,module,exports){
+},{}],58:[function(require,module,exports){
 'use strict';
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
@@ -3710,7 +3856,7 @@ function deepMerge(target) {
 
 module.exports = deepMerge;
 
-},{}],57:[function(require,module,exports){
+},{}],59:[function(require,module,exports){
 'use strict';
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
@@ -3733,7 +3879,7 @@ module.exports = {
 	deepMerge: _deepMerge2['default']
 };
 
-},{"./bindFunctions":54,"./canUseDom":55,"./deepMerge":56}],"react-images":[function(require,module,exports){
+},{"./bindFunctions":56,"./canUseDom":57,"./deepMerge":58}],"react-images":[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -3791,6 +3937,10 @@ var _componentsPaginatedThumbnails2 = _interopRequireDefault(_componentsPaginate
 var _componentsPortal = require('./components/Portal');
 
 var _componentsPortal2 = _interopRequireDefault(_componentsPortal);
+
+var _componentsVideo = require('./components/Video');
+
+var _componentsVideo2 = _interopRequireDefault(_componentsVideo);
 
 var _utils = require('./utils');
 
@@ -4042,24 +4192,15 @@ var Lightbox = (function (_Component) {
 			if (!image.srcset) image.srcset = [];
 
 			if (image.src && image.src.toLowerCase().lastIndexOf('.mp4') > -1) {
-				renderImageOrVideo = _react2['default'].createElement(
-					'video',
-					{
-						src: image.src,
-						preload: 'auto',
-						controls: true,
-						className: (0, _aphroditeNoImportant.css)(classes.image),
-						onClick: !!onClickImage && onClickImage,
-						poster: image.thumbnail,
-						style: {
-							cursor: this.props.onClickImage ? 'pointer' : 'auto',
-							maxHeight: 'calc(100vh - ' + heightOffset + ')'
-						} },
-					_react2['default'].createElement('source', { key: image.src, src: image.src }),
-					image.srcset.map(function (src) {
-						return _react2['default'].createElement('source', { key: src, src: src });
-					})
-				);
+				renderImageOrVideo = _react2['default'].createElement(_componentsVideo2['default'], {
+					src: image.src,
+					className: (0, _aphroditeNoImportant.css)(classes.image),
+					poster: image.thumbnail,
+					style: {
+						cursor: 'pointer',
+						maxHeight: 'calc(100vh - ' + heightOffset + ')'
+					},
+					srcset: image.srcset });
 			} else {
 				var srcset = undefined;
 				var sizes = undefined;
@@ -4204,4 +4345,4 @@ https://fb.me/react-unknown-prop is resolved
 <Swipeable onSwipedLeft={this.gotoNext} onSwipedRight={this.gotoPrev} />
 */
 
-},{"./components/Arrow":40,"./components/Container":41,"./components/Footer":42,"./components/Header":43,"./components/PaginatedThumbnails":45,"./components/Portal":47,"./theme":53,"./utils":57,"aphrodite/no-important":6,"prop-types":undefined,"react":undefined,"react-scrolllock":undefined}]},{},[]);
+},{"./components/Arrow":40,"./components/Container":41,"./components/Footer":42,"./components/Header":43,"./components/PaginatedThumbnails":45,"./components/Portal":47,"./components/Video":49,"./theme":55,"./utils":59,"aphrodite/no-important":6,"prop-types":undefined,"react":undefined,"react-scrolllock":undefined}]},{},[]);
