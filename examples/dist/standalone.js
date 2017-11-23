@@ -3160,7 +3160,7 @@ var Lightbox = (function (_Component) {
 			var image = images[currentImage];
 
 			var thumbnailsSize = showThumbnails ? this.theme.thumbnail.size : 0;
-			var heightOffset = this.theme.header.height + this.theme.footer.height + thumbnailsSize + this.theme.container.gutter.vertical + 'px';
+			var heightOffset = this.theme.header.height + this.theme.footer.height + thumbnailsSize + this.theme.container.gutter.vertical;
 			var renderImageOrVideo = undefined;
 
 			if (!image.srcset) image.srcset = [];
@@ -3190,9 +3190,10 @@ var Lightbox = (function (_Component) {
 					alt: image.alt,
 					src: image.src,
 					srcSet: srcset,
+					heightOffset: heightOffset,
 					style: {
 						cursor: this.props.onClickImage ? 'pointer' : 'auto',
-						maxHeight: 'calc(100vh - ' + heightOffset + ')'
+						maxHeight: 'calc(100vh - ' + heightOffset + 'px)'
 					}
 				});
 			}
@@ -3754,6 +3755,8 @@ Object.defineProperty(exports, '__esModule', {
   value: true
 });
 
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
 var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
@@ -3786,52 +3789,136 @@ var Image = (function (_Component) {
     _classCallCheck(this, Image);
 
     _get(Object.getPrototypeOf(Image.prototype), 'constructor', this).call(this, props);
-    this.state = {
-      scale: MIN_SCALE,
-      wrapperStyle: { position: 'relative' }
-    };
   }
 
   _createClass(Image, [{
+    key: 'componentWillMount',
+    value: function componentWillMount() {
+      this.setState({
+        scale: MIN_SCALE,
+        imageLoaded: false,
+        imageStyle: {
+          maxHeight: 'calc(100vh - ' + this.props.heightOffset + 'px)'
+        },
+        wrapperStyle: {},
+        secondWrapper: {}
+      });
+    }
+  }, {
+    key: 'componentDidMount',
+    value: function componentDidMount() {
+      var _this = this;
+
+      var image = this.refs.lightbox_image_node;
+      image.addEventListener('load', function () {
+        _this.setState({ imageLoaded: true });
+      });
+    }
+  }, {
+    key: 'componentWillReceiveProps',
+    value: function componentWillReceiveProps(nextProps) {
+      if (this.props.src !== nextProps.src) {
+        this.setState({
+          scale: MIN_SCALE,
+          imageLoaded: false,
+          imageStyle: {
+            maxHeight: 'calc(100vh - ' + nextProps.heightOffset + 'px)'
+          },
+          wrapperStyle: {},
+          secondWrapper: {}
+        });
+      }
+    }
+  }, {
     key: 'onZoomIn',
-    value: function onZoomIn(e) {
-      console.log('image_wrapper clientHeight', this.refs.image_wrapper.clientHeight);
-      this.setState({ scale: this.state.scale + 1.0 });
+    value: function onZoomIn() {
+      var wrapHeight = this.refs.image_wrapper.offsetHeight;
+      var wrapWidth = this.refs.image_wrapper.offsetWidth;
+      var newScale = this.state.scale + 1.0;
+      this.setState({
+        scale: newScale,
+        wrapperStyle: _extends({}, this.props.wrapperStyle, {
+          overflow: 'scroll',
+          width: wrapWidth,
+          height: wrapHeight
+        }),
+        secondWrapper: { width: wrapWidth * newScale, height: wrapHeight * newScale, position: 'static' },
+        imageStyle: { width: '100%', height: '100%' }
+      });
     }
   }, {
     key: 'onZoomOut',
-    value: function onZoomOut(e) {
-      console.log('image_wrapper clientHeight', this.refs.image_wrapper.clientHeight);
-      this.setState({ scale: this.state.scale - 1.0 });
+    value: function onZoomOut() {
+      var newScale = this.state.scale - 1.0;
+      if (newScale === 1.0) {
+        this.setState({
+          scale: MIN_SCALE,
+          imageStyle: {
+            maxHeight: 'calc(100vh - ' + this.props.heightOffset + 'px)'
+          },
+          wrapperStyle: {},
+          secondWrapper: {}
+        });
+      } else {
+        var wrapHeight = this.refs.image_wrapper.offsetHeight;
+        var wrapWidth = this.refs.image_wrapper.offsetWidth;
+        this.setState({
+          scale: newScale,
+          wrapperStyle: _extends({}, this.props.wrapperStyle, {
+            overflow: 'scroll',
+            width: wrapWidth,
+            height: wrapHeight
+          }),
+          secondWrapper: { width: wrapWidth * newScale, height: wrapHeight * newScale, position: 'static' },
+          imageStyle: { width: '100%', height: '100%' }
+        });
+      }
     }
   }, {
     key: 'render',
     value: function render() {
+
+      var imgSize = {};
+      if (this.state.scale > 1.0) {
+        imgSize.width = this.state.imageStyle.width;
+        imgSize.height = this.state.imageStyle.height;
+      }
+
+      var imageStyle = _extends({}, this.state.imageStyle);
+      imageStyle.visibility = this.state.imageLoaded ? 'visible' : 'hidden';
+
       return _react2['default'].createElement(
         'div',
-        { style: this.state.wrapperStyle, ref: 'image_wrapper' },
-        _react2['default'].createElement('img', {
-          className: this.props.className,
-          onClick: this.props.onClickImage,
-          sizes: this.props.sizes,
-          alt: this.props.alt,
-          src: this.props.src,
-          srcSet: this.props.srcset,
-          style: this.props.style
-        }),
+        { style: { position: 'relative' } },
+        !this.state.imageLoaded && _react2['default'].createElement(
+          'div',
+          { style: {
+              position: 'absolute',
+              bottom: 0,
+              top: 0,
+              left: 0,
+              right: 0,
+              margin: 'auto',
+              zIndex: 100,
+              width: 30,
+              height: 30,
+              opacity: 0.7
+            } },
+          'S'
+        ),
         this.state.scale > MIN_SCALE && _react2['default'].createElement(_iconsMinus2['default'], {
           color: '#FFF',
           title: 'Zoom out',
           onClick: this.onZoomOut.bind(this),
           style: {
             position: 'absolute',
-            bottom: 40,
-            right: 10,
+            bottom: 10,
+            right: this.state.scale < MAX_SCALE ? 40 : 10,
             cursor: 'pointer',
             zIndex: 100,
             width: 20,
             height: 20,
-            opacity: 0.8,
+            opacity: this.state.imageLoaded ? 0.7 : 0,
             filter: 'drop-shadow(2px 2px 1px rgba(0,0,0,0.8))'
           } }),
         this.state.scale < MAX_SCALE && _react2['default'].createElement(_iconsPlus2['default'], {
@@ -3846,9 +3933,28 @@ var Image = (function (_Component) {
             zIndex: 100,
             width: 20,
             height: 20,
-            opacity: 0.8,
+            opacity: this.state.imageLoaded ? 0.7 : 0,
             filter: 'drop-shadow(2px 2px 1px rgba(0,0,0,0.8))'
-          } })
+          } }),
+        _react2['default'].createElement(
+          'div',
+          { style: this.state.wrapperStyle, ref: 'image_wrapper' },
+          _react2['default'].createElement(
+            'div',
+            { style: this.state.secondWrapper },
+            _react2['default'].createElement('img', _extends({
+              ref: 'lightbox_image_node',
+              className: this.props.className,
+              onClick: this.props.onClickImage,
+              sizes: this.state.scale === 1.0 ? this.props.sizes : undefined,
+              alt: this.props.alt,
+              src: this.props.src
+            }, imgSize, {
+              srcSet: this.props.srcset,
+              style: imageStyle
+            }))
+          )
+        )
       );
     }
   }]);
@@ -3861,17 +3967,13 @@ exports['default'] = Image;
 Image.propTypes = {
   alt: _react.PropTypes.func,
   className: _react.PropTypes.string.isRequired,
+  heightOffset: _react.PropTypes.number.isRequired,
   onClick: _react.PropTypes.func,
   sizes: _react.PropTypes.string.isRequired,
   src: _react.PropTypes.string.isRequired,
   srcset: _react.PropTypes.array,
   style: _react.PropTypes.object.isRequired
 };
-
-/*
-Image.defaultProps = {
-  preload: "auto",
-};*/
 module.exports = exports['default'];
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
@@ -4637,8 +4739,8 @@ var PlusIcon = function PlusIcon(props) {
 		_react2["default"].createElement(
 			"g",
 			null,
-			_react2["default"].createElement("line", { strokeLinecap: "square", y2: "10", x2: "2", y1: "10", x1: "20", strokeWidth: "4", stroke: props.color, fill: "none" }),
-			_react2["default"].createElement("line", { strokeLinecap: "square", y2: "1", x2: "11", y1: "19", x1: "11", strokeWidth: "4", stroke: props.color, fill: "none" })
+			_react2["default"].createElement("line", { strokeLinecap: "square", y2: "10", x2: "3", y1: "10", x1: "20", strokeWidth: "4", stroke: props.color, fill: "none" }),
+			_react2["default"].createElement("line", { strokeLinecap: "square", y2: "0", x2: "11.5", y1: "18", x1: "11.5", strokeWidth: "4", stroke: props.color, fill: "none" })
 		)
 	);
 };

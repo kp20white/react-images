@@ -8,52 +8,130 @@ const MAX_SCALE = 3.0;
 export default class Image extends Component {
   constructor(props) {
     super(props);
-    this.state = {
+  }
+
+  componentWillMount() {
+    this.setState({
       scale: MIN_SCALE,
-      wrapperStyle: {position: 'relative'},
-    };
+      imageLoaded: false,
+      imageStyle: {
+        maxHeight: `calc(100vh - ${this.props.heightOffset}px)`,
+      },
+      wrapperStyle: { },
+      secondWrapper: { },
+    });
   }
 
-  onZoomIn(e) {
-    console.log('image_wrapper clientHeight', this.refs.image_wrapper.clientHeight);
-    this.setState({scale: this.state.scale + 1.0});
+  componentDidMount() {
+    let image = this.refs.lightbox_image_node;
+    image.addEventListener('load', () => {
+      this.setState({imageLoaded: true});
+    });
   }
 
-  onZoomOut(e) {
-    console.log('image_wrapper clientHeight', this.refs.image_wrapper.clientHeight);
-    this.setState({scale: this.state.scale - 1.0});
+  componentWillReceiveProps(nextProps) {
+    if (this.props.src !== nextProps.src) {
+      this.setState({
+        scale: MIN_SCALE,
+        imageLoaded: false,
+        imageStyle: {
+          maxHeight: `calc(100vh - ${nextProps.heightOffset}px)`,
+        },
+        wrapperStyle: {},
+        secondWrapper: { },
+      });
+    }
+  }
+
+  onZoomIn() {
+    let wrapHeight = this.refs.image_wrapper.offsetHeight;
+    let wrapWidth = this.refs.image_wrapper.offsetWidth;
+    let newScale  = this.state.scale + 1.0;
+    this.setState({
+      scale: newScale,
+      wrapperStyle: {
+        ...this.props.wrapperStyle,
+        overflow: 'scroll',
+        width: wrapWidth,
+        height: wrapHeight,
+      },
+      secondWrapper: { width: wrapWidth * newScale, height: wrapHeight * newScale, position: 'static' },
+      imageStyle: { width:'100%', height: '100%' },
+    });
+  }
+
+  onZoomOut() {
+    let newScale  = this.state.scale - 1.0;
+    if (newScale === 1.0) {
+      this.setState({
+        scale: MIN_SCALE,
+        imageStyle: {
+          maxHeight: `calc(100vh - ${this.props.heightOffset}px)`,
+        },
+        wrapperStyle: {},
+        secondWrapper: { },
+      });
+    } else {
+      let wrapHeight = this.refs.image_wrapper.offsetHeight;
+      let wrapWidth = this.refs.image_wrapper.offsetWidth;
+      this.setState({
+        scale: newScale,
+        wrapperStyle: {
+          ...this.props.wrapperStyle,
+          overflow: 'scroll',
+          width: wrapWidth,
+          height: wrapHeight,
+        },
+        secondWrapper: { width: wrapWidth * newScale, height: wrapHeight * newScale, position: 'static' },
+        imageStyle: { width:'100%', height: '100%' },
+      });
+    }
   }
 
   render()
   {
-    return (<div style={this.state.wrapperStyle} ref="image_wrapper">
-      <img
-        className={this.props.className}
-        onClick={this.props.onClickImage}
-        sizes={this.props.sizes}
-        alt={this.props.alt}
-        src={this.props.src}
-        srcSet={this.props.srcset}
-        style={this.props.style}
-      />
-      {this.state.scale > MIN_SCALE &&
+
+    let imgSize = {};
+    if (this.state.scale > 1.0) {
+      imgSize.width = this.state.imageStyle.width;
+      imgSize.height =  this.state.imageStyle.height;
+    }
+
+    let imageStyle = {...this.state.imageStyle};
+    imageStyle.visibility = this.state.imageLoaded ? 'visible' : 'hidden';
+
+    return (
+      <div style={{position: 'relative'}}>
+        {!this.state.imageLoaded && <div style={{
+          position: 'absolute',
+          bottom: 0,
+          top: 0,
+          left: 0,
+          right: 0,
+          margin: 'auto',
+          zIndex: 100,
+          width: 30,
+          height: 30,
+          opacity:  0.7,
+        }}>S</div>}
+        {this.state.scale > MIN_SCALE &&
         <MinusIcon
           color="#FFF"
           title="Zoom out"
           onClick={this.onZoomOut.bind(this)}
           style={{
             position: 'absolute',
-            bottom: 40,
-            right: 10,
+            bottom: 10,
+            right: this.state.scale < MAX_SCALE ? 40 : 10,
             cursor: 'pointer',
             zIndex: 100,
             width: 20,
             height: 20,
-            opacity: 0.8,
+            opacity: this.state.imageLoaded ? 0.7 : 0,
             filter: 'drop-shadow(2px 2px 1px rgba(0,0,0,0.8))',
           }}/>
-      }
-      {this.state.scale < MAX_SCALE &&
+        }
+        {this.state.scale < MAX_SCALE &&
         <PlusIcon
           color="#FFF"
           title="Zoom in"
@@ -66,11 +144,26 @@ export default class Image extends Component {
             zIndex: 100,
             width: 20,
             height: 20,
-            opacity: 0.8,
+            opacity: this.state.imageLoaded ? 0.7 : 0,
             filter: 'drop-shadow(2px 2px 1px rgba(0,0,0,0.8))'
           }} />
-      }
-    </div>);
+        }
+        <div style={this.state.wrapperStyle} ref="image_wrapper">
+          <div style={this.state.secondWrapper}>
+            <img
+              ref="lightbox_image_node"
+              className={this.props.className}
+              onClick={this.props.onClickImage}
+              sizes={this.state.scale === 1.0 ? this.props.sizes : undefined}
+              alt={this.props.alt}
+              src={this.props.src}
+              {...imgSize}
+              srcSet={this.props.srcset}
+              style={imageStyle}
+            />
+          </div>
+        </div>
+      </div>);
   }
 
 }
@@ -78,14 +171,10 @@ export default class Image extends Component {
 Image.propTypes = {
   alt: PropTypes.func,
   className: PropTypes.string.isRequired,
+  heightOffset: PropTypes.number.isRequired,
   onClick: PropTypes.func,
   sizes: PropTypes.string.isRequired,
   src: PropTypes.string.isRequired,
   srcset: PropTypes.array,
   style: PropTypes.object.isRequired,
 };
-
-/*
-Image.defaultProps = {
-  preload: "auto",
-};*/

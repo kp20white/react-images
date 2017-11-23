@@ -232,7 +232,7 @@ class Lightbox extends Component {
 		const image = images[currentImage];
 
 		const thumbnailsSize = showThumbnails ? this.theme.thumbnail.size : 0;
-		const heightOffset = `${this.theme.header.height + this.theme.footer.height + thumbnailsSize + (this.theme.container.gutter.vertical)}px`;
+		const heightOffset = this.theme.header.height + this.theme.footer.height + thumbnailsSize + (this.theme.container.gutter.vertical);
 		let renderImageOrVideo;
 
 		if (!image.srcset)
@@ -264,9 +264,10 @@ class Lightbox extends Component {
                 alt={image.alt}
                 src={image.src}
                 srcSet={srcset}
+								heightOffset={heightOffset}
                 style={{
                     cursor: this.props.onClickImage ? 'pointer' : 'auto',
-										maxHeight: `calc(100vh - ${heightOffset})`,
+										maxHeight: `calc(100vh - ${heightOffset}px)`,
                 }}
             />);
 		}
