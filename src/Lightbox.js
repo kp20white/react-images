@@ -11,6 +11,7 @@ import Header from './components/Header';
 import PaginatedThumbnails from './components/PaginatedThumbnails';
 import Portal from './components/Portal';
 import Video from './components/Video';
+import Image from './components/Image';
 
 import { bindFunctions, canUseDom, deepMerge } from './utils';
 
@@ -256,7 +257,7 @@ class Lightbox extends Component {
                 srcset = image.srcset.join();
                 sizes = '100vw';
             }
-            renderImageOrVideo = (<img
+            renderImageOrVideo = (<Image
                 className={css(classes.image)}
                 onClick={!!onClickImage && onClickImage}
                 sizes={sizes}
@@ -265,7 +266,7 @@ class Lightbox extends Component {
                 srcSet={srcset}
                 style={{
                     cursor: this.props.onClickImage ? 'pointer' : 'auto',
-                        maxHeight: `calc(100vh - ${heightOffset})`,
+										maxHeight: `calc(100vh - ${heightOffset})`,
                 }}
             />);
 		}
