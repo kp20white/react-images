@@ -113,6 +113,38 @@ export default class Image extends Component {
     this.zoomed = true;
   }
 
+  onImageMouseDown(e) {
+    if (!this.panStarted) {
+      let self = this;
+      this.panStarted = true;
+      //let wrapperNode = this.refs.image_wrapper;
+      this.scrollPos = { x: e.clientX, y: e.clientY };
+
+      //console.log('onImageMouseDown', this.scrollPos);
+
+      let onMouseMove = function(e) {
+        //console.log('onImageMouseMove  ----');
+        let offsetX = self.scrollPos.x - e.clientX;
+        let offsetY = self.scrollPos.y - e.clientY;
+
+        self.refs.image_wrapper.scrollLeft += offsetX;
+        self.refs.image_wrapper.scrollTop += offsetY;
+
+        self.scrollPos = { x: e.clientX, y: e.clientY };
+      };
+
+      let onMouseUp = function(e) {
+        //console.log('onImageMouseUp ^^^^^');
+        self.panStarted = false;
+        window.removeEventListener("mousemove", onMouseMove);
+        window.removeEventListener("mouseup", onMouseUp);
+      };
+
+      window.addEventListener("mousemove", onMouseMove);
+      window.addEventListener("mouseup", onMouseUp);
+    }
+  }
+
   render()
   {
 
@@ -124,6 +156,10 @@ export default class Image extends Component {
 
     let imageStyle = {...this.state.imageStyle};
     imageStyle.visibility = this.state.imageLoaded ? 'visible' : 'hidden';
+
+    if (this.state.scale > 1) {
+      imageStyle.cursor = 'all-scroll';
+    }
 
     return (
       <div style={{position: 'relative', backgroundColor: 'black'}}>
@@ -187,6 +223,8 @@ export default class Image extends Component {
               {...imgSize}
               srcSet={this.props.srcset}
               style={imageStyle}
+              draggable="false"
+              onMouseDown={this.onImageMouseDown.bind(this)}
             />
           </div>
         </div>
