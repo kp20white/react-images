@@ -33,7 +33,7 @@ export default class Video extends Component {
 
   render()
   {
-    return (<div style={{position: 'relative', pointerEvents: 'auto'}}>
+    return (<div style={{position: 'relative', pointerEvents: 'auto', backgroundColor: 'black'}}>
       <div onClick={this.onWrapperClick.bind(this)}
            style={{position: 'absolute', top: 0, left: 0, width: '100%', height: '90%', zIndex: 100, cursor: this.props.style.cursor ? this.props.style.cursor : 'auto'}}>
         <PlayButton

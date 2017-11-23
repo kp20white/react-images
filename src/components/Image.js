@@ -29,6 +29,27 @@ export default class Image extends Component {
     });
   }
 
+  componentDidUpdate() {
+    if (this.zoomed) {
+      this.zoomed = false;
+
+      if (this.state.scale > MIN_SCALE) {
+
+        let imageNode = this.refs.lightbox_image_node,
+          wrapperNode = this.refs.image_wrapper;
+
+        let hw = wrapperNode.offsetHeight,
+          hi = imageNode.offsetHeight,
+          ww = wrapperNode.offsetWidth,
+          wi = imageNode.offsetWidth;
+
+        wrapperNode.scrollTop = (hi - hw)/2;
+        wrapperNode.scrollLeft = (wi - ww)/2;
+      }
+
+    }
+  }
+
   componentWillReceiveProps(nextProps) {
     if (this.props.src !== nextProps.src) {
       this.setState({
@@ -58,6 +79,8 @@ export default class Image extends Component {
       secondWrapper: { width: wrapWidth * newScale, height: wrapHeight * newScale, position: 'static' },
       imageStyle: { width:'100%', height: '100%' },
     });
+
+    this.zoomed = true;
   }
 
   onZoomOut() {
@@ -86,6 +109,8 @@ export default class Image extends Component {
         imageStyle: { width:'100%', height: '100%' },
       });
     }
+
+    this.zoomed = true;
   }
 
   render()
@@ -101,8 +126,8 @@ export default class Image extends Component {
     imageStyle.visibility = this.state.imageLoaded ? 'visible' : 'hidden';
 
     return (
-      <div style={{position: 'relative'}}>
-        {!this.state.imageLoaded && <div style={{
+      <div style={{position: 'relative', backgroundColor: 'black'}}>
+        {!this.state.imageLoaded && <i className="fa fa-circle-o-notch fa-spin fa-fw" style={{
           position: 'absolute',
           bottom: 0,
           top: 0,
@@ -112,8 +137,10 @@ export default class Image extends Component {
           zIndex: 100,
           width: 30,
           height: 30,
-          opacity:  0.7,
-        }}>S</div>}
+          opacity:  1,
+          color: '#AAA',
+          fontSize: '2em',
+        }} />}
         {this.state.scale > MIN_SCALE &&
         <MinusIcon
           color="#FFF"

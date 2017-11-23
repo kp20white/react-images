@@ -3815,6 +3815,27 @@ var Image = (function (_Component) {
       });
     }
   }, {
+    key: 'componentDidUpdate',
+    value: function componentDidUpdate() {
+      if (this.zoomed) {
+        this.zoomed = false;
+
+        if (this.state.scale > MIN_SCALE) {
+
+          var imageNode = this.refs.lightbox_image_node,
+              wrapperNode = this.refs.image_wrapper;
+
+          var hw = wrapperNode.offsetHeight,
+              hi = imageNode.offsetHeight,
+              ww = wrapperNode.offsetWidth,
+              wi = imageNode.offsetWidth;
+
+          wrapperNode.scrollTop = (hi - hw) / 2;
+          wrapperNode.scrollLeft = (wi - ww) / 2;
+        }
+      }
+    }
+  }, {
     key: 'componentWillReceiveProps',
     value: function componentWillReceiveProps(nextProps) {
       if (this.props.src !== nextProps.src) {
@@ -3845,6 +3866,8 @@ var Image = (function (_Component) {
         secondWrapper: { width: wrapWidth * newScale, height: wrapHeight * newScale, position: 'static' },
         imageStyle: { width: '100%', height: '100%' }
       });
+
+      this.zoomed = true;
     }
   }, {
     key: 'onZoomOut',
@@ -3873,6 +3896,8 @@ var Image = (function (_Component) {
           imageStyle: { width: '100%', height: '100%' }
         });
       }
+
+      this.zoomed = true;
     }
   }, {
     key: 'render',
@@ -3889,23 +3914,21 @@ var Image = (function (_Component) {
 
       return _react2['default'].createElement(
         'div',
-        { style: { position: 'relative' } },
-        !this.state.imageLoaded && _react2['default'].createElement(
-          'div',
-          { style: {
-              position: 'absolute',
-              bottom: 0,
-              top: 0,
-              left: 0,
-              right: 0,
-              margin: 'auto',
-              zIndex: 100,
-              width: 30,
-              height: 30,
-              opacity: 0.7
-            } },
-          'S'
-        ),
+        { style: { position: 'relative', backgroundColor: 'black' } },
+        !this.state.imageLoaded && _react2['default'].createElement('i', { className: 'fa fa-circle-o-notch fa-spin fa-fw', style: {
+            position: 'absolute',
+            bottom: 0,
+            top: 0,
+            left: 0,
+            right: 0,
+            margin: 'auto',
+            zIndex: 100,
+            width: 30,
+            height: 30,
+            opacity: 1,
+            color: '#AAA',
+            fontSize: '2em'
+          } }),
         this.state.scale > MIN_SCALE && _react2['default'].createElement(_iconsMinus2['default'], {
           color: '#FFF',
           title: 'Zoom out',
@@ -4528,7 +4551,7 @@ var Video = (function (_Component) {
     value: function render() {
       return _react2['default'].createElement(
         'div',
-        { style: { position: 'relative', pointerEvents: 'auto' } },
+        { style: { position: 'relative', pointerEvents: 'auto', backgroundColor: 'black' } },
         _react2['default'].createElement(
           'div',
           { onClick: this.onWrapperClick.bind(this),
