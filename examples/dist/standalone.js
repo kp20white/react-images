@@ -3854,16 +3854,18 @@ var Image = (function (_Component) {
   }, {
     key: 'onZoomIn',
     value: function onZoomIn() {
+      if (this.state.scale >= MAX_SCALE) return;
+
       var wrapHeight = this.refs.image_wrapper.offsetHeight;
       var wrapWidth = this.refs.image_wrapper.offsetWidth;
       var newScale = this.state.scale + 1.0;
       this.setState({
         scale: newScale,
-        wrapperStyle: _extends({}, this.props.wrapperStyle, {
+        wrapperStyle: {
           overflow: 'scroll',
           width: wrapWidth,
           height: wrapHeight
-        }),
+        },
         secondWrapper: { width: wrapWidth * newScale, height: wrapHeight * newScale, position: 'static' },
         imageStyle: { width: '100%', height: '100%' }
       });
@@ -3873,6 +3875,8 @@ var Image = (function (_Component) {
   }, {
     key: 'onZoomOut',
     value: function onZoomOut() {
+      if (this.state.scale <= MIN_SCALE) return;
+
       var newScale = this.state.scale - 1.0;
       if (newScale === 1.0) {
         this.setState({
@@ -3888,11 +3892,11 @@ var Image = (function (_Component) {
         var wrapWidth = this.refs.image_wrapper.offsetWidth;
         this.setState({
           scale: newScale,
-          wrapperStyle: _extends({}, this.props.wrapperStyle, {
+          wrapperStyle: {
             overflow: 'scroll',
             width: wrapWidth,
             height: wrapHeight
-          }),
+          },
           secondWrapper: { width: wrapWidth * newScale, height: wrapHeight * newScale, position: 'static' },
           imageStyle: { width: '100%', height: '100%' }
         });
@@ -3909,13 +3913,9 @@ var Image = (function (_Component) {
         (function () {
           var self = _this2;
           _this2.panStarted = true;
-          //let wrapperNode = this.refs.image_wrapper;
           _this2.scrollPos = { x: e.clientX, y: e.clientY };
 
-          //console.log('onImageMouseDown', this.scrollPos);
-
           var onMouseMove = function onMouseMove(e) {
-            //console.log('onImageMouseMove  ----');
             var offsetX = self.scrollPos.x - e.clientX;
             var offsetY = self.scrollPos.y - e.clientY;
 
@@ -3926,7 +3926,6 @@ var Image = (function (_Component) {
           };
 
           var onMouseUp = function onMouseUp(e) {
-            //console.log('onImageMouseUp ^^^^^');
             self.panStarted = false;
             window.removeEventListener("mousemove", onMouseMove);
             window.removeEventListener("mouseup", onMouseUp);
@@ -3971,22 +3970,22 @@ var Image = (function (_Component) {
             color: '#AAA',
             fontSize: '2em'
           } }),
-        this.state.scale > MIN_SCALE && _react2['default'].createElement(_iconsMinus2['default'], {
+        _react2['default'].createElement(_iconsMinus2['default'], {
           color: '#FFF',
           title: 'Zoom out',
           onClick: this.onZoomOut.bind(this),
           style: {
             position: 'absolute',
             bottom: 10,
-            right: this.state.scale < MAX_SCALE ? 40 : 10,
-            cursor: 'pointer',
+            right: 40,
+            cursor: this.state.scale > MIN_SCALE ? 'pointer' : 'auto',
             zIndex: 100,
             width: 20,
             height: 20,
-            opacity: this.state.imageLoaded ? 0.7 : 0,
+            opacity: this.state.imageLoaded ? this.state.scale > MIN_SCALE ? 0.8 : 0.4 : 0,
             filter: 'drop-shadow(2px 2px 1px rgba(0,0,0,0.8))'
           } }),
-        this.state.scale < MAX_SCALE && _react2['default'].createElement(_iconsPlus2['default'], {
+        _react2['default'].createElement(_iconsPlus2['default'], {
           color: '#FFF',
           title: 'Zoom in',
           onClick: this.onZoomIn.bind(this),
@@ -3994,11 +3993,11 @@ var Image = (function (_Component) {
             position: 'absolute',
             bottom: 10,
             right: 10,
-            cursor: 'pointer',
+            cursor: this.state.scale < MAX_SCALE ? 'pointer' : 'auto',
             zIndex: 100,
             width: 20,
             height: 20,
-            opacity: this.state.imageLoaded ? 0.7 : 0,
+            opacity: this.state.imageLoaded ? this.state.scale < MAX_SCALE ? 0.8 : 0.4 : 0,
             filter: 'drop-shadow(2px 2px 1px rgba(0,0,0,0.8))'
           } }),
         _react2['default'].createElement(

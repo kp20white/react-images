@@ -65,13 +65,14 @@ export default class Image extends Component {
   }
 
   onZoomIn() {
+    if (this.state.scale >= MAX_SCALE) return;
+
     let wrapHeight = this.refs.image_wrapper.offsetHeight;
     let wrapWidth = this.refs.image_wrapper.offsetWidth;
     let newScale  = this.state.scale + 1.0;
     this.setState({
       scale: newScale,
       wrapperStyle: {
-        ...this.props.wrapperStyle,
         overflow: 'scroll',
         width: wrapWidth,
         height: wrapHeight,
@@ -84,6 +85,8 @@ export default class Image extends Component {
   }
 
   onZoomOut() {
+    if (this.state.scale <= MIN_SCALE) return;
+
     let newScale  = this.state.scale - 1.0;
     if (newScale === 1.0) {
       this.setState({
@@ -100,7 +103,6 @@ export default class Image extends Component {
       this.setState({
         scale: newScale,
         wrapperStyle: {
-          ...this.props.wrapperStyle,
           overflow: 'scroll',
           width: wrapWidth,
           height: wrapHeight,
@@ -117,13 +119,9 @@ export default class Image extends Component {
     if (!this.panStarted) {
       let self = this;
       this.panStarted = true;
-      //let wrapperNode = this.refs.image_wrapper;
       this.scrollPos = { x: e.clientX, y: e.clientY };
 
-      //console.log('onImageMouseDown', this.scrollPos);
-
       let onMouseMove = function(e) {
-        //console.log('onImageMouseMove  ----');
         let offsetX = self.scrollPos.x - e.clientX;
         let offsetY = self.scrollPos.y - e.clientY;
 
@@ -134,7 +132,6 @@ export default class Image extends Component {
       };
 
       let onMouseUp = function(e) {
-        //console.log('onImageMouseUp ^^^^^');
         self.panStarted = false;
         window.removeEventListener("mousemove", onMouseMove);
         window.removeEventListener("mouseup", onMouseUp);
@@ -177,7 +174,6 @@ export default class Image extends Component {
           color: '#AAA',
           fontSize: '2em',
         }} />}
-        {this.state.scale > MIN_SCALE &&
         <MinusIcon
           color="#FFF"
           title="Zoom out"
@@ -185,16 +181,14 @@ export default class Image extends Component {
           style={{
             position: 'absolute',
             bottom: 10,
-            right: this.state.scale < MAX_SCALE ? 40 : 10,
-            cursor: 'pointer',
+            right: 40,
+            cursor: ( this.state.scale > MIN_SCALE ? 'pointer' : 'auto' ),
             zIndex: 100,
             width: 20,
             height: 20,
-            opacity: this.state.imageLoaded ? 0.7 : 0,
+            opacity: this.state.imageLoaded ? ( this.state.scale > MIN_SCALE ? 0.8 : 0.4 ) : 0,
             filter: 'drop-shadow(2px 2px 1px rgba(0,0,0,0.8))',
           }}/>
-        }
-        {this.state.scale < MAX_SCALE &&
         <PlusIcon
           color="#FFF"
           title="Zoom in"
@@ -203,14 +197,13 @@ export default class Image extends Component {
             position: 'absolute',
             bottom: 10,
             right: 10,
-            cursor: 'pointer',
+            cursor: ( this.state.scale < MAX_SCALE ? 'pointer' : 'auto' ) ,
             zIndex: 100,
             width: 20,
             height: 20,
-            opacity: this.state.imageLoaded ? 0.7 : 0,
-            filter: 'drop-shadow(2px 2px 1px rgba(0,0,0,0.8))'
+            opacity: this.state.imageLoaded ? ( this.state.scale < MAX_SCALE ? 0.8 : 0.4 ) : 0,
+            filter: 'drop-shadow(2px 2px 1px rgba(0,0,0,0.8))',
           }} />
-        }
         <div style={this.state.wrapperStyle} ref="image_wrapper">
           <div style={this.state.secondWrapper}>
             <img
