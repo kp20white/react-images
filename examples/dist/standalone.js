@@ -3937,6 +3937,38 @@ var Image = (function (_Component) {
       }
     }
   }, {
+    key: 'onImageTouch',
+    value: function onImageTouch(e) {
+      var _this3 = this;
+
+      if (!this.panStarted && this.state.scale > MIN_SCALE) {
+        (function () {
+          var self = _this3;
+          _this3.panStarted = true;
+          _this3.touchPos = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+
+          var onTouchMove = function onTouchMove(e) {
+            var offsetX = self.touchPos.x - e.changedTouches[0].clientX;
+            var offsetY = self.touchPos.y - e.changedTouches[0].clientY;
+
+            self.refs.image_wrapper.scrollLeft += offsetX;
+            self.refs.image_wrapper.scrollTop += offsetY;
+
+            self.touchPos = { x: e.changedTouches[0].clientX, y: e.changedTouches[0].clientY };
+          };
+
+          var onTouchEnd = function onTouchEnd(e) {
+            self.panStarted = false;
+            window.removeEventListener("touchmove", onTouchMove);
+            window.removeEventListener("touchend", onTouchEnd);
+          };
+
+          window.addEventListener("touchmove", onTouchMove);
+          window.addEventListener("touchend", onTouchEnd);
+        })();
+      }
+    }
+  }, {
     key: 'render',
     value: function render() {
 
@@ -4017,7 +4049,8 @@ var Image = (function (_Component) {
               srcSet: this.props.srcset,
               style: imageStyle,
               draggable: 'false',
-              onMouseDown: this.onImageMouseDown.bind(this)
+              onMouseDown: this.onImageMouseDown.bind(this),
+              onTouchStart: this.onImageTouch.bind(this)
             }))
           )
         )
@@ -4897,7 +4930,7 @@ theme.thumbnail = {
 theme.arrow = {
 	background: 'rgba(0,0,0,0.2)',
 	fill: 'white',
-	height: 120,
+	height: 80,
 	zIndex: 200
 };
 
