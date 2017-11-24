@@ -4,6 +4,7 @@ import PlusIcon from '../icons/plus';
 
 const MIN_SCALE = 1.0;
 const MAX_SCALE = 4.0;
+const SCALE_MULTER = 2.0;
 
 const MIN_SWIPE_LENGTH = 40.0;
 
@@ -36,24 +37,31 @@ export default class Image extends Component {
       this.zoomed = false;
 
       if (this.state.scale > MIN_SCALE) {
-
         let imageNode = this.refs.lightbox_image_node,
           wrapperNode = this.refs.image_wrapper;
 
         let hw = wrapperNode.offsetHeight,
           hi = imageNode.offsetHeight,
           ww = wrapperNode.offsetWidth,
-          wi = imageNode.offsetWidth;
+          wi = imageNode.offsetWidth,
+          centerX = 0.5, centerY = 0.5;
 
-        wrapperNode.scrollTop = (hi - hw)/2;
-        wrapperNode.scrollLeft = (wi - ww)/2;
+        if (this.touchRelativePos) {
+          centerX = this.touchRelativePos.x;
+          centerY = this.touchRelativePos.y;
+          console.log('this.touchPos', { centerX, centerY });
+          this.touchRelativePos = null;
+        }
+
+        wrapperNode.scrollTop = (hi * centerY) - hw / 2;
+        wrapperNode.scrollLeft = (wi * centerX) - ww / 2;
       }
-
     }
   }
 
   componentWillReceiveProps(nextProps) {
     if (this.props.src !== nextProps.src) {
+      this.tabPos = null;
       this.setState({
         scale: MIN_SCALE,
         imageLoaded: false,
@@ -61,13 +69,18 @@ export default class Image extends Component {
           maxHeight: `calc(100vh - ${nextProps.heightOffset}px)`,
         },
         wrapperStyle: {},
-        secondWrapper: { },
+        secondWrapper: {},
       });
     }
   }
 
-  onZoomIn(e, multer = 2.0) {
+  onZoomIn(e, multer = SCALE_MULTER) {
     if (this.state.scale >= MAX_SCALE) return;
+
+    if (e !== null) {
+      console.log('clear touchPos');
+      this.touchRelativePos = null;
+    } // if click on + clear tabPos info
 
     let wrapHeight = this.refs.image_wrapper.offsetHeight;
     let wrapWidth = this.refs.image_wrapper.offsetWidth;
@@ -86,8 +99,13 @@ export default class Image extends Component {
     this.zoomed = true;
   }
 
-  onZoomOut(e, multer = 2.0) {
+  onZoomOut(e, multer = SCALE_MULTER) {
     if (this.state.scale <= MIN_SCALE) return;
+
+    if (e !== null) {
+      console.log('clear touchPos');
+      this.touchRelativePos = null;
+    } // if click on - clear tabPos info
 
     let newScale = this.state.scale / multer;
     if (newScale === MIN_SCALE) {
@@ -147,22 +165,30 @@ export default class Image extends Component {
   onImageTouch(e) {
     if (!this.panStarted) {
       let self = this;
+      this.touchPos = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+      // console.log('e.touches[0]', e.touches[0]);
+      // console.log('ClientSize', {w: this.refs.lightbox_image_node.clientWidth, h: this.refs.lightbox_image_node.clientHeight});
+      let imageRect = this.refs.lightbox_image_node.getClientRects()[0];
+      this.touchRelativePos = {
+        x: (e.touches[0].clientX - imageRect.x) / this.refs.lightbox_image_node.clientWidth,
+        y: (e.touches[0].clientY - imageRect.y) / this.refs.lightbox_image_node.clientHeight,
+      };
+      // console.log('touchRelativePos', this.touchRelativePos);
       if (this.state.scale > MIN_SCALE) {
 
         if (this.lastTouchTime && (Date.now() - this.lastTouchTime) < 300) {
-          // time beetween touches is loss than 300ms - double tap
+          // time beetween touches is less than 300ms - double tap
           if (this.state.scale < MAX_SCALE) {
-            self.onZoomIn();
+            self.onZoomIn(null, SCALE_MULTER, this.touchPos);
           }
           else {
-            self.onZoomOut(null, MAX_SCALE - MIN_SCALE);
+            self.onZoomOut(null, MAX_SCALE, this.touchPos);
           }
           return;
         }
 
         this.lastTouchTime = Date.now();
         this.panStarted = true;
-        this.touchPos = { x: e.touches[0].clientX, y: e.touches[0].clientY };
 
         let onTouchMove = function(e) {
           let offsetX = self.touchPos.x - e.changedTouches[0].clientX;
@@ -186,10 +212,9 @@ export default class Image extends Component {
         /**
          * track touch swipes
          */
-
           if (this.lastTouchTime && (Date.now() - this.lastTouchTime) < 300) {
-            // time beetween touches is loss than 300ms - double tap
-            self.onZoomIn();
+            // time beetween touches is less than 300ms - double tap
+            self.onZoomIn(null, SCALE_MULTER);
             return;
           }
 

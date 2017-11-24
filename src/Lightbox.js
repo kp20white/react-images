@@ -110,8 +110,10 @@ class Lightbox extends Component {
 		}
 	}
 	gotoNext (event) {
+		// console.log('gotoNext');
 		if (this.props.currentImage === (this.props.images.length - 1)) return;
 		if (event) {
+			// console.log('eeee', event);
 			event.preventDefault();
 			event.stopPropagation();
 		}

@@ -3028,8 +3028,10 @@ var Lightbox = (function (_Component) {
 	}, {
 		key: 'gotoNext',
 		value: function gotoNext(event) {
+			// console.log('gotoNext');
 			if (this.props.currentImage === this.props.images.length - 1) return;
 			if (event) {
+				// console.log('eeee', event);
 				event.preventDefault();
 				event.stopPropagation();
 			}
@@ -3784,6 +3786,7 @@ var _iconsPlus2 = _interopRequireDefault(_iconsPlus);
 
 var MIN_SCALE = 1.0;
 var MAX_SCALE = 4.0;
+var SCALE_MULTER = 2.0;
 
 var MIN_SWIPE_LENGTH = 40.0;
 
@@ -3826,17 +3829,25 @@ var Image = (function (_Component) {
         this.zoomed = false;
 
         if (this.state.scale > MIN_SCALE) {
-
           var imageNode = this.refs.lightbox_image_node,
               wrapperNode = this.refs.image_wrapper;
 
           var hw = wrapperNode.offsetHeight,
               hi = imageNode.offsetHeight,
               ww = wrapperNode.offsetWidth,
-              wi = imageNode.offsetWidth;
+              wi = imageNode.offsetWidth,
+              centerX = 0.5,
+              centerY = 0.5;
 
-          wrapperNode.scrollTop = (hi - hw) / 2;
-          wrapperNode.scrollLeft = (wi - ww) / 2;
+          if (this.touchRelativePos) {
+            centerX = this.touchRelativePos.x;
+            centerY = this.touchRelativePos.y;
+            console.log('this.touchPos', { centerX: centerX, centerY: centerY });
+            this.touchRelativePos = null;
+          }
+
+          wrapperNode.scrollTop = hi * centerY - hw / 2;
+          wrapperNode.scrollLeft = wi * centerX - ww / 2;
         }
       }
     }
@@ -3844,6 +3855,7 @@ var Image = (function (_Component) {
     key: 'componentWillReceiveProps',
     value: function componentWillReceiveProps(nextProps) {
       if (this.props.src !== nextProps.src) {
+        this.tabPos = null;
         this.setState({
           scale: MIN_SCALE,
           imageLoaded: false,
@@ -3858,9 +3870,14 @@ var Image = (function (_Component) {
   }, {
     key: 'onZoomIn',
     value: function onZoomIn(e) {
-      var multer = arguments.length <= 1 || arguments[1] === undefined ? 2.0 : arguments[1];
+      var multer = arguments.length <= 1 || arguments[1] === undefined ? SCALE_MULTER : arguments[1];
 
       if (this.state.scale >= MAX_SCALE) return;
+
+      if (e !== null) {
+        console.log('clear touchPos');
+        this.touchRelativePos = null;
+      } // if click on + clear tabPos info
 
       var wrapHeight = this.refs.image_wrapper.offsetHeight;
       var wrapWidth = this.refs.image_wrapper.offsetWidth;
@@ -3881,9 +3898,14 @@ var Image = (function (_Component) {
   }, {
     key: 'onZoomOut',
     value: function onZoomOut(e) {
-      var multer = arguments.length <= 1 || arguments[1] === undefined ? 2.0 : arguments[1];
+      var multer = arguments.length <= 1 || arguments[1] === undefined ? SCALE_MULTER : arguments[1];
 
       if (this.state.scale <= MIN_SCALE) return;
+
+      if (e !== null) {
+        console.log('clear touchPos');
+        this.touchRelativePos = null;
+      } // if click on - clear tabPos info
 
       var newScale = this.state.scale / multer;
       if (newScale === MIN_SCALE) {
@@ -3952,15 +3974,24 @@ var Image = (function (_Component) {
       if (!this.panStarted) {
         var _ret2 = (function () {
           var self = _this3;
+          _this3.touchPos = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+          // console.log('e.touches[0]', e.touches[0]);
+          // console.log('ClientSize', {w: this.refs.lightbox_image_node.clientWidth, h: this.refs.lightbox_image_node.clientHeight});
+          var imageRect = _this3.refs.lightbox_image_node.getClientRects()[0];
+          _this3.touchRelativePos = {
+            x: (e.touches[0].clientX - imageRect.x) / _this3.refs.lightbox_image_node.clientWidth,
+            y: (e.touches[0].clientY - imageRect.y) / _this3.refs.lightbox_image_node.clientHeight
+          };
+          // console.log('touchRelativePos', this.touchRelativePos);
           if (_this3.state.scale > MIN_SCALE) {
             var _ret3 = (function () {
 
               if (_this3.lastTouchTime && Date.now() - _this3.lastTouchTime < 300) {
-                // time beetween touches is loss than 300ms - double tap
+                // time beetween touches is less than 300ms - double tap
                 if (_this3.state.scale < MAX_SCALE) {
-                  self.onZoomIn();
+                  self.onZoomIn(null, SCALE_MULTER, _this3.touchPos);
                 } else {
-                  self.onZoomOut(null, MAX_SCALE - MIN_SCALE);
+                  self.onZoomOut(null, MAX_SCALE, _this3.touchPos);
                 }
                 return {
                   v: {
@@ -3971,7 +4002,6 @@ var Image = (function (_Component) {
 
               _this3.lastTouchTime = Date.now();
               _this3.panStarted = true;
-              _this3.touchPos = { x: e.touches[0].clientX, y: e.touches[0].clientY };
 
               var onTouchMove = function onTouchMove(e) {
                 var offsetX = self.touchPos.x - e.changedTouches[0].clientX;
@@ -3999,10 +4029,9 @@ var Image = (function (_Component) {
               /**
                * track touch swipes
                */
-
               if (_this3.lastTouchTime && Date.now() - _this3.lastTouchTime < 300) {
-                // time beetween touches is loss than 300ms - double tap
-                self.onZoomIn();
+                // time beetween touches is less than 300ms - double tap
+                self.onZoomIn(null, SCALE_MULTER);
                 return {
                   v: {
                     v: undefined
