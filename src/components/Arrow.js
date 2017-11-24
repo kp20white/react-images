@@ -63,7 +63,7 @@ const defaultStyles = {
 	// sizees
 	arrow__size__medium: {
 		height: defaults.arrow.height,
-		marginTop: defaults.arrow.height / -2,
+		marginTop: (defaults.arrow.height + 20*2) / -2,
 		width: 40,
 
 		'@media (min-width: 768px)': {
@@ -72,7 +72,7 @@ const defaultStyles = {
 	},
 	arrow__size__small: {
 		height: defaults.thumbnail.size,
-		marginTop: defaults.thumbnail.size / -2,
+		marginTop: (defaults.thumbnail.size + 20*2) / -2,
 		width: 30,
 
 		'@media (min-width: 500px)': {
