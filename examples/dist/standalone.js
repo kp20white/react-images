@@ -3170,9 +3170,10 @@ var Lightbox = (function (_Component) {
 					src: image.src,
 					className: (0, _aphroditeNoImportant.css)(classes.image),
 					poster: image.thumbnail,
+					heightOffset: heightOffset,
 					style: {
 						cursor: 'pointer',
-						maxHeight: 'calc(100vh - ' + heightOffset + ')'
+						height: 'calc(100vh - ' + heightOffset + 'px)'
 					},
 					srcset: image.srcset });
 			} else {
@@ -4594,14 +4595,14 @@ var Video = (function (_Component) {
     value: function render() {
       return _react2['default'].createElement(
         'div',
-        { style: { position: 'relative', pointerEvents: 'auto', backgroundColor: 'black' } },
+        { style: { position: 'relative', pointerEvents: 'auto', backgroundColor: 'black', maxHeight: 'calc(100vh - ' + this.props.heightOffset + 'px)' } },
         _react2['default'].createElement(
           'div',
           { onClick: this.onWrapperClick.bind(this),
             style: { position: 'absolute', top: 0, left: 0, width: '100%', height: '90%', zIndex: 100, cursor: this.props.style.cursor ? this.props.style.cursor : 'auto' } },
           _react2['default'].createElement(_iconsPlayButton2['default'], {
             fill: '#FFFFFF',
-            style: { position: 'absolute', top: 0, bottom: 0, left: 0, right: 0, width: '18%', height: '18%', margin: 'auto', opacity: this.state.play ? 0 : 0.8, cursor: 'pointer', transition: 'opacity 0.3s' }
+            style: { position: 'absolute', top: 0, bottom: 0, left: 0, right: 0, width: '18%', height: '18%', minWidth: 20, minHeight: 20, margin: 'auto', opacity: this.state.play ? 0 : 0.8, cursor: 'pointer', transition: 'opacity 0.3s' }
           })
         ),
         _react2['default'].createElement(
@@ -4630,6 +4631,7 @@ exports['default'] = Video;
 
 Video.propTypes = {
   className: _react.PropTypes.string.isRequired,
+  heightOffset: _react.PropTypes.number.isRequired,
   poster: _react.PropTypes.string.isRequired,
   preload: _react.PropTypes.string,
   src: _react.PropTypes.string.isRequired,
@@ -4758,7 +4760,7 @@ var PlayButton = function PlayButton(props) {
 			style: props.style,
 			version: "1.1",
 			xmlns: "http://www.w3.org/2000/svg",
-			xmlnsXlink: "http://www.w3.org/1999/xlink", x: "0px", y: "0px", width: "100%", height: "100%", viewBox: "0 0 22 32", xmlSpace: "preserve" },
+			xmlnsXlink: "http://www.w3.org/1999/xlink", x: "0px", y: "0px", viewBox: "0 0 32 32", xmlSpace: "preserve" },
 		_react2["default"].createElement("path", { d: "M6 4l20 12-20 12z" })
 	);
 };
@@ -4872,7 +4874,7 @@ theme.thumbnail = {
 
 // arrow
 theme.arrow = {
-	background: 'black',
+	background: 'rgba(0,0,0,0.2)',
 	fill: 'white',
 	height: 120
 };

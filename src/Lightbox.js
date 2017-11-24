@@ -244,9 +244,10 @@ class Lightbox extends Component {
 					src={image.src}
 					className={css(classes.image)}
 					poster={image.thumbnail}
+					heightOffset={heightOffset}
 					style={{
 						cursor: 'pointer',
-						maxHeight: `calc(100vh - ${heightOffset})`
+						height: `calc(100vh - ${heightOffset}px)`
 					}}
 					srcset={image.srcset} />);
 		} else {

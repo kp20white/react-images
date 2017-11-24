@@ -33,12 +33,12 @@ export default class Video extends Component {
 
   render()
   {
-    return (<div style={{position: 'relative', pointerEvents: 'auto', backgroundColor: 'black'}}>
+    return (<div style={{position: 'relative', pointerEvents: 'auto', backgroundColor: 'black', maxHeight: `calc(100vh - ${this.props.heightOffset}px)`}}>
       <div onClick={this.onWrapperClick.bind(this)}
            style={{position: 'absolute', top: 0, left: 0, width: '100%', height: '90%', zIndex: 100, cursor: this.props.style.cursor ? this.props.style.cursor : 'auto'}}>
         <PlayButton
           fill="#FFFFFF"
-          style={{position: 'absolute', top: 0, bottom: 0, left: 0, right: 0, width: '18%', height: '18%', margin: 'auto', opacity: this.state.play ? 0 : 0.8 , cursor: 'pointer', transition: 'opacity 0.3s'}}
+          style={{position: 'absolute', top: 0, bottom: 0, left: 0, right: 0, width: '18%', height: '18%', minWidth: 20, minHeight: 20, margin: 'auto', opacity: this.state.play ? 0 : 0.8 , cursor: 'pointer', transition: 'opacity 0.3s'}}
           />
       </div>
       <video
@@ -63,6 +63,7 @@ export default class Video extends Component {
 
 Video.propTypes = {
   className: PropTypes.string.isRequired,
+  heightOffset: PropTypes.number.isRequired,
   poster: PropTypes.string.isRequired,
   preload: PropTypes.string,
   src: PropTypes.string.isRequired,

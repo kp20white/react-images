@@ -114,6 +114,11 @@ render(
 				useForDemo: true
 			},
 			{
+				thumbnail: "https://s3.amazonaws.com/xoi-content-upload-development/M0010006D5/2017/11/M0010006D5-1509622353279-113x200.jpeg",
+				src: "https://s3.amazonaws.com/xoi-content-upload-development/M0010006D5/2017/11/M0010006D5-1509622353279.mp4",
+        useForDemo: true
+			},
+			{
 				thumbnail: "https://s3.amazonaws.com/xoi-content-upload-production/M001001065/2016/07/M001001065-1469463389447-267x178.jpeg",
 				src: "https://s3.amazonaws.com/xoi-content-upload-production/M001001065/2016/07/M001001065-1469463389447.mp4",
 				useForDemo: true
