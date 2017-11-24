@@ -247,7 +247,7 @@ class Lightbox extends Component {
 					heightOffset={heightOffset}
 					style={{
 						cursor: 'pointer',
-						height: `calc(100vh - ${heightOffset}px)`
+						maxHeight: `calc(100vh - ${heightOffset}px)`
 					}}
 					srcset={image.srcset} />);
 		} else {
@@ -383,5 +383,6 @@ const classes = StyleSheet.create({
 		userSelect: 'none',
 	},
 });
+
 
 export default Lightbox;

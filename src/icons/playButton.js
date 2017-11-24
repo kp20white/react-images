@@ -2,6 +2,7 @@ import React, { PropTypes } from 'react';
 
 const PlayButton = (props) => {
 	return <svg
+		className={props.className}
 		fill={props.fill}
 		style={props.style}
 		version="1.1"
@@ -13,6 +14,7 @@ const PlayButton = (props) => {
 
 
 PlayButton.propTypes = {
+  className: PropTypes.string.isRequired,
 	fill: PropTypes.string.isRequired,
 	style: PropTypes.object.isRequired,
 };

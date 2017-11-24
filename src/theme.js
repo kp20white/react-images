@@ -16,7 +16,7 @@ theme.container = {
 
 // header
 theme.header = {
-	height: 40,
+	height: 10,
 };
 theme.close = {
 	fill: 'white',
@@ -48,6 +48,7 @@ theme.arrow = {
 	background: 'rgba(0,0,0,0.2)',
 	fill: 'white',
 	height: 120,
+	zIndex: 200,
 };
 
 

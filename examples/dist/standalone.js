@@ -3173,7 +3173,7 @@ var Lightbox = (function (_Component) {
 					heightOffset: heightOffset,
 					style: {
 						cursor: 'pointer',
-						height: 'calc(100vh - ' + heightOffset + 'px)'
+						maxHeight: 'calc(100vh - ' + heightOffset + 'px)'
 					},
 					srcset: image.srcset });
 			} else {
@@ -4552,6 +4552,8 @@ var _react = (typeof window !== "undefined" ? window['React'] : typeof global !=
 
 var _react2 = _interopRequireDefault(_react);
 
+var _aphroditeNoImportant = require('aphrodite/no-important');
+
 var _iconsPlayButton = require('../icons/playButton');
 
 var _iconsPlayButton2 = _interopRequireDefault(_iconsPlayButton);
@@ -4602,7 +4604,8 @@ var Video = (function (_Component) {
             style: { position: 'absolute', top: 0, left: 0, width: '100%', height: '90%', zIndex: 100, cursor: this.props.style.cursor ? this.props.style.cursor : 'auto' } },
           _react2['default'].createElement(_iconsPlayButton2['default'], {
             fill: '#FFFFFF',
-            style: { position: 'absolute', top: 0, bottom: 0, left: 0, right: 0, width: '18%', height: '18%', minWidth: 20, minHeight: 20, margin: 'auto', opacity: this.state.play ? 0 : 0.8, cursor: 'pointer', transition: 'opacity 0.3s' }
+            className: (0, _aphroditeNoImportant.css)(classes.play),
+            style: { opacity: this.state.play ? 0 : 0.8 }
           })
         ),
         _react2['default'].createElement(
@@ -4642,10 +4645,27 @@ Video.propTypes = {
 Video.defaultProps = {
   preload: "auto"
 };
+
+var classes = _aphroditeNoImportant.StyleSheet.create({
+  play: {
+    position: 'absolute',
+    top: 0,
+    bottom: 0,
+    left: 0,
+    right: 0,
+    width: '18%',
+    height: '18%',
+    minWidth: 20,
+    minHeight: 20,
+    margin: 'auto',
+    cursor: 'pointer',
+    transition: 'opacity 0.3s'
+  }
+});
 module.exports = exports['default'];
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"../icons/playButton":58}],53:[function(require,module,exports){
+},{"../icons/playButton":58,"aphrodite/no-important":6}],53:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -4756,6 +4776,7 @@ var PlayButton = function PlayButton(props) {
 	return _react2["default"].createElement(
 		"svg",
 		{
+			className: props.className,
 			fill: props.fill,
 			style: props.style,
 			version: "1.1",
@@ -4766,6 +4787,7 @@ var PlayButton = function PlayButton(props) {
 };
 
 PlayButton.propTypes = {
+	className: _react.PropTypes.string.isRequired,
 	fill: _react.PropTypes.string.isRequired,
 	style: _react.PropTypes.object.isRequired
 };
@@ -4845,7 +4867,7 @@ theme.container = {
 
 // header
 theme.header = {
-	height: 40
+	height: 10
 };
 theme.close = {
 	fill: 'white'
@@ -4876,7 +4898,8 @@ theme.thumbnail = {
 theme.arrow = {
 	background: 'rgba(0,0,0,0.2)',
 	fill: 'white',
-	height: 120
+	height: 120,
+	zIndex: 200
 };
 
 module.exports = theme;

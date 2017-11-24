@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react';
+import { css, StyleSheet } from 'aphrodite/no-important';
 import PlayButton from '../icons/playButton';
 
 export default class Video extends Component {
@@ -38,7 +39,8 @@ export default class Video extends Component {
            style={{position: 'absolute', top: 0, left: 0, width: '100%', height: '90%', zIndex: 100, cursor: this.props.style.cursor ? this.props.style.cursor : 'auto'}}>
         <PlayButton
           fill="#FFFFFF"
-          style={{position: 'absolute', top: 0, bottom: 0, left: 0, right: 0, width: '18%', height: '18%', minWidth: 20, minHeight: 20, margin: 'auto', opacity: this.state.play ? 0 : 0.8 , cursor: 'pointer', transition: 'opacity 0.3s'}}
+          className={css(classes.play)}
+          style={{opacity: this.state.play ? 0 : 0.8 }}
           />
       </div>
       <video
@@ -74,3 +76,20 @@ Video.propTypes = {
 Video.defaultProps = {
   preload: "auto",
 };
+
+const classes = StyleSheet.create({
+  play: {
+    position: 'absolute',
+    top: 0,
+    bottom: 0,
+    left: 0,
+    right: 0,
+    width: '18%',
+    height: '18%',
+    minWidth: 20,
+    minHeight: 20,
+    margin: 'auto',
+    cursor: 'pointer',
+    transition: 'opacity 0.3s',
+  },
+});
