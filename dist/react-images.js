@@ -2834,8 +2834,10 @@ var Lightbox = (function (_Component) {
 	}, {
 		key: 'gotoNext',
 		value: function gotoNext(event) {
+			// console.log('gotoNext');
 			if (this.props.currentImage === this.props.images.length - 1) return;
 			if (event) {
+				// console.log('eeee', event);
 				event.preventDefault();
 				event.stopPropagation();
 			}
@@ -2976,9 +2978,10 @@ var Lightbox = (function (_Component) {
 					src: image.src,
 					className: (0, _aphroditeNoImportant.css)(classes.image),
 					poster: image.thumbnail,
+					heightOffset: heightOffset,
 					style: {
 						cursor: 'pointer',
-						maxHeight: 'calc(100vh - ' + heightOffset + ')'
+						maxHeight: 'calc(100vh - ' + heightOffset + 'px)'
 					},
 					srcset: image.srcset });
 			} else {
@@ -2997,6 +3000,8 @@ var Lightbox = (function (_Component) {
 					src: image.src,
 					srcSet: srcset,
 					heightOffset: heightOffset,
+					onSwipeLeft: this.gotoPrev.bind(this),
+					onSwipeRight: this.gotoNext.bind(this),
 					style: {
 						cursor: this.props.onClickImage ? 'pointer' : 'auto',
 						maxHeight: 'calc(100vh - ' + heightOffset + 'px)'
@@ -3213,7 +3218,7 @@ var defaultStyles = {
 	// sizees
 	arrow__size__medium: {
 		height: _theme2['default'].arrow.height,
-		marginTop: _theme2['default'].arrow.height / -2,
+		marginTop: (_theme2['default'].arrow.height + 20 * 2) / -2,
 		width: 40,
 
 		'@media (min-width: 768px)': {
@@ -3222,7 +3227,7 @@ var defaultStyles = {
 	},
 	arrow__size__small: {
 		height: _theme2['default'].thumbnail.size,
-		marginTop: _theme2['default'].thumbnail.size / -2,
+		marginTop: (_theme2['default'].thumbnail.size + 20 * 2) / -2,
 		width: 30,
 
 		'@media (min-width: 500px)': {
@@ -3480,7 +3485,7 @@ var defaultStyles = {
 		height: 10 },
 	/*defaults.header.height,*/
 	close: {
-		backgroundColor: 'rgba(0,0,0,1)',
+		backgroundColor: 'rgba(0,0,0,0.5)',
 		border: 'none',
 		borderRadius: 4,
 		cursor: 'pointer',
@@ -3565,7 +3570,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
-var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+var _get = function get(_x3, _x4, _x5) { var _again = true; _function: while (_again) { var object = _x3, property = _x4, receiver = _x5; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x3 = parent; _x4 = property; _x5 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
@@ -3586,7 +3591,10 @@ var _iconsPlus = require('../icons/plus');
 var _iconsPlus2 = _interopRequireDefault(_iconsPlus);
 
 var MIN_SCALE = 1.0;
-var MAX_SCALE = 3.0;
+var MAX_SCALE = 4.0;
+var SCALE_MULTER = 2.0;
+
+var MIN_SWIPE_LENGTH = 40.0;
 
 var Image = (function (_Component) {
   _inherits(Image, _Component);
@@ -3627,17 +3635,25 @@ var Image = (function (_Component) {
         this.zoomed = false;
 
         if (this.state.scale > MIN_SCALE) {
-
           var imageNode = this.refs.lightbox_image_node,
               wrapperNode = this.refs.image_wrapper;
 
           var hw = wrapperNode.offsetHeight,
               hi = imageNode.offsetHeight,
               ww = wrapperNode.offsetWidth,
-              wi = imageNode.offsetWidth;
+              wi = imageNode.offsetWidth,
+              centerX = 0.5,
+              centerY = 0.5;
 
-          wrapperNode.scrollTop = (hi - hw) / 2;
-          wrapperNode.scrollLeft = (wi - ww) / 2;
+          if (this.touchRelativePos) {
+            centerX = this.touchRelativePos.x;
+            centerY = this.touchRelativePos.y;
+            console.log('this.touchPos', { centerX: centerX, centerY: centerY });
+            this.touchRelativePos = null;
+          }
+
+          wrapperNode.scrollTop = hi * centerY - hw / 2;
+          wrapperNode.scrollLeft = wi * centerX - ww / 2;
         }
       }
     }
@@ -3645,6 +3661,7 @@ var Image = (function (_Component) {
     key: 'componentWillReceiveProps',
     value: function componentWillReceiveProps(nextProps) {
       if (this.props.src !== nextProps.src) {
+        this.tabPos = null;
         this.setState({
           scale: MIN_SCALE,
           imageLoaded: false,
@@ -3658,17 +3675,26 @@ var Image = (function (_Component) {
     }
   }, {
     key: 'onZoomIn',
-    value: function onZoomIn() {
+    value: function onZoomIn(e) {
+      var multer = arguments.length <= 1 || arguments[1] === undefined ? SCALE_MULTER : arguments[1];
+
+      if (this.state.scale >= MAX_SCALE) return;
+
+      if (e !== null) {
+        console.log('clear touchPos');
+        this.touchRelativePos = null;
+      } // if click on + clear tabPos info
+
       var wrapHeight = this.refs.image_wrapper.offsetHeight;
       var wrapWidth = this.refs.image_wrapper.offsetWidth;
-      var newScale = this.state.scale + 1.0;
+      var newScale = this.state.scale * multer;
       this.setState({
         scale: newScale,
-        wrapperStyle: _extends({}, this.props.wrapperStyle, {
+        wrapperStyle: {
           overflow: 'scroll',
           width: wrapWidth,
           height: wrapHeight
-        }),
+        },
         secondWrapper: { width: wrapWidth * newScale, height: wrapHeight * newScale, position: 'static' },
         imageStyle: { width: '100%', height: '100%' }
       });
@@ -3677,9 +3703,18 @@ var Image = (function (_Component) {
     }
   }, {
     key: 'onZoomOut',
-    value: function onZoomOut() {
-      var newScale = this.state.scale - 1.0;
-      if (newScale === 1.0) {
+    value: function onZoomOut(e) {
+      var multer = arguments.length <= 1 || arguments[1] === undefined ? SCALE_MULTER : arguments[1];
+
+      if (this.state.scale <= MIN_SCALE) return;
+
+      if (e !== null) {
+        console.log('clear touchPos');
+        this.touchRelativePos = null;
+      } // if click on - clear tabPos info
+
+      var newScale = this.state.scale / multer;
+      if (newScale === MIN_SCALE) {
         this.setState({
           scale: MIN_SCALE,
           imageStyle: {
@@ -3693,11 +3728,11 @@ var Image = (function (_Component) {
         var wrapWidth = this.refs.image_wrapper.offsetWidth;
         this.setState({
           scale: newScale,
-          wrapperStyle: _extends({}, this.props.wrapperStyle, {
+          wrapperStyle: {
             overflow: 'scroll',
             width: wrapWidth,
             height: wrapHeight
-          }),
+          },
           secondWrapper: { width: wrapWidth * newScale, height: wrapHeight * newScale, position: 'static' },
           imageStyle: { width: '100%', height: '100%' }
         });
@@ -3706,17 +3741,159 @@ var Image = (function (_Component) {
       this.zoomed = true;
     }
   }, {
+    key: 'onImageMouseDown',
+    value: function onImageMouseDown(e) {
+      var _this2 = this;
+
+      if (!this.panStarted) {
+        (function () {
+          var self = _this2;
+          _this2.panStarted = true;
+          _this2.scrollPos = { x: e.clientX, y: e.clientY };
+
+          var onMouseMove = function onMouseMove(e) {
+            var offsetX = self.scrollPos.x - e.clientX;
+            var offsetY = self.scrollPos.y - e.clientY;
+
+            self.refs.image_wrapper.scrollLeft += offsetX;
+            self.refs.image_wrapper.scrollTop += offsetY;
+
+            self.scrollPos = { x: e.clientX, y: e.clientY };
+          };
+
+          var onMouseUp = function onMouseUp(e) {
+            self.panStarted = false;
+            window.removeEventListener("mousemove", onMouseMove);
+            window.removeEventListener("mouseup", onMouseUp);
+          };
+
+          window.addEventListener("mousemove", onMouseMove);
+          window.addEventListener("mouseup", onMouseUp);
+        })();
+      }
+    }
+  }, {
+    key: 'onImageTouch',
+    value: function onImageTouch(e) {
+      var _this3 = this;
+
+      console.log('touch ----------');
+      if (!this.panStarted) {
+        var _ret2 = (function () {
+          var self = _this3;
+          _this3.touchPos = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+          // console.log('e.touches[0]', e.touches[0]);
+          // console.log('ClientSize', {w: this.refs.lightbox_image_node.clientWidth, h: this.refs.lightbox_image_node.clientHeight});
+          var imageRect = _this3.refs.lightbox_image_node.getClientRects()[0];
+          _this3.touchRelativePos = {
+            x: (e.touches[0].clientX - imageRect.x) / _this3.refs.lightbox_image_node.clientWidth,
+            y: (e.touches[0].clientY - imageRect.y) / _this3.refs.lightbox_image_node.clientHeight
+          };
+          // console.log('touchRelativePos', this.touchRelativePos);
+          if (_this3.state.scale > MIN_SCALE) {
+            var _ret3 = (function () {
+
+              if (_this3.lastTouchTime && Date.now() - _this3.lastTouchTime < 300) {
+                // time beetween touches is less than 300ms - double tap
+                if (_this3.state.scale < MAX_SCALE) {
+                  self.onZoomIn(null, SCALE_MULTER, _this3.touchPos);
+                } else {
+                  self.onZoomOut(null, MAX_SCALE, _this3.touchPos);
+                }
+                return {
+                  v: {
+                    v: undefined
+                  }
+                };
+              }
+
+              _this3.lastTouchTime = Date.now();
+              _this3.panStarted = true;
+
+              var onTouchMove = function onTouchMove(e) {
+                var offsetX = self.touchPos.x - e.changedTouches[0].clientX;
+                var offsetY = self.touchPos.y - e.changedTouches[0].clientY;
+
+                self.refs.image_wrapper.scrollLeft += offsetX;
+                self.refs.image_wrapper.scrollTop += offsetY;
+
+                self.touchPos = { x: e.changedTouches[0].clientX, y: e.changedTouches[0].clientY };
+              };
+
+              var onTouchEnd = function onTouchEnd(e) {
+                self.panStarted = false;
+                window.removeEventListener("touchmove", onTouchMove);
+                window.removeEventListener("touchend", onTouchEnd);
+              };
+
+              window.addEventListener("touchmove", onTouchMove);
+              window.addEventListener("touchend", onTouchEnd);
+            })();
+
+            if (typeof _ret3 === 'object') return _ret3.v;
+          } else {
+            var _ret4 = (function () {
+              /**
+               * track touch swipes
+               */
+              if (_this3.lastTouchTime && Date.now() - _this3.lastTouchTime < 300) {
+                // time beetween touches is less than 300ms - double tap
+                self.onZoomIn(null, SCALE_MULTER);
+                return {
+                  v: {
+                    v: undefined
+                  }
+                };
+              }
+
+              _this3.lastTouchTime = Date.now();
+              _this3.touchPos = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+
+              var onTouchEnd = function onTouchEnd(e) {
+                self.swipeStarted = false;
+
+                var offsetX = self.touchPos.x - e.changedTouches[0].clientX;
+                var offsetY = self.touchPos.y - e.changedTouches[0].clientY;
+
+                if (Math.abs(offsetX) > 3.0 * Math.abs(offsetY) && Math.abs(offsetX) > MIN_SWIPE_LENGTH) {
+                  if (offsetX < 0) {
+                    // swipe left
+                    if (self.props.onSwipeLeft) self.props.onSwipeLeft();
+                  } else {
+                    // swipe right
+                    if (self.props.onSwipeRight) self.props.onSwipeRight();
+                  }
+                }
+
+                window.removeEventListener("touchend", onTouchEnd);
+              };
+
+              window.addEventListener("touchend", onTouchEnd);
+            })();
+
+            if (typeof _ret4 === 'object') return _ret4.v;
+          }
+        })();
+
+        if (typeof _ret2 === 'object') return _ret2.v;
+      }
+    }
+  }, {
     key: 'render',
     value: function render() {
 
       var imgSize = {};
-      if (this.state.scale > 1.0) {
+      if (this.state.scale > MIN_SCALE) {
         imgSize.width = this.state.imageStyle.width;
         imgSize.height = this.state.imageStyle.height;
       }
 
       var imageStyle = _extends({}, this.state.imageStyle);
       imageStyle.visibility = this.state.imageLoaded ? 'visible' : 'hidden';
+
+      if (this.state.scale > MIN_SCALE) {
+        imageStyle.cursor = 'all-scroll';
+      }
 
       return _react2['default'].createElement(
         'div',
@@ -3735,22 +3912,22 @@ var Image = (function (_Component) {
             color: '#AAA',
             fontSize: '2em'
           } }),
-        this.state.scale > MIN_SCALE && _react2['default'].createElement(_iconsMinus2['default'], {
+        _react2['default'].createElement(_iconsMinus2['default'], {
           color: '#FFF',
           title: 'Zoom out',
           onClick: this.onZoomOut.bind(this),
           style: {
             position: 'absolute',
             bottom: 10,
-            right: this.state.scale < MAX_SCALE ? 40 : 10,
-            cursor: 'pointer',
+            right: 40,
+            cursor: this.state.scale > MIN_SCALE ? 'pointer' : 'auto',
             zIndex: 100,
             width: 20,
             height: 20,
-            opacity: this.state.imageLoaded ? 0.7 : 0,
+            opacity: this.state.imageLoaded ? this.state.scale > MIN_SCALE ? 0.8 : 0.4 : 0,
             filter: 'drop-shadow(2px 2px 1px rgba(0,0,0,0.8))'
           } }),
-        this.state.scale < MAX_SCALE && _react2['default'].createElement(_iconsPlus2['default'], {
+        _react2['default'].createElement(_iconsPlus2['default'], {
           color: '#FFF',
           title: 'Zoom in',
           onClick: this.onZoomIn.bind(this),
@@ -3758,11 +3935,11 @@ var Image = (function (_Component) {
             position: 'absolute',
             bottom: 10,
             right: 10,
-            cursor: 'pointer',
+            cursor: this.state.scale < MAX_SCALE ? 'pointer' : 'auto',
             zIndex: 100,
             width: 20,
             height: 20,
-            opacity: this.state.imageLoaded ? 0.7 : 0,
+            opacity: this.state.imageLoaded ? this.state.scale < MAX_SCALE ? 0.8 : 0.4 : 0,
             filter: 'drop-shadow(2px 2px 1px rgba(0,0,0,0.8))'
           } }),
         _react2['default'].createElement(
@@ -3775,12 +3952,15 @@ var Image = (function (_Component) {
               ref: 'lightbox_image_node',
               className: this.props.className,
               onClick: this.props.onClickImage,
-              sizes: this.state.scale === 1.0 ? this.props.sizes : undefined,
+              sizes: this.state.scale === MIN_SCALE ? this.props.sizes : undefined,
               alt: this.props.alt,
               src: this.props.src
             }, imgSize, {
               srcSet: this.props.srcset,
-              style: imageStyle
+              style: imageStyle,
+              draggable: 'false',
+              onMouseDown: this.onImageMouseDown.bind(this),
+              onTouchStart: this.onImageTouch.bind(this)
             }))
           )
         )
@@ -3798,6 +3978,8 @@ Image.propTypes = {
   className: _react.PropTypes.string.isRequired,
   heightOffset: _react.PropTypes.number.isRequired,
   onClick: _react.PropTypes.func,
+  onSwipeLeft: _react.PropTypes.func,
+  onSwipeRight: _react.PropTypes.func,
   sizes: _react.PropTypes.string.isRequired,
   src: _react.PropTypes.string.isRequired,
   srcset: _react.PropTypes.array,
@@ -4314,6 +4496,8 @@ var _react = (typeof window !== "undefined" ? window['React'] : typeof global !=
 
 var _react2 = _interopRequireDefault(_react);
 
+var _aphroditeNoImportant = require('aphrodite/no-important');
+
 var _iconsPlayButton = require('../icons/playButton');
 
 var _iconsPlayButton2 = _interopRequireDefault(_iconsPlayButton);
@@ -4357,14 +4541,15 @@ var Video = (function (_Component) {
     value: function render() {
       return _react2['default'].createElement(
         'div',
-        { style: { position: 'relative', pointerEvents: 'auto', backgroundColor: 'black' } },
+        { style: { position: 'relative', pointerEvents: 'auto', backgroundColor: 'black', maxHeight: 'calc(100vh - ' + this.props.heightOffset + 'px)' } },
         _react2['default'].createElement(
           'div',
           { onClick: this.onWrapperClick.bind(this),
             style: { position: 'absolute', top: 0, left: 0, width: '100%', height: '90%', zIndex: 100, cursor: this.props.style.cursor ? this.props.style.cursor : 'auto' } },
           _react2['default'].createElement(_iconsPlayButton2['default'], {
             fill: '#FFFFFF',
-            style: { position: 'absolute', top: 0, bottom: 0, left: 0, right: 0, width: '18%', height: '18%', margin: 'auto', opacity: this.state.play ? 0 : 0.8, cursor: 'pointer', transition: 'opacity 0.3s' }
+            className: (0, _aphroditeNoImportant.css)(classes.play),
+            style: { opacity: this.state.play ? 0 : 0.8 }
           })
         ),
         _react2['default'].createElement(
@@ -4393,6 +4578,7 @@ exports['default'] = Video;
 
 Video.propTypes = {
   className: _react.PropTypes.string.isRequired,
+  heightOffset: _react.PropTypes.number.isRequired,
   poster: _react.PropTypes.string.isRequired,
   preload: _react.PropTypes.string,
   src: _react.PropTypes.string.isRequired,
@@ -4403,10 +4589,27 @@ Video.propTypes = {
 Video.defaultProps = {
   preload: "auto"
 };
+
+var classes = _aphroditeNoImportant.StyleSheet.create({
+  play: {
+    position: 'absolute',
+    top: 0,
+    bottom: 0,
+    left: 0,
+    right: 0,
+    width: '18%',
+    height: '18%',
+    minWidth: 20,
+    minHeight: 20,
+    margin: 'auto',
+    cursor: 'pointer',
+    transition: 'opacity 0.3s'
+  }
+});
 module.exports = exports['default'];
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"../icons/playButton":57}],52:[function(require,module,exports){
+},{"../icons/playButton":57,"aphrodite/no-important":6}],52:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -4517,16 +4720,18 @@ var PlayButton = function PlayButton(props) {
 	return _react2["default"].createElement(
 		"svg",
 		{
+			className: props.className,
 			fill: props.fill,
 			style: props.style,
 			version: "1.1",
 			xmlns: "http://www.w3.org/2000/svg",
-			xmlnsXlink: "http://www.w3.org/1999/xlink", x: "0px", y: "0px", width: "100%", height: "100%", viewBox: "0 0 22 32", xmlSpace: "preserve" },
+			xmlnsXlink: "http://www.w3.org/1999/xlink", x: "0px", y: "0px", viewBox: "0 0 32 32", xmlSpace: "preserve" },
 		_react2["default"].createElement("path", { d: "M6 4l20 12-20 12z" })
 	);
 };
 
 PlayButton.propTypes = {
+	className: _react.PropTypes.string.isRequired,
 	fill: _react.PropTypes.string.isRequired,
 	style: _react.PropTypes.object.isRequired
 };
@@ -4606,7 +4811,7 @@ theme.container = {
 
 // header
 theme.header = {
-	height: 40
+	height: 10
 };
 theme.close = {
 	fill: 'white'
@@ -4635,9 +4840,10 @@ theme.thumbnail = {
 
 // arrow
 theme.arrow = {
-	background: 'black',
+	background: 'rgba(0,0,0,0.2)',
 	fill: 'white',
-	height: 120
+	height: 80,
+	zIndex: 200
 };
 
 module.exports = theme;
