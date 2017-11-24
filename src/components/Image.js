@@ -3,7 +3,7 @@ import MinusIcon from '../icons/minus';
 import PlusIcon from '../icons/plus';
 
 const MIN_SCALE = 1.0;
-const MAX_SCALE = 3.0;
+const MAX_SCALE = 4.0;
 
 const MIN_SWIPE_LENGTH = 40.0;
 
@@ -19,8 +19,8 @@ export default class Image extends Component {
       imageStyle: {
         maxHeight: `calc(100vh - ${this.props.heightOffset}px)`,
       },
-      wrapperStyle: { },
-      secondWrapper: { },
+      wrapperStyle: {},
+      secondWrapper: {},
     });
   }
 
@@ -66,12 +66,12 @@ export default class Image extends Component {
     }
   }
 
-  onZoomIn() {
+  onZoomIn(e, multer = 2.0) {
     if (this.state.scale >= MAX_SCALE) return;
 
     let wrapHeight = this.refs.image_wrapper.offsetHeight;
     let wrapWidth = this.refs.image_wrapper.offsetWidth;
-    let newScale  = this.state.scale + 1.0;
+    let newScale  = this.state.scale * multer;
     this.setState({
       scale: newScale,
       wrapperStyle: {
@@ -86,11 +86,11 @@ export default class Image extends Component {
     this.zoomed = true;
   }
 
-  onZoomOut() {
+  onZoomOut(e, multer = 2.0) {
     if (this.state.scale <= MIN_SCALE) return;
 
-    let newScale  = this.state.scale - 1.0;
-    if (newScale === 1.0) {
+    let newScale = this.state.scale / multer;
+    if (newScale === MIN_SCALE) {
       this.setState({
         scale: MIN_SCALE,
         imageStyle: {
@@ -146,8 +146,21 @@ export default class Image extends Component {
 
   onImageTouch(e) {
     if (!this.panStarted) {
+      let self = this;
       if (this.state.scale > MIN_SCALE) {
-        let self = this;
+
+        if (this.lastTouchTime && (Date.now() - this.lastTouchTime) < 300) {
+          // time beetween touches is loss than 300ms - double tap
+          if (this.state.scale < MAX_SCALE) {
+            self.onZoomIn();
+          }
+          else {
+            self.onZoomOut(null, MAX_SCALE - MIN_SCALE);
+          }
+          return;
+        }
+
+        this.lastTouchTime = Date.now();
         this.panStarted = true;
         this.touchPos = { x: e.touches[0].clientX, y: e.touches[0].clientY };
 
@@ -173,8 +186,14 @@ export default class Image extends Component {
         /**
          * track touch swipes
          */
-          let self = this;
-          this.swipeStarted = true;
+
+          if (this.lastTouchTime && (Date.now() - this.lastTouchTime) < 300) {
+            // time beetween touches is loss than 300ms - double tap
+            self.onZoomIn();
+            return;
+          }
+
+          this.lastTouchTime = Date.now();
           this.touchPos = { x: e.touches[0].clientX, y: e.touches[0].clientY };
 
           let onTouchEnd = function(e) {
@@ -205,7 +224,7 @@ export default class Image extends Component {
   {
 
     let imgSize = {};
-    if (this.state.scale > 1.0) {
+    if (this.state.scale > MIN_SCALE) {
       imgSize.width = this.state.imageStyle.width;
       imgSize.height =  this.state.imageStyle.height;
     }
@@ -213,7 +232,7 @@ export default class Image extends Component {
     let imageStyle = {...this.state.imageStyle};
     imageStyle.visibility = this.state.imageLoaded ? 'visible' : 'hidden';
 
-    if (this.state.scale > 1) {
+    if (this.state.scale > MIN_SCALE) {
       imageStyle.cursor = 'all-scroll';
     }
 
@@ -256,7 +275,7 @@ export default class Image extends Component {
             position: 'absolute',
             bottom: 10,
             right: 10,
-            cursor: ( this.state.scale < MAX_SCALE ? 'pointer' : 'auto' ) ,
+            cursor: ( this.state.scale < MAX_SCALE ? 'pointer' : 'auto' ),
             zIndex: 100,
             width: 20,
             height: 20,
@@ -269,7 +288,7 @@ export default class Image extends Component {
               ref="lightbox_image_node"
               className={this.props.className}
               onClick={this.props.onClickImage}
-              sizes={this.state.scale === 1.0 ? this.props.sizes : undefined}
+              sizes={this.state.scale === MIN_SCALE ? this.props.sizes : undefined}
               alt={this.props.alt}
               src={this.props.src}
               {...imgSize}

@@ -3762,7 +3762,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
-var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+var _get = function get(_x3, _x4, _x5) { var _again = true; _function: while (_again) { var object = _x3, property = _x4, receiver = _x5; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x3 = parent; _x4 = property; _x5 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
@@ -3783,7 +3783,7 @@ var _iconsPlus = require('../icons/plus');
 var _iconsPlus2 = _interopRequireDefault(_iconsPlus);
 
 var MIN_SCALE = 1.0;
-var MAX_SCALE = 3.0;
+var MAX_SCALE = 4.0;
 
 var MIN_SWIPE_LENGTH = 40.0;
 
@@ -3857,12 +3857,14 @@ var Image = (function (_Component) {
     }
   }, {
     key: 'onZoomIn',
-    value: function onZoomIn() {
+    value: function onZoomIn(e) {
+      var multer = arguments.length <= 1 || arguments[1] === undefined ? 2.0 : arguments[1];
+
       if (this.state.scale >= MAX_SCALE) return;
 
       var wrapHeight = this.refs.image_wrapper.offsetHeight;
       var wrapWidth = this.refs.image_wrapper.offsetWidth;
-      var newScale = this.state.scale + 1.0;
+      var newScale = this.state.scale * multer;
       this.setState({
         scale: newScale,
         wrapperStyle: {
@@ -3878,11 +3880,13 @@ var Image = (function (_Component) {
     }
   }, {
     key: 'onZoomOut',
-    value: function onZoomOut() {
+    value: function onZoomOut(e) {
+      var multer = arguments.length <= 1 || arguments[1] === undefined ? 2.0 : arguments[1];
+
       if (this.state.scale <= MIN_SCALE) return;
 
-      var newScale = this.state.scale - 1.0;
-      if (newScale === 1.0) {
+      var newScale = this.state.scale / multer;
+      if (newScale === MIN_SCALE) {
         this.setState({
           scale: MIN_SCALE,
           imageStyle: {
@@ -3946,62 +3950,96 @@ var Image = (function (_Component) {
       var _this3 = this;
 
       if (!this.panStarted) {
-        if (this.state.scale > MIN_SCALE) {
-          (function () {
-            var self = _this3;
-            _this3.panStarted = true;
-            _this3.touchPos = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+        var _ret2 = (function () {
+          var self = _this3;
+          if (_this3.state.scale > MIN_SCALE) {
+            var _ret3 = (function () {
 
-            var onTouchMove = function onTouchMove(e) {
-              var offsetX = self.touchPos.x - e.changedTouches[0].clientX;
-              var offsetY = self.touchPos.y - e.changedTouches[0].clientY;
-
-              self.refs.image_wrapper.scrollLeft += offsetX;
-              self.refs.image_wrapper.scrollTop += offsetY;
-
-              self.touchPos = { x: e.changedTouches[0].clientX, y: e.changedTouches[0].clientY };
-            };
-
-            var onTouchEnd = function onTouchEnd(e) {
-              self.panStarted = false;
-              window.removeEventListener("touchmove", onTouchMove);
-              window.removeEventListener("touchend", onTouchEnd);
-            };
-
-            window.addEventListener("touchmove", onTouchMove);
-            window.addEventListener("touchend", onTouchEnd);
-          })();
-        } else {
-          (function () {
-            /**
-             * track touch swipes
-             */
-            var self = _this3;
-            _this3.swipeStarted = true;
-            _this3.touchPos = { x: e.touches[0].clientX, y: e.touches[0].clientY };
-
-            var onTouchEnd = function onTouchEnd(e) {
-              self.swipeStarted = false;
-
-              var offsetX = self.touchPos.x - e.changedTouches[0].clientX;
-              var offsetY = self.touchPos.y - e.changedTouches[0].clientY;
-
-              if (Math.abs(offsetX) > 3.0 * Math.abs(offsetY) && Math.abs(offsetX) > MIN_SWIPE_LENGTH) {
-                if (offsetX < 0) {
-                  // swipe left
-                  if (self.props.onSwipeLeft) self.props.onSwipeLeft();
+              if (_this3.lastTouchTime && Date.now() - _this3.lastTouchTime < 300) {
+                // time beetween touches is loss than 300ms - double tap
+                if (_this3.state.scale < MAX_SCALE) {
+                  self.onZoomIn();
                 } else {
-                  // swipe right
-                  if (self.props.onSwipeRight) self.props.onSwipeRight();
+                  self.onZoomOut(null, MAX_SCALE - MIN_SCALE);
                 }
+                return {
+                  v: {
+                    v: undefined
+                  }
+                };
               }
 
-              window.removeEventListener("touchend", onTouchEnd);
-            };
+              _this3.lastTouchTime = Date.now();
+              _this3.panStarted = true;
+              _this3.touchPos = { x: e.touches[0].clientX, y: e.touches[0].clientY };
 
-            window.addEventListener("touchend", onTouchEnd);
-          })();
-        }
+              var onTouchMove = function onTouchMove(e) {
+                var offsetX = self.touchPos.x - e.changedTouches[0].clientX;
+                var offsetY = self.touchPos.y - e.changedTouches[0].clientY;
+
+                self.refs.image_wrapper.scrollLeft += offsetX;
+                self.refs.image_wrapper.scrollTop += offsetY;
+
+                self.touchPos = { x: e.changedTouches[0].clientX, y: e.changedTouches[0].clientY };
+              };
+
+              var onTouchEnd = function onTouchEnd(e) {
+                self.panStarted = false;
+                window.removeEventListener("touchmove", onTouchMove);
+                window.removeEventListener("touchend", onTouchEnd);
+              };
+
+              window.addEventListener("touchmove", onTouchMove);
+              window.addEventListener("touchend", onTouchEnd);
+            })();
+
+            if (typeof _ret3 === 'object') return _ret3.v;
+          } else {
+            var _ret4 = (function () {
+              /**
+               * track touch swipes
+               */
+
+              if (_this3.lastTouchTime && Date.now() - _this3.lastTouchTime < 300) {
+                // time beetween touches is loss than 300ms - double tap
+                self.onZoomIn();
+                return {
+                  v: {
+                    v: undefined
+                  }
+                };
+              }
+
+              _this3.lastTouchTime = Date.now();
+              _this3.touchPos = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+
+              var onTouchEnd = function onTouchEnd(e) {
+                self.swipeStarted = false;
+
+                var offsetX = self.touchPos.x - e.changedTouches[0].clientX;
+                var offsetY = self.touchPos.y - e.changedTouches[0].clientY;
+
+                if (Math.abs(offsetX) > 3.0 * Math.abs(offsetY) && Math.abs(offsetX) > MIN_SWIPE_LENGTH) {
+                  if (offsetX < 0) {
+                    // swipe left
+                    if (self.props.onSwipeLeft) self.props.onSwipeLeft();
+                  } else {
+                    // swipe right
+                    if (self.props.onSwipeRight) self.props.onSwipeRight();
+                  }
+                }
+
+                window.removeEventListener("touchend", onTouchEnd);
+              };
+
+              window.addEventListener("touchend", onTouchEnd);
+            })();
+
+            if (typeof _ret4 === 'object') return _ret4.v;
+          }
+        })();
+
+        if (typeof _ret2 === 'object') return _ret2.v;
       }
     }
   }, {
@@ -4009,7 +4047,7 @@ var Image = (function (_Component) {
     value: function render() {
 
       var imgSize = {};
-      if (this.state.scale > 1.0) {
+      if (this.state.scale > MIN_SCALE) {
         imgSize.width = this.state.imageStyle.width;
         imgSize.height = this.state.imageStyle.height;
       }
@@ -4017,7 +4055,7 @@ var Image = (function (_Component) {
       var imageStyle = _extends({}, this.state.imageStyle);
       imageStyle.visibility = this.state.imageLoaded ? 'visible' : 'hidden';
 
-      if (this.state.scale > 1) {
+      if (this.state.scale > MIN_SCALE) {
         imageStyle.cursor = 'all-scroll';
       }
 
@@ -4078,7 +4116,7 @@ var Image = (function (_Component) {
               ref: 'lightbox_image_node',
               className: this.props.className,
               onClick: this.props.onClickImage,
-              sizes: this.state.scale === 1.0 ? this.props.sizes : undefined,
+              sizes: this.state.scale === MIN_SCALE ? this.props.sizes : undefined,
               alt: this.props.alt,
               src: this.props.src
             }, imgSize, {
