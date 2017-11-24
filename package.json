@@ -1,9 +1,9 @@
 {
   "name": "react-images",
-  "version": "0.5.7",
+  "version": "0.5.8",
   "description": "Customized for XOEYE,  simple and responsive lightbox component for displaying an array of images with React.js",
   "main": "lib/Lightbox.js",
-  "author": "Joss Mackison",
+  "author": "Joss Mackison, Aleander Cherepnya",
   "license": "MIT",
   "repository": {
     "type": "git",
