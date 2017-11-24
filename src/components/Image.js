@@ -5,6 +5,8 @@ import PlusIcon from '../icons/plus';
 const MIN_SCALE = 1.0;
 const MAX_SCALE = 3.0;
 
+const MIN_SWIPE_LENGTH = 40.0;
+
 export default class Image extends Component {
   constructor(props) {
     super(props);
@@ -143,29 +145,59 @@ export default class Image extends Component {
   }
 
   onImageTouch(e) {
-    if (!this.panStarted && this.state.scale > MIN_SCALE) {
-      let self = this;
-      this.panStarted = true;
-      this.touchPos = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+    if (!this.panStarted) {
+      if (this.state.scale > MIN_SCALE) {
+        let self = this;
+        this.panStarted = true;
+        this.touchPos = { x: e.touches[0].clientX, y: e.touches[0].clientY };
 
-      let onTouchMove = function(e) {
-        let offsetX = self.touchPos.x - e.changedTouches[0].clientX;
-        let offsetY = self.touchPos.y - e.changedTouches[0].clientY;
+        let onTouchMove = function(e) {
+          let offsetX = self.touchPos.x - e.changedTouches[0].clientX;
+          let offsetY = self.touchPos.y - e.changedTouches[0].clientY;
 
-        self.refs.image_wrapper.scrollLeft += offsetX;
-        self.refs.image_wrapper.scrollTop += offsetY;
+          self.refs.image_wrapper.scrollLeft += offsetX;
+          self.refs.image_wrapper.scrollTop += offsetY;
 
-        self.touchPos = { x: e.changedTouches[0].clientX, y: e.changedTouches[0].clientY };
-      };
+          self.touchPos = { x: e.changedTouches[0].clientX, y: e.changedTouches[0].clientY };
+        };
 
-      let onTouchEnd = function(e) {
-        self.panStarted = false;
-        window.removeEventListener("touchmove", onTouchMove);
-        window.removeEventListener("touchend", onTouchEnd);
-      };
+        let onTouchEnd = function(e) {
+          self.panStarted = false;
+          window.removeEventListener("touchmove", onTouchMove);
+          window.removeEventListener("touchend", onTouchEnd);
+        };
 
-      window.addEventListener("touchmove", onTouchMove);
-      window.addEventListener("touchend", onTouchEnd);
+        window.addEventListener("touchmove", onTouchMove);
+        window.addEventListener("touchend", onTouchEnd);
+      } else {
+        /**
+         * track touch swipes
+         */
+          let self = this;
+          this.swipeStarted = true;
+          this.touchPos = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+
+          let onTouchEnd = function(e) {
+            self.swipeStarted = false;
+
+            let offsetX = self.touchPos.x - e.changedTouches[0].clientX;
+            let offsetY = self.touchPos.y - e.changedTouches[0].clientY;
+
+            if (Math.abs(offsetX) > (3.0 * Math.abs(offsetY)) && Math.abs(offsetX) > MIN_SWIPE_LENGTH) {
+              if (offsetX < 0) {
+                // swipe left
+                if (self.props.onSwipeLeft) self.props.onSwipeLeft();
+              } else {
+                // swipe right
+                if (self.props.onSwipeRight) self.props.onSwipeRight();
+              }
+            }
+
+            window.removeEventListener("touchend", onTouchEnd);
+          };
+
+          window.addEventListener("touchend", onTouchEnd);
+      }
     }
   }
 
@@ -259,6 +291,8 @@ Image.propTypes = {
   className: PropTypes.string.isRequired,
   heightOffset: PropTypes.number.isRequired,
   onClick: PropTypes.func,
+  onSwipeLeft: PropTypes.func,
+  onSwipeRight: PropTypes.func,
   sizes: PropTypes.string.isRequired,
   src: PropTypes.string.isRequired,
   srcset: PropTypes.array,

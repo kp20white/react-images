@@ -3192,6 +3192,8 @@ var Lightbox = (function (_Component) {
 					src: image.src,
 					srcSet: srcset,
 					heightOffset: heightOffset,
+					onSwipeLeft: this.gotoPrev.bind(this),
+					onSwipeRight: this.gotoNext.bind(this),
 					style: {
 						cursor: this.props.onClickImage ? 'pointer' : 'auto',
 						maxHeight: 'calc(100vh - ' + heightOffset + 'px)'
@@ -3783,6 +3785,8 @@ var _iconsPlus2 = _interopRequireDefault(_iconsPlus);
 var MIN_SCALE = 1.0;
 var MAX_SCALE = 3.0;
 
+var MIN_SWIPE_LENGTH = 40.0;
+
 var Image = (function (_Component) {
   _inherits(Image, _Component);
 
@@ -3941,31 +3945,63 @@ var Image = (function (_Component) {
     value: function onImageTouch(e) {
       var _this3 = this;
 
-      if (!this.panStarted && this.state.scale > MIN_SCALE) {
-        (function () {
-          var self = _this3;
-          _this3.panStarted = true;
-          _this3.touchPos = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+      if (!this.panStarted) {
+        if (this.state.scale > MIN_SCALE) {
+          (function () {
+            var self = _this3;
+            _this3.panStarted = true;
+            _this3.touchPos = { x: e.touches[0].clientX, y: e.touches[0].clientY };
 
-          var onTouchMove = function onTouchMove(e) {
-            var offsetX = self.touchPos.x - e.changedTouches[0].clientX;
-            var offsetY = self.touchPos.y - e.changedTouches[0].clientY;
+            var onTouchMove = function onTouchMove(e) {
+              var offsetX = self.touchPos.x - e.changedTouches[0].clientX;
+              var offsetY = self.touchPos.y - e.changedTouches[0].clientY;
 
-            self.refs.image_wrapper.scrollLeft += offsetX;
-            self.refs.image_wrapper.scrollTop += offsetY;
+              self.refs.image_wrapper.scrollLeft += offsetX;
+              self.refs.image_wrapper.scrollTop += offsetY;
 
-            self.touchPos = { x: e.changedTouches[0].clientX, y: e.changedTouches[0].clientY };
-          };
+              self.touchPos = { x: e.changedTouches[0].clientX, y: e.changedTouches[0].clientY };
+            };
 
-          var onTouchEnd = function onTouchEnd(e) {
-            self.panStarted = false;
-            window.removeEventListener("touchmove", onTouchMove);
-            window.removeEventListener("touchend", onTouchEnd);
-          };
+            var onTouchEnd = function onTouchEnd(e) {
+              self.panStarted = false;
+              window.removeEventListener("touchmove", onTouchMove);
+              window.removeEventListener("touchend", onTouchEnd);
+            };
 
-          window.addEventListener("touchmove", onTouchMove);
-          window.addEventListener("touchend", onTouchEnd);
-        })();
+            window.addEventListener("touchmove", onTouchMove);
+            window.addEventListener("touchend", onTouchEnd);
+          })();
+        } else {
+          (function () {
+            /**
+             * track touch swipes
+             */
+            var self = _this3;
+            _this3.swipeStarted = true;
+            _this3.touchPos = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+
+            var onTouchEnd = function onTouchEnd(e) {
+              self.swipeStarted = false;
+
+              var offsetX = self.touchPos.x - e.changedTouches[0].clientX;
+              var offsetY = self.touchPos.y - e.changedTouches[0].clientY;
+
+              if (Math.abs(offsetX) > 3.0 * Math.abs(offsetY) && Math.abs(offsetX) > MIN_SWIPE_LENGTH) {
+                if (offsetX < 0) {
+                  // swipe left
+                  if (self.props.onSwipeLeft) self.props.onSwipeLeft();
+                } else {
+                  // swipe right
+                  if (self.props.onSwipeRight) self.props.onSwipeRight();
+                }
+              }
+
+              window.removeEventListener("touchend", onTouchEnd);
+            };
+
+            window.addEventListener("touchend", onTouchEnd);
+          })();
+        }
       }
     }
   }, {
@@ -4068,6 +4104,8 @@ Image.propTypes = {
   className: _react.PropTypes.string.isRequired,
   heightOffset: _react.PropTypes.number.isRequired,
   onClick: _react.PropTypes.func,
+  onSwipeLeft: _react.PropTypes.func,
+  onSwipeRight: _react.PropTypes.func,
   sizes: _react.PropTypes.string.isRequired,
   src: _react.PropTypes.string.isRequired,
   srcset: _react.PropTypes.array,

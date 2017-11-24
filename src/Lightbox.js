@@ -266,6 +266,8 @@ class Lightbox extends Component {
                 src={image.src}
                 srcSet={srcset}
 								heightOffset={heightOffset}
+                onSwipeLeft={this.gotoPrev.bind(this)}
+                onSwipeRight={this.gotoNext.bind(this)}
                 style={{
                     cursor: this.props.onClickImage ? 'pointer' : 'auto',
 										maxHeight: `calc(100vh - ${heightOffset}px)`,
