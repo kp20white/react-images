@@ -34,30 +34,32 @@ export default class Video extends Component {
 
   render()
   {
-    return (<div style={{position: 'relative', pointerEvents: 'auto', backgroundColor: 'black', maxHeight: `calc(100vh - ${this.props.heightOffset}px)`}}>
-      <div onClick={this.onWrapperClick.bind(this)}
-           style={{position: 'absolute', top: 0, left: 0, width: '100%', height: '90%', zIndex: 100, cursor: this.props.style.cursor ? this.props.style.cursor : 'auto'}}>
-        <PlayButton
-          fill="#FFFFFF"
-          className={css(classes.play)}
-          style={{opacity: this.state.play ? 0 : 0.8 }}
-          />
+    return (<div style={{textAlign: 'center'}}>
+      <div style={{position: 'relative', display: 'inline-block', pointerEvents: 'auto', backgroundColor: 'black', maxHeight: `calc(100vh - ${this.props.heightOffset}px)`}}>
+        <div onClick={this.onWrapperClick.bind(this)}
+             style={{position: 'absolute', top: 0, left: 0, width: '100%', height: '90%', zIndex: 100, cursor: this.props.style.cursor ? this.props.style.cursor : 'auto'}}>
+          <PlayButton
+            fill="#FFFFFF"
+            className={css(classes.play)}
+            style={{opacity: this.state.play ? 0 : 0.8 }}
+            />
+        </div>
+        <video
+          ref="video_player"
+          src={this.props.src}
+          preload={this.props.preload}
+          controls
+          className={this.props.className}
+          poster={this.props.poster}
+          style={this.props.style}>
+        <source key={this.props.src} src={this.props.src}/>
+        {
+          this.props.srcset.map((src) => {
+            return <source key={src} src={src}/>
+          })
+        }
+        </video>
       </div>
-      <video
-        ref="video_player"
-        src={this.props.src}
-        preload={this.props.preload}
-        controls
-        className={this.props.className}
-        poster={this.props.poster}
-        style={this.props.style}>
-      <source key={this.props.src} src={this.props.src}/>
-      {
-        this.props.srcset.map((src) => {
-          return <source key={src} src={src}/>
-        })
-      }
-      </video>
     </div>);
   }
 

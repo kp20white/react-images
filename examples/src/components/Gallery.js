@@ -93,7 +93,7 @@ class Gallery extends Component {
 					onClose={this.closeLightbox}
 					showThumbnails={false}
 					theme={this.props.theme}
-					bottomControls={[ <div><textarea type="text" value="bottomControls" /></div> ]}
+					bottomControls={[ <div><textarea type="text" value="bottomControls" style={{width: 700}}/></div> ]}
 				/>
 			</div>
 		);

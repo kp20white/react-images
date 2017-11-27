@@ -262,67 +262,69 @@ export default class Image extends Component {
     }
 
     return (
-      <div style={{position: 'relative', backgroundColor: 'black'}}>
-        {!this.state.imageLoaded && <i className="fa fa-circle-o-notch fa-spin fa-fw" style={{
-          position: 'absolute',
-          bottom: 0,
-          top: 0,
-          left: 0,
-          right: 0,
-          margin: 'auto',
-          zIndex: 100,
-          width: 30,
-          height: 30,
-          opacity:  1,
-          color: '#AAA',
-          fontSize: '2em',
-        }} />}
-        <MinusIcon
-          color="#FFF"
-          title="Zoom out"
-          onClick={this.onZoomOut.bind(this)}
-          style={{
+      <div style={{textAlign: 'center'}}>
+        <div style={{position: 'relative', display: 'inline-block', margin: 'auto', backgroundColor: 'black'}}>
+          {!this.state.imageLoaded && <i className="fa fa-circle-o-notch fa-spin fa-fw" style={{
             position: 'absolute',
-            bottom: 10,
-            right: 40,
-            cursor: ( this.state.scale > MIN_SCALE ? 'pointer' : 'auto' ),
+            bottom: 0,
+            top: 0,
+            left: 0,
+            right: 0,
+            margin: 'auto',
             zIndex: 100,
-            width: 20,
-            height: 20,
-            opacity: this.state.imageLoaded ? ( this.state.scale > MIN_SCALE ? 0.8 : 0.4 ) : 0,
-            filter: 'drop-shadow(2px 2px 1px rgba(0,0,0,0.8))',
-          }}/>
-        <PlusIcon
-          color="#FFF"
-          title="Zoom in"
-          onClick={this.onZoomIn.bind(this)}
-          style={{
-            position: 'absolute',
-            bottom: 10,
-            right: 10,
-            cursor: ( this.state.scale < MAX_SCALE ? 'pointer' : 'auto' ),
-            zIndex: 100,
-            width: 20,
-            height: 20,
-            opacity: this.state.imageLoaded ? ( this.state.scale < MAX_SCALE ? 0.8 : 0.4 ) : 0,
-            filter: 'drop-shadow(2px 2px 1px rgba(0,0,0,0.8))',
-          }} />
-        <div style={this.state.wrapperStyle} ref="image_wrapper">
-          <div style={this.state.secondWrapper}>
-            <img
-              ref="lightbox_image_node"
-              className={this.props.className}
-              onClick={this.props.onClickImage}
-              sizes={this.state.scale === MIN_SCALE ? this.props.sizes : undefined}
-              alt={this.props.alt}
-              src={this.props.src}
-              {...imgSize}
-              srcSet={this.props.srcset}
-              style={imageStyle}
-              draggable="false"
-              onMouseDown={this.onImageMouseDown.bind(this)}
-              onTouchStart={this.onImageTouch.bind(this)}
-            />
+            width: 30,
+            height: 30,
+            opacity:  1,
+            color: '#AAA',
+            fontSize: '2em',
+          }} />}
+          <MinusIcon
+            color="#FFF"
+            title="Zoom out"
+            onClick={this.onZoomOut.bind(this)}
+            style={{
+              position: 'absolute',
+              bottom: 10,
+              right: 40,
+              cursor: ( this.state.scale > MIN_SCALE ? 'pointer' : 'auto' ),
+              zIndex: 100,
+              width: 20,
+              height: 20,
+              opacity: this.state.imageLoaded ? ( this.state.scale > MIN_SCALE ? 0.8 : 0.4 ) : 0,
+              filter: 'drop-shadow(2px 2px 1px rgba(0,0,0,0.8))',
+            }}/>
+          <PlusIcon
+            color="#FFF"
+            title="Zoom in"
+            onClick={this.onZoomIn.bind(this)}
+            style={{
+              position: 'absolute',
+              bottom: 10,
+              right: 10,
+              cursor: ( this.state.scale < MAX_SCALE ? 'pointer' : 'auto' ),
+              zIndex: 100,
+              width: 20,
+              height: 20,
+              opacity: this.state.imageLoaded ? ( this.state.scale < MAX_SCALE ? 0.8 : 0.4 ) : 0,
+              filter: 'drop-shadow(2px 2px 1px rgba(0,0,0,0.8))',
+            }} />
+          <div style={this.state.wrapperStyle} ref="image_wrapper">
+            <div style={this.state.secondWrapper}>
+              <img
+                ref="lightbox_image_node"
+                className={this.props.className}
+                onClick={this.props.onClickImage}
+                sizes={this.state.scale === MIN_SCALE ? this.props.sizes : undefined}
+                alt={this.props.alt}
+                src={this.props.src}
+                {...imgSize}
+                srcSet={this.props.srcset}
+                style={imageStyle}
+                draggable="false"
+                onMouseDown={this.onImageMouseDown.bind(this)}
+                onTouchStart={this.onImageTouch.bind(this)}
+              />
+            </div>
           </div>
         </div>
       </div>);
