@@ -3111,8 +3111,9 @@ var classes = _aphroditeNoImportant.StyleSheet.create({
 		position: 'relative'
 	},
 	figure: {
-		margin: 0 },
-	// remove browser default
+		margin: 0, // remove browser default
+		maxWidth: '100vw'
+	},
 	image: {
 		display: 'block', // removes browser default gutter
 		height: 'auto',
@@ -3617,7 +3618,7 @@ var Image = (function (_Component) {
           maxHeight: 'calc(100vh - ' + this.props.heightOffset + 'px)'
         },
         wrapperStyle: {},
-        secondWrapper: {}
+        secondWrapper: { maxHeight: '100vh' }
       });
     }
   }, {
@@ -3671,7 +3672,7 @@ var Image = (function (_Component) {
             maxHeight: 'calc(100vh - ' + nextProps.heightOffset + 'px)'
           },
           wrapperStyle: {},
-          secondWrapper: {}
+          secondWrapper: { maxHeight: '100vh' }
         });
       }
     }
@@ -3723,7 +3724,7 @@ var Image = (function (_Component) {
             maxHeight: 'calc(100vh - ' + this.props.heightOffset + 'px)'
           },
           wrapperStyle: {},
-          secondWrapper: {}
+          secondWrapper: { maxHeight: '100vh' }
         });
       } else {
         var wrapHeight = this.refs.image_wrapper.offsetHeight;

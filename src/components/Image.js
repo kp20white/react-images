@@ -21,7 +21,7 @@ export default class Image extends Component {
         maxHeight: `calc(100vh - ${this.props.heightOffset}px)`,
       },
       wrapperStyle: {},
-      secondWrapper: {},
+      secondWrapper: { maxHeight: '100vh' },
     });
   }
 
@@ -69,7 +69,7 @@ export default class Image extends Component {
           maxHeight: `calc(100vh - ${nextProps.heightOffset}px)`,
         },
         wrapperStyle: {},
-        secondWrapper: {},
+        secondWrapper: { maxHeight: '100vh' },
       });
     }
   }
@@ -115,7 +115,7 @@ export default class Image extends Component {
           maxHeight: `calc(100vh - ${this.props.heightOffset}px)`,
         },
         wrapperStyle: {},
-        secondWrapper: { },
+        secondWrapper: { maxHeight: '100vh' },
       });
     } else {
       let wrapHeight = this.refs.image_wrapper.offsetHeight;

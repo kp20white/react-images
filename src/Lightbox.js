@@ -377,6 +377,7 @@ const classes = StyleSheet.create({
 	},
 	figure: {
 		margin: 0, // remove browser default
+		maxWidth: '100vw',
 	},
 	image: {
 		display: 'block', // removes browser default gutter
