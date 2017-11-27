@@ -3777,7 +3777,6 @@ var Image = (function (_Component) {
     value: function onImageTouch(e) {
       var _this3 = this;
 
-      console.log('touch ----------');
       if (!this.panStarted) {
         var _ret2 = (function () {
           var self = _this3;
@@ -3897,71 +3896,75 @@ var Image = (function (_Component) {
 
       return _react2['default'].createElement(
         'div',
-        { style: { position: 'relative', backgroundColor: 'black' } },
-        !this.state.imageLoaded && _react2['default'].createElement('i', { className: 'fa fa-circle-o-notch fa-spin fa-fw', style: {
-            position: 'absolute',
-            bottom: 0,
-            top: 0,
-            left: 0,
-            right: 0,
-            margin: 'auto',
-            zIndex: 100,
-            width: 30,
-            height: 30,
-            opacity: 1,
-            color: '#AAA',
-            fontSize: '2em'
-          } }),
-        _react2['default'].createElement(_iconsMinus2['default'], {
-          color: '#FFF',
-          title: 'Zoom out',
-          onClick: this.onZoomOut.bind(this),
-          style: {
-            position: 'absolute',
-            bottom: 10,
-            right: 40,
-            cursor: this.state.scale > MIN_SCALE ? 'pointer' : 'auto',
-            zIndex: 100,
-            width: 20,
-            height: 20,
-            opacity: this.state.imageLoaded ? this.state.scale > MIN_SCALE ? 0.8 : 0.4 : 0,
-            filter: 'drop-shadow(2px 2px 1px rgba(0,0,0,0.8))'
-          } }),
-        _react2['default'].createElement(_iconsPlus2['default'], {
-          color: '#FFF',
-          title: 'Zoom in',
-          onClick: this.onZoomIn.bind(this),
-          style: {
-            position: 'absolute',
-            bottom: 10,
-            right: 10,
-            cursor: this.state.scale < MAX_SCALE ? 'pointer' : 'auto',
-            zIndex: 100,
-            width: 20,
-            height: 20,
-            opacity: this.state.imageLoaded ? this.state.scale < MAX_SCALE ? 0.8 : 0.4 : 0,
-            filter: 'drop-shadow(2px 2px 1px rgba(0,0,0,0.8))'
-          } }),
+        { style: { textAlign: 'center' } },
         _react2['default'].createElement(
           'div',
-          { style: this.state.wrapperStyle, ref: 'image_wrapper' },
+          { style: { position: 'relative', display: 'inline-block', margin: 'auto', backgroundColor: 'black' } },
+          !this.state.imageLoaded && _react2['default'].createElement('i', { className: 'fa fa-circle-o-notch fa-spin fa-fw', style: {
+              position: 'absolute',
+              bottom: 0,
+              top: 0,
+              left: 0,
+              right: 0,
+              margin: 'auto',
+              zIndex: 100,
+              width: 30,
+              height: 30,
+              opacity: 1,
+              color: '#AAA',
+              fontSize: '2em'
+            } }),
+          _react2['default'].createElement(_iconsMinus2['default'], {
+            color: '#FFF',
+            title: 'Zoom out',
+            onClick: this.onZoomOut.bind(this),
+            style: {
+              position: 'absolute',
+              bottom: 10,
+              right: 40,
+              cursor: this.state.scale > MIN_SCALE ? 'pointer' : 'auto',
+              zIndex: 100,
+              width: 20,
+              height: 20,
+              opacity: this.state.imageLoaded ? this.state.scale > MIN_SCALE ? 0.8 : 0.4 : 0,
+              filter: 'drop-shadow(2px 2px 1px rgba(0,0,0,0.8))'
+            } }),
+          _react2['default'].createElement(_iconsPlus2['default'], {
+            color: '#FFF',
+            title: 'Zoom in',
+            onClick: this.onZoomIn.bind(this),
+            style: {
+              position: 'absolute',
+              bottom: 10,
+              right: 10,
+              cursor: this.state.scale < MAX_SCALE ? 'pointer' : 'auto',
+              zIndex: 100,
+              width: 20,
+              height: 20,
+              opacity: this.state.imageLoaded ? this.state.scale < MAX_SCALE ? 0.8 : 0.4 : 0,
+              filter: 'drop-shadow(2px 2px 1px rgba(0,0,0,0.8))'
+            } }),
           _react2['default'].createElement(
             'div',
-            { style: this.state.secondWrapper },
-            _react2['default'].createElement('img', _extends({
-              ref: 'lightbox_image_node',
-              className: this.props.className,
-              onClick: this.props.onClickImage,
-              sizes: this.state.scale === MIN_SCALE ? this.props.sizes : undefined,
-              alt: this.props.alt,
-              src: this.props.src
-            }, imgSize, {
-              srcSet: this.props.srcset,
-              style: imageStyle,
-              draggable: 'false',
-              onMouseDown: this.onImageMouseDown.bind(this),
-              onTouchStart: this.onImageTouch.bind(this)
-            }))
+            { style: this.state.wrapperStyle, ref: 'image_wrapper' },
+            _react2['default'].createElement(
+              'div',
+              { style: this.state.secondWrapper },
+              _react2['default'].createElement('img', _extends({
+                ref: 'lightbox_image_node',
+                className: this.props.className,
+                onClick: this.props.onClickImage,
+                sizes: this.state.scale === MIN_SCALE ? this.props.sizes : undefined,
+                alt: this.props.alt,
+                src: this.props.src
+              }, imgSize, {
+                srcSet: this.props.srcset,
+                style: imageStyle,
+                draggable: 'false',
+                onMouseDown: this.onImageMouseDown.bind(this),
+                onTouchStart: this.onImageTouch.bind(this)
+              }))
+            )
           )
         )
       );
@@ -4541,31 +4544,35 @@ var Video = (function (_Component) {
     value: function render() {
       return _react2['default'].createElement(
         'div',
-        { style: { position: 'relative', pointerEvents: 'auto', backgroundColor: 'black', maxHeight: 'calc(100vh - ' + this.props.heightOffset + 'px)' } },
+        { style: { textAlign: 'center' } },
         _react2['default'].createElement(
           'div',
-          { onClick: this.onWrapperClick.bind(this),
-            style: { position: 'absolute', top: 0, left: 0, width: '100%', height: '90%', zIndex: 100, cursor: this.props.style.cursor ? this.props.style.cursor : 'auto' } },
-          _react2['default'].createElement(_iconsPlayButton2['default'], {
-            fill: '#FFFFFF',
-            className: (0, _aphroditeNoImportant.css)(classes.play),
-            style: { opacity: this.state.play ? 0 : 0.8 }
-          })
-        ),
-        _react2['default'].createElement(
-          'video',
-          {
-            ref: 'video_player',
-            src: this.props.src,
-            preload: this.props.preload,
-            controls: true,
-            className: this.props.className,
-            poster: this.props.poster,
-            style: this.props.style },
-          _react2['default'].createElement('source', { key: this.props.src, src: this.props.src }),
-          this.props.srcset.map(function (src) {
-            return _react2['default'].createElement('source', { key: src, src: src });
-          })
+          { style: { position: 'relative', display: 'inline-block', pointerEvents: 'auto', backgroundColor: 'black', maxHeight: 'calc(100vh - ' + this.props.heightOffset + 'px)' } },
+          _react2['default'].createElement(
+            'div',
+            { onClick: this.onWrapperClick.bind(this),
+              style: { position: 'absolute', top: 0, left: 0, width: '100%', height: '90%', zIndex: 100, cursor: this.props.style.cursor ? this.props.style.cursor : 'auto' } },
+            _react2['default'].createElement(_iconsPlayButton2['default'], {
+              fill: '#FFFFFF',
+              className: (0, _aphroditeNoImportant.css)(classes.play),
+              style: { opacity: this.state.play ? 0 : 0.8 }
+            })
+          ),
+          _react2['default'].createElement(
+            'video',
+            {
+              ref: 'video_player',
+              src: this.props.src,
+              preload: this.props.preload,
+              controls: true,
+              className: this.props.className,
+              poster: this.props.poster,
+              style: this.props.style },
+            _react2['default'].createElement('source', { key: this.props.src, src: this.props.src }),
+            this.props.srcset.map(function (src) {
+              return _react2['default'].createElement('source', { key: src, src: src });
+            })
+          )
         )
       );
     }
