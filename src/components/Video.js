@@ -2,6 +2,8 @@ import React, { Component, PropTypes } from 'react';
 import { css, StyleSheet } from 'aphrodite/no-important';
 import PlayButton from '../icons/playButton';
 
+const MIN_SWIPE_LENGTH = 40.0;
+
 export default class Video extends Component {
   constructor(props) {
     super(props);
@@ -32,11 +34,42 @@ export default class Video extends Component {
     }, false);
   }
 
+  onVideoTouch(e) {
+    /**
+     * track touch swipes
+     */
+
+    let self = this;
+
+    this.touchPos = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+
+    let onTouchEnd = function(e) {
+      self.swipeStarted = false;
+
+      let offsetX = self.touchPos.x - e.changedTouches[0].clientX;
+      let offsetY = self.touchPos.y - e.changedTouches[0].clientY;
+
+      if (Math.abs(offsetX) > (3.0 * Math.abs(offsetY)) && Math.abs(offsetX) > MIN_SWIPE_LENGTH) {
+        if (offsetX < 0) {
+          // swipe left
+          if (self.props.onSwipeLeft) self.props.onSwipeLeft();
+        } else {
+          // swipe right
+          if (self.props.onSwipeRight) self.props.onSwipeRight();
+        }
+      }
+
+      window.removeEventListener("touchend", onTouchEnd);
+    };
+    window.addEventListener("touchend", onTouchEnd);
+  }
+
   render()
   {
     return (<div style={{textAlign: 'center'}}>
-      <div style={{position: 'relative', display: 'inline-block', pointerEvents: 'auto', backgroundColor: 'black', maxHeight: `calc(100vh - ${this.props.heightOffset}px)`}}>
+      <div style={{position: 'relative', display: 'inline-block', maxWidth: '100vw', pointerEvents: 'auto', backgroundColor: 'black', maxHeight: `calc(100vh - ${this.props.heightOffset}px)`}}>
         <div onClick={this.onWrapperClick.bind(this)}
+             onTouchStart={this.onVideoTouch.bind(this)}
              style={{position: 'absolute', top: 0, left: 0, width: '100%', height: '90%', zIndex: 100, cursor: this.props.style.cursor ? this.props.style.cursor : 'auto'}}>
           <PlayButton
             fill="#FFFFFF"
@@ -68,6 +101,8 @@ export default class Video extends Component {
 Video.propTypes = {
   className: PropTypes.string.isRequired,
   heightOffset: PropTypes.number.isRequired,
+  onSwipeLeft: PropTypes.func,
+  onSwipeRight: PropTypes.func,
   poster: PropTypes.string.isRequired,
   preload: PropTypes.string,
   src: PropTypes.string.isRequired,

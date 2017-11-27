@@ -2979,6 +2979,8 @@ var Lightbox = (function (_Component) {
 					className: (0, _aphroditeNoImportant.css)(classes.image),
 					poster: image.thumbnail,
 					heightOffset: heightOffset,
+					onSwipeLeft: this.gotoPrev.bind(this),
+					onSwipeRight: this.gotoNext.bind(this),
 					style: {
 						cursor: 'pointer',
 						maxHeight: 'calc(100vh - ' + heightOffset + 'px)'
@@ -3899,7 +3901,7 @@ var Image = (function (_Component) {
         { style: { textAlign: 'center' } },
         _react2['default'].createElement(
           'div',
-          { style: { position: 'relative', display: 'inline-block', margin: 'auto', backgroundColor: 'black' } },
+          { style: { position: 'relative', display: 'inline-block', maxWidth: '100vw', margin: 'auto', backgroundColor: 'black' } },
           !this.state.imageLoaded && _react2['default'].createElement('i', { className: 'fa fa-circle-o-notch fa-spin fa-fw', style: {
               position: 'absolute',
               bottom: 0,
@@ -4505,6 +4507,8 @@ var _iconsPlayButton = require('../icons/playButton');
 
 var _iconsPlayButton2 = _interopRequireDefault(_iconsPlayButton);
 
+var MIN_SWIPE_LENGTH = 40.0;
+
 var Video = (function (_Component) {
   _inherits(Video, _Component);
 
@@ -4540,6 +4544,37 @@ var Video = (function (_Component) {
       }, false);
     }
   }, {
+    key: 'onVideoTouch',
+    value: function onVideoTouch(e) {
+      /**
+       * track touch swipes
+       */
+
+      var self = this;
+
+      this.touchPos = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+
+      var onTouchEnd = function onTouchEnd(e) {
+        self.swipeStarted = false;
+
+        var offsetX = self.touchPos.x - e.changedTouches[0].clientX;
+        var offsetY = self.touchPos.y - e.changedTouches[0].clientY;
+
+        if (Math.abs(offsetX) > 3.0 * Math.abs(offsetY) && Math.abs(offsetX) > MIN_SWIPE_LENGTH) {
+          if (offsetX < 0) {
+            // swipe left
+            if (self.props.onSwipeLeft) self.props.onSwipeLeft();
+          } else {
+            // swipe right
+            if (self.props.onSwipeRight) self.props.onSwipeRight();
+          }
+        }
+
+        window.removeEventListener("touchend", onTouchEnd);
+      };
+      window.addEventListener("touchend", onTouchEnd);
+    }
+  }, {
     key: 'render',
     value: function render() {
       return _react2['default'].createElement(
@@ -4547,10 +4582,11 @@ var Video = (function (_Component) {
         { style: { textAlign: 'center' } },
         _react2['default'].createElement(
           'div',
-          { style: { position: 'relative', display: 'inline-block', pointerEvents: 'auto', backgroundColor: 'black', maxHeight: 'calc(100vh - ' + this.props.heightOffset + 'px)' } },
+          { style: { position: 'relative', display: 'inline-block', maxWidth: '100vw', pointerEvents: 'auto', backgroundColor: 'black', maxHeight: 'calc(100vh - ' + this.props.heightOffset + 'px)' } },
           _react2['default'].createElement(
             'div',
             { onClick: this.onWrapperClick.bind(this),
+              onTouchStart: this.onVideoTouch.bind(this),
               style: { position: 'absolute', top: 0, left: 0, width: '100%', height: '90%', zIndex: 100, cursor: this.props.style.cursor ? this.props.style.cursor : 'auto' } },
             _react2['default'].createElement(_iconsPlayButton2['default'], {
               fill: '#FFFFFF',
@@ -4586,6 +4622,8 @@ exports['default'] = Video;
 Video.propTypes = {
   className: _react.PropTypes.string.isRequired,
   heightOffset: _react.PropTypes.number.isRequired,
+  onSwipeLeft: _react.PropTypes.func,
+  onSwipeRight: _react.PropTypes.func,
   poster: _react.PropTypes.string.isRequired,
   preload: _react.PropTypes.string,
   src: _react.PropTypes.string.isRequired,

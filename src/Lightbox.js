@@ -247,6 +247,8 @@ class Lightbox extends Component {
 					className={css(classes.image)}
 					poster={image.thumbnail}
 					heightOffset={heightOffset}
+					onSwipeLeft={this.gotoPrev.bind(this)}
+					onSwipeRight={this.gotoNext.bind(this)}
 					style={{
 						cursor: 'pointer',
 						maxHeight: `calc(100vh - ${heightOffset}px)`

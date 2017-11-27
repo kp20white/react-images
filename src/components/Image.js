@@ -263,7 +263,7 @@ export default class Image extends Component {
 
     return (
       <div style={{textAlign: 'center'}}>
-        <div style={{position: 'relative', display: 'inline-block', margin: 'auto', backgroundColor: 'black'}}>
+        <div style={{position: 'relative', display: 'inline-block', maxWidth: '100vw', margin: 'auto', backgroundColor: 'black'}}>
           {!this.state.imageLoaded && <i className="fa fa-circle-o-notch fa-spin fa-fw" style={{
             position: 'absolute',
             bottom: 0,
