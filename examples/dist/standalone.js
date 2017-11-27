@@ -1856,193 +1856,6 @@ module.exports = exports['default'];
 module.exports = require('./lib/static/prefixAll')
 
 },{"./lib/static/prefixAll":26}],34:[function(require,module,exports){
-// shim for using process in browser
-var process = module.exports = {};
-
-// cached from whatever global is present so that test runners that stub it
-// don't break things.  But we need to wrap it in a try catch in case it is
-// wrapped in strict mode code which doesn't define any globals.  It's inside a
-// function because try/catches deoptimize in certain engines.
-
-var cachedSetTimeout;
-var cachedClearTimeout;
-
-function defaultSetTimout() {
-    throw new Error('setTimeout has not been defined');
-}
-function defaultClearTimeout () {
-    throw new Error('clearTimeout has not been defined');
-}
-(function () {
-    try {
-        if (typeof setTimeout === 'function') {
-            cachedSetTimeout = setTimeout;
-        } else {
-            cachedSetTimeout = defaultSetTimout;
-        }
-    } catch (e) {
-        cachedSetTimeout = defaultSetTimout;
-    }
-    try {
-        if (typeof clearTimeout === 'function') {
-            cachedClearTimeout = clearTimeout;
-        } else {
-            cachedClearTimeout = defaultClearTimeout;
-        }
-    } catch (e) {
-        cachedClearTimeout = defaultClearTimeout;
-    }
-} ())
-function runTimeout(fun) {
-    if (cachedSetTimeout === setTimeout) {
-        //normal enviroments in sane situations
-        return setTimeout(fun, 0);
-    }
-    // if setTimeout wasn't available but was latter defined
-    if ((cachedSetTimeout === defaultSetTimout || !cachedSetTimeout) && setTimeout) {
-        cachedSetTimeout = setTimeout;
-        return setTimeout(fun, 0);
-    }
-    try {
-        // when when somebody has screwed with setTimeout but no I.E. maddness
-        return cachedSetTimeout(fun, 0);
-    } catch(e){
-        try {
-            // When we are in I.E. but the script has been evaled so I.E. doesn't trust the global object when called normally
-            return cachedSetTimeout.call(null, fun, 0);
-        } catch(e){
-            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error
-            return cachedSetTimeout.call(this, fun, 0);
-        }
-    }
-
-
-}
-function runClearTimeout(marker) {
-    if (cachedClearTimeout === clearTimeout) {
-        //normal enviroments in sane situations
-        return clearTimeout(marker);
-    }
-    // if clearTimeout wasn't available but was latter defined
-    if ((cachedClearTimeout === defaultClearTimeout || !cachedClearTimeout) && clearTimeout) {
-        cachedClearTimeout = clearTimeout;
-        return clearTimeout(marker);
-    }
-    try {
-        // when when somebody has screwed with setTimeout but no I.E. maddness
-        return cachedClearTimeout(marker);
-    } catch (e){
-        try {
-            // When we are in I.E. but the script has been evaled so I.E. doesn't  trust the global object when called normally
-            return cachedClearTimeout.call(null, marker);
-        } catch (e){
-            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error.
-            // Some versions of I.E. have different rules for clearTimeout vs setTimeout
-            return cachedClearTimeout.call(this, marker);
-        }
-    }
-
-
-
-}
-var queue = [];
-var draining = false;
-var currentQueue;
-var queueIndex = -1;
-
-function cleanUpNextTick() {
-    if (!draining || !currentQueue) {
-        return;
-    }
-    draining = false;
-    if (currentQueue.length) {
-        queue = currentQueue.concat(queue);
-    } else {
-        queueIndex = -1;
-    }
-    if (queue.length) {
-        drainQueue();
-    }
-}
-
-function drainQueue() {
-    if (draining) {
-        return;
-    }
-    var timeout = runTimeout(cleanUpNextTick);
-    draining = true;
-
-    var len = queue.length;
-    while(len) {
-        currentQueue = queue;
-        queue = [];
-        while (++queueIndex < len) {
-            if (currentQueue) {
-                currentQueue[queueIndex].run();
-            }
-        }
-        queueIndex = -1;
-        len = queue.length;
-    }
-    currentQueue = null;
-    draining = false;
-    runClearTimeout(timeout);
-}
-
-process.nextTick = function (fun) {
-    var args = new Array(arguments.length - 1);
-    if (arguments.length > 1) {
-        for (var i = 1; i < arguments.length; i++) {
-            args[i - 1] = arguments[i];
-        }
-    }
-    queue.push(new Item(fun, args));
-    if (queue.length === 1 && !draining) {
-        runTimeout(drainQueue);
-    }
-};
-
-// v8 likes predictible objects
-function Item(fun, array) {
-    this.fun = fun;
-    this.array = array;
-}
-Item.prototype.run = function () {
-    this.fun.apply(null, this.array);
-};
-process.title = 'browser';
-process.browser = true;
-process.env = {};
-process.argv = [];
-process.version = ''; // empty string to avoid regexp issues
-process.versions = {};
-
-function noop() {}
-
-process.on = noop;
-process.addListener = noop;
-process.once = noop;
-process.off = noop;
-process.removeListener = noop;
-process.removeAllListeners = noop;
-process.emit = noop;
-process.prependListener = noop;
-process.prependOnceListener = noop;
-
-process.listeners = function (name) { return [] }
-
-process.binding = function (name) {
-    throw new Error('process.binding is not supported');
-};
-
-process.cwd = function () { return '/' };
-process.chdir = function (dir) {
-    throw new Error('process.chdir is not supported');
-};
-process.umask = function() { return 0; };
-
-},{}],35:[function(require,module,exports){
-(function (process){
 'use strict';
 
 exports.__esModule = true;
@@ -2132,14 +1945,12 @@ var CSSTransitionGroup = function (_React$Component) {
 CSSTransitionGroup.displayName = 'CSSTransitionGroup';
 
 
-CSSTransitionGroup.propTypes = process.env.NODE_ENV !== "production" ? propTypes : {};
+CSSTransitionGroup.propTypes = "production" !== "production" ? propTypes : {};
 CSSTransitionGroup.defaultProps = defaultProps;
 
 exports.default = CSSTransitionGroup;
 module.exports = exports['default'];
-}).call(this,require('_process'))
-},{"./CSSTransitionGroupChild":36,"./TransitionGroup":37,"./utils/PropTypes":39,"_process":34,"prop-types":undefined,"react":undefined}],36:[function(require,module,exports){
-(function (process){
+},{"./CSSTransitionGroupChild":35,"./TransitionGroup":36,"./utils/PropTypes":38,"prop-types":undefined,"react":undefined}],35:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -2365,13 +2176,11 @@ var CSSTransitionGroupChild = function (_React$Component) {
 CSSTransitionGroupChild.displayName = 'CSSTransitionGroupChild';
 
 
-CSSTransitionGroupChild.propTypes = process.env.NODE_ENV !== "production" ? propTypes : {};
+CSSTransitionGroupChild.propTypes = "production" !== "production" ? propTypes : {};
 
 exports.default = CSSTransitionGroupChild;
 module.exports = exports['default'];
-}).call(this,require('_process'))
-},{"./utils/PropTypes":39,"_process":34,"dom-helpers/class/addClass":10,"dom-helpers/class/removeClass":12,"dom-helpers/transition/properties":13,"dom-helpers/util/requestAnimationFrame":15,"prop-types":undefined,"react":undefined,"react-dom":undefined}],37:[function(require,module,exports){
-(function (process){
+},{"./utils/PropTypes":38,"dom-helpers/class/addClass":10,"dom-helpers/class/removeClass":12,"dom-helpers/transition/properties":13,"dom-helpers/util/requestAnimationFrame":15,"prop-types":undefined,"react":undefined,"react-dom":undefined}],36:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -2589,7 +2398,7 @@ var TransitionGroup = function (_React$Component) {
           _this3.childRefs[key] = r;
         };
 
-        process.env.NODE_ENV !== 'production' ? (0, _warning2.default)(isCallbackRef, 'string refs are not supported on children of TransitionGroup and will be ignored. ' + 'Please use a callback ref instead: https://facebook.github.io/react/docs/refs-and-the-dom.html#the-ref-callback-attribute') : void 0;
+        "production" !== 'production' ? (0, _warning2.default)(isCallbackRef, 'string refs are not supported on children of TransitionGroup and will be ignored. ' + 'Please use a callback ref instead: https://facebook.github.io/react/docs/refs-and-the-dom.html#the-ref-callback-attribute') : void 0;
 
         // Always chaining the refs leads to problems when the childFactory
         // wraps the child. The child ref callback gets called twice with the
@@ -2636,13 +2445,12 @@ var TransitionGroup = function (_React$Component) {
 TransitionGroup.displayName = 'TransitionGroup';
 
 
-TransitionGroup.propTypes = process.env.NODE_ENV !== "production" ? propTypes : {};
+TransitionGroup.propTypes = "production" !== "production" ? propTypes : {};
 TransitionGroup.defaultProps = defaultProps;
 
 exports.default = TransitionGroup;
 module.exports = exports['default'];
-}).call(this,require('_process'))
-},{"./utils/ChildMapping":38,"_process":34,"chain-function":9,"prop-types":undefined,"react":undefined,"warning":40}],38:[function(require,module,exports){
+},{"./utils/ChildMapping":37,"chain-function":9,"prop-types":undefined,"react":undefined,"warning":39}],37:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -2734,7 +2542,7 @@ function mergeChildMappings(prev, next) {
 
   return childMapping;
 }
-},{"react":undefined}],39:[function(require,module,exports){
+},{"react":undefined}],38:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -2784,8 +2592,7 @@ var nameShape = exports.nameShape = _propTypes2.default.oneOfType([_propTypes2.d
   appear: _propTypes2.default.string,
   appearActive: _propTypes2.default.string
 })]);
-},{"prop-types":undefined,"react":undefined}],40:[function(require,module,exports){
-(function (process){
+},{"prop-types":undefined,"react":undefined}],39:[function(require,module,exports){
 /**
  * Copyright 2014-2015, Facebook, Inc.
  * All rights reserved.
@@ -2806,7 +2613,7 @@ var nameShape = exports.nameShape = _propTypes2.default.oneOfType([_propTypes2.d
 
 var warning = function() {};
 
-if (process.env.NODE_ENV !== 'production') {
+if ("production" !== 'production') {
   warning = function(condition, format, args) {
     var len = arguments.length;
     args = new Array(len > 2 ? len - 2 : 0);
@@ -2847,8 +2654,7 @@ if (process.env.NODE_ENV !== 'production') {
 
 module.exports = warning;
 
-}).call(this,require('_process'))
-},{"_process":34}],41:[function(require,module,exports){
+},{}],40:[function(require,module,exports){
 (function (global){
 'use strict';
 
@@ -3329,7 +3135,7 @@ https://fb.me/react-unknown-prop is resolved
 */
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./components/Arrow":42,"./components/Container":43,"./components/Footer":44,"./components/Header":45,"./components/Image":47,"./components/PaginatedThumbnails":48,"./components/Portal":50,"./components/Video":52,"./theme":60,"./utils":64,"aphrodite/no-important":6,"prop-types":undefined,"react-scrolllock":undefined}],42:[function(require,module,exports){
+},{"./components/Arrow":41,"./components/Container":42,"./components/Footer":43,"./components/Header":44,"./components/Image":46,"./components/PaginatedThumbnails":47,"./components/Portal":49,"./components/Video":51,"./theme":59,"./utils":63,"aphrodite/no-important":6,"prop-types":undefined,"react-scrolllock":undefined}],41:[function(require,module,exports){
 (function (global){
 'use strict';
 
@@ -3444,7 +3250,7 @@ var defaultStyles = {
 module.exports = Arrow;
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"../theme":60,"../utils":64,"./Icon":46,"aphrodite/no-important":6,"prop-types":undefined}],43:[function(require,module,exports){
+},{"../theme":59,"../utils":63,"./Icon":45,"aphrodite/no-important":6,"prop-types":undefined}],42:[function(require,module,exports){
 (function (global){
 'use strict';
 
@@ -3492,7 +3298,7 @@ var defaultStyles = {
 		backgroundColor: _theme2['default'].container.background,
 		boxSizing: 'border-box',
 		display: 'flex',
-		height: '100%',
+		height: '100vh',
 		justifyContent: 'center',
 		left: 0,
 		paddingBottom: _theme2['default'].container.gutter.vertical,
@@ -3501,7 +3307,8 @@ var defaultStyles = {
 		paddingTop: _theme2['default'].container.gutter.vertical,
 		position: 'fixed',
 		top: 0,
-		width: '100%',
+		width: '100vw',
+		margin: 0,
 		zIndex: _theme2['default'].container.zIndex
 	}
 };
@@ -3509,7 +3316,7 @@ var defaultStyles = {
 module.exports = Container;
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"../theme":60,"../utils":64,"aphrodite/no-important":6,"prop-types":undefined}],44:[function(require,module,exports){
+},{"../theme":59,"../utils":63,"aphrodite/no-important":6,"prop-types":undefined}],43:[function(require,module,exports){
 (function (global){
 'use strict';
 
@@ -3608,7 +3415,7 @@ var defaultStyles = {
 module.exports = Footer;
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"../theme":60,"../utils":64,"aphrodite/no-important":6,"prop-types":undefined}],45:[function(require,module,exports){
+},{"../theme":59,"../utils":63,"aphrodite/no-important":6,"prop-types":undefined}],44:[function(require,module,exports){
 (function (global){
 'use strict';
 
@@ -3704,7 +3511,7 @@ var defaultStyles = {
 module.exports = Header;
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"../theme":60,"../utils":64,"./Icon":46,"aphrodite/no-important":6,"prop-types":undefined}],46:[function(require,module,exports){
+},{"../theme":59,"../utils":63,"./Icon":45,"aphrodite/no-important":6,"prop-types":undefined}],45:[function(require,module,exports){
 (function (global){
 'use strict';
 
@@ -3755,7 +3562,7 @@ exports['default'] = Icon;
 module.exports = exports['default'];
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"../icons":56,"prop-types":undefined}],47:[function(require,module,exports){
+},{"../icons":55,"prop-types":undefined}],46:[function(require,module,exports){
 (function (global){
 'use strict';
 
@@ -4188,7 +3995,7 @@ Image.propTypes = {
 module.exports = exports['default'];
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"../icons/minus":57,"../icons/plus":59}],48:[function(require,module,exports){
+},{"../icons/minus":56,"../icons/plus":58}],47:[function(require,module,exports){
 (function (global){
 'use strict';
 
@@ -4424,7 +4231,7 @@ PaginatedThumbnails.propTypes = {
 module.exports = exports['default'];
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"../theme":60,"./Arrow":42,"./Thumbnail":51,"aphrodite/no-important":6,"prop-types":undefined}],49:[function(require,module,exports){
+},{"../theme":59,"./Arrow":41,"./Thumbnail":50,"aphrodite/no-important":6,"prop-types":undefined}],48:[function(require,module,exports){
 (function (global){
 'use strict';
 
@@ -4486,7 +4293,7 @@ exports['default'] = PassContext;
 module.exports = exports['default'];
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"prop-types":undefined}],50:[function(require,module,exports){
+},{"prop-types":undefined}],49:[function(require,module,exports){
 (function (global){
 'use strict';
 
@@ -4592,7 +4399,7 @@ Portal.contextTypes = {
 module.exports = exports['default'];
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./PassContext":49,"prop-types":undefined,"react-dom":undefined,"react-transition-group/CSSTransitionGroup":35}],51:[function(require,module,exports){
+},{"./PassContext":48,"prop-types":undefined,"react-dom":undefined,"react-transition-group/CSSTransitionGroup":34}],50:[function(require,module,exports){
 (function (global){
 'use strict';
 
@@ -4674,7 +4481,7 @@ exports['default'] = Thumbnail;
 module.exports = exports['default'];
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"../theme":60,"../utils":64,"aphrodite/no-important":6,"prop-types":undefined}],52:[function(require,module,exports){
+},{"../theme":59,"../utils":63,"aphrodite/no-important":6,"prop-types":undefined}],51:[function(require,module,exports){
 (function (global){
 'use strict';
 
@@ -4849,7 +4656,7 @@ var classes = _aphroditeNoImportant.StyleSheet.create({
 module.exports = exports['default'];
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"../icons/playButton":58,"aphrodite/no-important":6}],53:[function(require,module,exports){
+},{"../icons/playButton":57,"aphrodite/no-important":6}],52:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -4862,7 +4669,7 @@ exports["default"] = function (fill) {
 
 module.exports = exports["default"];
 
-},{}],54:[function(require,module,exports){
+},{}],53:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -4875,7 +4682,7 @@ exports["default"] = function (fill) {
 
 module.exports = exports["default"];
 
-},{}],55:[function(require,module,exports){
+},{}],54:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -4888,7 +4695,7 @@ exports["default"] = function (fill) {
 
 module.exports = exports["default"];
 
-},{}],56:[function(require,module,exports){
+},{}],55:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -4897,7 +4704,7 @@ module.exports = {
 	close: require('./close')
 };
 
-},{"./arrowLeft":53,"./arrowRight":54,"./close":55}],57:[function(require,module,exports){
+},{"./arrowLeft":52,"./arrowRight":53,"./close":54}],56:[function(require,module,exports){
 (function (global){
 "use strict";
 
@@ -4942,7 +4749,7 @@ exports["default"] = MinusIcon;
 module.exports = exports["default"];
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],58:[function(require,module,exports){
+},{}],57:[function(require,module,exports){
 (function (global){
 "use strict";
 
@@ -4980,7 +4787,7 @@ exports["default"] = PlayButton;
 module.exports = exports["default"];
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],59:[function(require,module,exports){
+},{}],58:[function(require,module,exports){
 (function (global){
 "use strict";
 
@@ -5030,7 +4837,7 @@ exports["default"] = PlusIcon;
 module.exports = exports["default"];
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],60:[function(require,module,exports){
+},{}],59:[function(require,module,exports){
 // ==============================
 // THEME
 // ==============================
@@ -5088,7 +4895,7 @@ theme.arrow = {
 
 module.exports = theme;
 
-},{}],61:[function(require,module,exports){
+},{}],60:[function(require,module,exports){
 /**
 	Bind multiple component methods:
 
@@ -5111,14 +4918,14 @@ module.exports = function bindFunctions(functions) {
 	});
 };
 
-},{}],62:[function(require,module,exports){
+},{}],61:[function(require,module,exports){
 // Return true if window + document
 
 'use strict';
 
 module.exports = !!(typeof window !== 'undefined' && window.document && window.document.createElement);
 
-},{}],63:[function(require,module,exports){
+},{}],62:[function(require,module,exports){
 'use strict';
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
@@ -5145,7 +4952,7 @@ function deepMerge(target) {
 
 module.exports = deepMerge;
 
-},{}],64:[function(require,module,exports){
+},{}],63:[function(require,module,exports){
 'use strict';
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
@@ -5168,5 +4975,5 @@ module.exports = {
 	deepMerge: _deepMerge2['default']
 };
 
-},{"./bindFunctions":61,"./canUseDom":62,"./deepMerge":63}]},{},[41])(41)
+},{"./bindFunctions":60,"./canUseDom":61,"./deepMerge":62}]},{},[40])(40)
 });

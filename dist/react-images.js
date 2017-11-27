@@ -3298,7 +3298,7 @@ var defaultStyles = {
 		backgroundColor: _theme2['default'].container.background,
 		boxSizing: 'border-box',
 		display: 'flex',
-		height: '100%',
+		height: '100vh',
 		justifyContent: 'center',
 		left: 0,
 		paddingBottom: _theme2['default'].container.gutter.vertical,
@@ -3307,7 +3307,8 @@ var defaultStyles = {
 		paddingTop: _theme2['default'].container.gutter.vertical,
 		position: 'fixed',
 		top: 0,
-		width: '100%',
+		width: '100vw',
+		margin: 0,
 		zIndex: _theme2['default'].container.zIndex
 	}
 };

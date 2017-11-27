@@ -26,7 +26,7 @@ const defaultStyles = {
 		backgroundColor: defaults.container.background,
 		boxSizing: 'border-box',
 		display: 'flex',
-		height: '100%',
+		height: '100vh',
 		justifyContent: 'center',
 		left: 0,
 		paddingBottom: defaults.container.gutter.vertical,
@@ -35,7 +35,8 @@ const defaultStyles = {
 		paddingTop: defaults.container.gutter.vertical,
 		position: 'fixed',
 		top: 0,
-		width: '100%',
+		width: '100vw',
+		margin: 0,
 		zIndex: defaults.container.zIndex,
 	},
 };
