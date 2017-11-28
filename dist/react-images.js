@@ -2946,7 +2946,6 @@ var Lightbox = (function (_Component) {
 					}),
 					this.renderImages()
 				),
-				this.renderThumbnails(),
 				this.renderArrowPrev(),
 				this.renderArrowNext(),
 				_react2['default'].createElement(_reactScrolllock2['default'], null)
@@ -3024,25 +3023,19 @@ var Lightbox = (function (_Component) {
 				this.props.bottomControls ? this.props.bottomControls : null
 			);
 		}
-	}, {
-		key: 'renderThumbnails',
-		value: function renderThumbnails() {
-			var _props3 = this.props;
-			var images = _props3.images;
-			var currentImage = _props3.currentImage;
-			var onClickThumbnail = _props3.onClickThumbnail;
-			var showThumbnails = _props3.showThumbnails;
-			var thumbnailOffset = _props3.thumbnailOffset;
 
-			if (!showThumbnails) return;
-
-			return _react2['default'].createElement(_componentsPaginatedThumbnails2['default'], {
-				currentImage: currentImage,
-				images: images,
-				offset: thumbnailOffset,
-				onClickThumbnail: onClickThumbnail
-			});
-		}
+		/*renderThumbnails () {
+  	const { images, currentImage, onClickThumbnail, showThumbnails, thumbnailOffset } = this.props;
+  		if (!showThumbnails) return;
+  		return (
+  		<PaginatedThumbnails
+  			currentImage={currentImage}
+  			images={images}
+  			offset={thumbnailOffset}
+  			onClickThumbnail={onClickThumbnail}
+  		/>
+  	);
+  }*/
 	}, {
 		key: 'render',
 		value: function render() {
@@ -3647,7 +3640,6 @@ var Image = (function (_Component) {
           if (this.touchRelativePos) {
             centerX = this.touchRelativePos.x;
             centerY = this.touchRelativePos.y;
-            console.log('this.touchPos', { centerX: centerX, centerY: centerY });
             this.touchRelativePos = null;
           }
 
@@ -3660,7 +3652,7 @@ var Image = (function (_Component) {
     key: 'componentWillReceiveProps',
     value: function componentWillReceiveProps(nextProps) {
       if (this.props.src !== nextProps.src) {
-        this.tabPos = null;
+        this.touchRelativePos = null;
         this.setState({
           scale: MIN_SCALE,
           imageLoaded: false,
@@ -3780,23 +3772,19 @@ var Image = (function (_Component) {
         var _ret2 = (function () {
           var self = _this3;
           _this3.touchPos = { x: e.touches[0].clientX, y: e.touches[0].clientY };
-          // console.log('e.touches[0]', e.touches[0]);
-          // console.log('ClientSize', {w: this.refs.lightbox_image_node.clientWidth, h: this.refs.lightbox_image_node.clientHeight});
           var imageRect = _this3.refs.lightbox_image_node.getClientRects()[0];
           _this3.touchRelativePos = {
             x: (e.touches[0].clientX - imageRect.x) / _this3.refs.lightbox_image_node.clientWidth,
             y: (e.touches[0].clientY - imageRect.y) / _this3.refs.lightbox_image_node.clientHeight
           };
-          // console.log('touchRelativePos', this.touchRelativePos);
           if (_this3.state.scale > MIN_SCALE) {
             var _ret3 = (function () {
 
               if (_this3.lastTouchTime && Date.now() - _this3.lastTouchTime < 300) {
-                // time beetween touches is less than 300ms - double tap
                 if (_this3.state.scale < MAX_SCALE) {
-                  self.onZoomIn(null, SCALE_MULTER, _this3.touchPos);
+                  self.onZoomIn(null, SCALE_MULTER);
                 } else {
-                  self.onZoomOut(null, MAX_SCALE, _this3.touchPos);
+                  self.onZoomOut(null, MAX_SCALE);
                 }
                 return {
                   v: {
@@ -3877,6 +3865,23 @@ var Image = (function (_Component) {
       }
     }
   }, {
+    key: 'onImageDoubleClick',
+    value: function onImageDoubleClick(e) {
+
+      var imageRect = this.refs.lightbox_image_node.getClientRects()[0];
+
+      this.touchRelativePos = {
+        x: (e.clientX - imageRect.x) / this.refs.lightbox_image_node.clientWidth,
+        y: (e.clientY - imageRect.y) / this.refs.lightbox_image_node.clientHeight
+      };
+
+      if (this.state.scale < MAX_SCALE) {
+        this.onZoomIn(null, SCALE_MULTER);
+      } else {
+        this.onZoomOut(null, MAX_SCALE);
+      }
+    }
+  }, {
     key: 'render',
     value: function render() {
 
@@ -3952,7 +3957,6 @@ var Image = (function (_Component) {
               _react2['default'].createElement('img', _extends({
                 ref: 'lightbox_image_node',
                 className: this.state.scale === MIN_SCALE ? this.props.className + ' not_scaled_image' : this.props.className,
-                onClick: this.props.onClickImage,
                 sizes: this.state.scale === MIN_SCALE ? this.props.sizes : undefined,
                 alt: this.props.alt,
                 src: this.props.src
@@ -3960,6 +3964,8 @@ var Image = (function (_Component) {
                 srcSet: this.props.srcset,
                 style: imageStyle,
                 draggable: 'false',
+                onClick: this.props.onClickImage,
+                onDoubleClick: this.onImageDoubleClick.bind(this),
                 onMouseDown: this.onImageMouseDown.bind(this),
                 onTouchStart: this.onImageTouch.bind(this)
               }))

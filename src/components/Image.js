@@ -49,7 +49,6 @@ export default class Image extends Component {
         if (this.touchRelativePos) {
           centerX = this.touchRelativePos.x;
           centerY = this.touchRelativePos.y;
-          console.log('this.touchPos', { centerX, centerY });
           this.touchRelativePos = null;
         }
 
@@ -61,7 +60,7 @@ export default class Image extends Component {
 
   componentWillReceiveProps(nextProps) {
     if (this.props.src !== nextProps.src) {
-      this.tabPos = null;
+      this.touchRelativePos = null;
       this.setState({
         scale: MIN_SCALE,
         imageLoaded: false,
@@ -166,18 +165,14 @@ export default class Image extends Component {
     if (!this.panStarted) {
       let self = this;
       this.touchPos = { x: e.touches[0].clientX, y: e.touches[0].clientY };
-      // console.log('e.touches[0]', e.touches[0]);
-      // console.log('ClientSize', {w: this.refs.lightbox_image_node.clientWidth, h: this.refs.lightbox_image_node.clientHeight});
       let imageRect = this.refs.lightbox_image_node.getClientRects()[0];
       this.touchRelativePos = {
         x: (e.touches[0].clientX - imageRect.x) / this.refs.lightbox_image_node.clientWidth,
         y: (e.touches[0].clientY - imageRect.y) / this.refs.lightbox_image_node.clientHeight,
       };
-      // console.log('touchRelativePos', this.touchRelativePos);
       if (this.state.scale > MIN_SCALE) {
 
         if (this.lastTouchTime && (Date.now() - this.lastTouchTime) < 300) {
-          // time beetween touches is less than 300ms - double tap
           if (this.state.scale < MAX_SCALE) {
             self.onZoomIn(null, SCALE_MULTER);
           }

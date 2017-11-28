@@ -211,9 +211,9 @@ class Lightbox extends Component {
 						closeButtonTitle={this.props.closeButtonTitle}
 					/>
 					{this.renderImages()}
-          {this.renderArrowPrev()}
-          {this.renderArrowNext()}
 				</div>
+        {this.renderArrowPrev()}
+        {this.renderArrowNext()}
 				<ScrollLock />
 			</Container>
 		);
