@@ -312,7 +312,7 @@ export default class Image extends Component {
             <div style={this.state.secondWrapper}>
               <img
                 ref="lightbox_image_node"
-                className={this.props.className}
+                className={this.state.scale === MIN_SCALE ? `${this.props.className} not_scaled_image` : this.props.className}
                 onClick={this.props.onClickImage}
                 sizes={this.state.scale === MIN_SCALE ? this.props.sizes : undefined}
                 alt={this.props.alt}

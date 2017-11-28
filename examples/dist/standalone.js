@@ -3128,11 +3128,6 @@ var classes = _aphroditeNoImportant.StyleSheet.create({
 
 exports['default'] = Lightbox;
 module.exports = exports['default'];
-/*
-Re-implement when react warning "unknown props"
-https://fb.me/react-unknown-prop is resolved
-<Swipeable onSwipedLeft={this.gotoNext} onSwipedRight={this.gotoPrev} />
-*/
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{"./components/Arrow":41,"./components/Container":42,"./components/Footer":43,"./components/Header":44,"./components/Image":46,"./components/PaginatedThumbnails":47,"./components/Portal":49,"./components/Video":51,"./theme":59,"./utils":63,"aphrodite/no-important":6,"prop-types":undefined,"react-scrolllock":undefined}],41:[function(require,module,exports){
@@ -3956,7 +3951,7 @@ var Image = (function (_Component) {
               { style: this.state.secondWrapper },
               _react2['default'].createElement('img', _extends({
                 ref: 'lightbox_image_node',
-                className: this.props.className,
+                className: this.state.scale === MIN_SCALE ? this.props.className + ' not_scaled_image' : this.props.className,
                 onClick: this.props.onClickImage,
                 sizes: this.state.scale === MIN_SCALE ? this.props.sizes : undefined,
                 alt: this.props.alt,

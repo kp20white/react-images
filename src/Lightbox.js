@@ -280,11 +280,6 @@ class Lightbox extends Component {
 		}
 		return (
 			<figure className={css(classes.figure)}>
-				{/*
-					Re-implement when react warning "unknown props"
-					https://fb.me/react-unknown-prop is resolved
-					<Swipeable onSwipedLeft={this.gotoNext} onSwipedRight={this.gotoPrev} />
-				*/}
 				{ renderImageOrVideo }
 				<Footer
 					caption={images[currentImage].caption}
