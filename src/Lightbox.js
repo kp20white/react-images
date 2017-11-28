@@ -211,10 +211,9 @@ class Lightbox extends Component {
 						closeButtonTitle={this.props.closeButtonTitle}
 					/>
 					{this.renderImages()}
+          {this.renderArrowPrev()}
+          {this.renderArrowNext()}
 				</div>
-				{this.renderThumbnails()}
-				{this.renderArrowPrev()}
-				{this.renderArrowNext()}
 				<ScrollLock />
 			</Container>
 		);
@@ -292,7 +291,7 @@ class Lightbox extends Component {
 			</figure>
 		);
 	}
-	renderThumbnails () {
+	/*renderThumbnails () {
 		const { images, currentImage, onClickThumbnail, showThumbnails, thumbnailOffset } = this.props;
 
 		if (!showThumbnails) return;
@@ -305,7 +304,7 @@ class Lightbox extends Component {
 				onClickThumbnail={onClickThumbnail}
 			/>
 		);
-	}
+	}*/
 	render () {
 		return (
 			<Portal>

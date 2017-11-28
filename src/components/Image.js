@@ -179,10 +179,10 @@ export default class Image extends Component {
         if (this.lastTouchTime && (Date.now() - this.lastTouchTime) < 300) {
           // time beetween touches is less than 300ms - double tap
           if (this.state.scale < MAX_SCALE) {
-            self.onZoomIn(null, SCALE_MULTER, this.touchPos);
+            self.onZoomIn(null, SCALE_MULTER);
           }
           else {
-            self.onZoomOut(null, MAX_SCALE, this.touchPos);
+            self.onZoomOut(null, MAX_SCALE);
           }
           return;
         }
@@ -242,6 +242,23 @@ export default class Image extends Component {
 
           window.addEventListener("touchend", onTouchEnd);
       }
+    }
+  }
+
+  onImageDoubleClick(e) {
+
+    let imageRect = this.refs.lightbox_image_node.getClientRects()[0];
+
+    this.touchRelativePos = {
+      x: (e.clientX - imageRect.x) / this.refs.lightbox_image_node.clientWidth,
+      y: (e.clientY - imageRect.y) / this.refs.lightbox_image_node.clientHeight,
+    };
+
+    if (this.state.scale < MAX_SCALE) {
+      this.onZoomIn(null, SCALE_MULTER);
+    }
+    else {
+      this.onZoomOut(null, MAX_SCALE);
     }
   }
 
@@ -313,7 +330,6 @@ export default class Image extends Component {
               <img
                 ref="lightbox_image_node"
                 className={this.state.scale === MIN_SCALE ? `${this.props.className} not_scaled_image` : this.props.className}
-                onClick={this.props.onClickImage}
                 sizes={this.state.scale === MIN_SCALE ? this.props.sizes : undefined}
                 alt={this.props.alt}
                 src={this.props.src}
@@ -321,6 +337,8 @@ export default class Image extends Component {
                 srcSet={this.props.srcset}
                 style={imageStyle}
                 draggable="false"
+                onClick={this.props.onClickImage}
+                onDoubleClick={this.onImageDoubleClick.bind(this)}
                 onMouseDown={this.onImageMouseDown.bind(this)}
                 onTouchStart={this.onImageTouch.bind(this)}
               />
