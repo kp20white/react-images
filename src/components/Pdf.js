@@ -6,7 +6,6 @@ const MIN_SWIPE_LENGTH = 40.0;
 export default class Pdf extends Component {
   constructor(props) {
     super(props);
-    console.log('props,src', props.src);
   }
 
   onTouch(e) {
@@ -43,8 +42,12 @@ export default class Pdf extends Component {
   {
     return (
       <div className={css(classes.pdfContainer)} onTouchStart={this.onTouch.bind(this)}>
-        <img src={this.props.thumbnail} /><br />
-        <a className={css(classes.downloadLink)} href={this.props.src} target="_blank"><i className="fa fa-file-pdf-o" />&nbsp;Download PDF</a>
+        <div>
+          <img src={this.props.thumbnail} />
+        </div>
+        <div className={css(classes.downloadBlock)} >
+          <a className={css(classes.downloadLink)}  href={this.props.src} target="_blank"><i className="fa fa-file-pdf-o" />&nbsp;Download PDF</a>
+        </div>
       </div>);
   }
 
@@ -63,9 +66,12 @@ const classes = StyleSheet.create({
   pdfContainer: {
     textAlign: 'center',
   },
+  downloadBlock: {
+    display: 'inline-block',
+    padding: '10px',
+  },
   downloadLink: {
     color: '#DDD',
     fontSize: '1.4em',
-    padding: '10px',
   },
 });
