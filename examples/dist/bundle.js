@@ -2767,7 +2767,7 @@ var defaultStyles = {
 
 module.exports = Arrow;
 
-},{"../theme":58,"../utils":62,"./Icon":44,"aphrodite/no-important":6,"prop-types":undefined,"react":undefined}],41:[function(require,module,exports){
+},{"../theme":59,"../utils":63,"./Icon":44,"aphrodite/no-important":6,"prop-types":undefined,"react":undefined}],41:[function(require,module,exports){
 'use strict';
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
@@ -2831,7 +2831,7 @@ var defaultStyles = {
 
 module.exports = Container;
 
-},{"../theme":58,"../utils":62,"aphrodite/no-important":6,"prop-types":undefined,"react":undefined}],42:[function(require,module,exports){
+},{"../theme":59,"../utils":63,"aphrodite/no-important":6,"prop-types":undefined,"react":undefined}],42:[function(require,module,exports){
 'use strict';
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
@@ -2928,7 +2928,7 @@ var defaultStyles = {
 
 module.exports = Footer;
 
-},{"../theme":58,"../utils":62,"aphrodite/no-important":6,"prop-types":undefined,"react":undefined}],43:[function(require,module,exports){
+},{"../theme":59,"../utils":63,"aphrodite/no-important":6,"prop-types":undefined,"react":undefined}],43:[function(require,module,exports){
 'use strict';
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
@@ -3022,7 +3022,7 @@ var defaultStyles = {
 
 module.exports = Header;
 
-},{"../theme":58,"../utils":62,"./Icon":44,"aphrodite/no-important":6,"prop-types":undefined,"react":undefined}],44:[function(require,module,exports){
+},{"../theme":59,"../utils":63,"./Icon":44,"aphrodite/no-important":6,"prop-types":undefined,"react":undefined}],44:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -3071,7 +3071,7 @@ Icon.defaultProps = {
 exports['default'] = Icon;
 module.exports = exports['default'];
 
-},{"../icons":54,"prop-types":undefined,"react":undefined}],45:[function(require,module,exports){
+},{"../icons":55,"prop-types":undefined,"react":undefined}],45:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -3515,7 +3515,7 @@ Image.propTypes = {
 };
 module.exports = exports['default'];
 
-},{"../icons/minus":55,"../icons/plus":57,"react":undefined}],46:[function(require,module,exports){
+},{"../icons/minus":56,"../icons/plus":58,"react":undefined}],46:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -3749,7 +3749,7 @@ PaginatedThumbnails.propTypes = {
 };
 module.exports = exports['default'];
 
-},{"../theme":58,"./Arrow":40,"./Thumbnail":49,"aphrodite/no-important":6,"prop-types":undefined,"react":undefined}],47:[function(require,module,exports){
+},{"../theme":59,"./Arrow":40,"./Thumbnail":50,"aphrodite/no-important":6,"prop-types":undefined,"react":undefined}],47:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -3810,6 +3810,114 @@ exports['default'] = PassContext;
 module.exports = exports['default'];
 
 },{"prop-types":undefined,"react":undefined}],48:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, '__esModule', {
+  value: true
+});
+
+var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _aphroditeNoImportant = require('aphrodite/no-important');
+
+var MIN_SWIPE_LENGTH = 40.0;
+
+var Pdf = (function (_Component) {
+  _inherits(Pdf, _Component);
+
+  function Pdf(props) {
+    _classCallCheck(this, Pdf);
+
+    _get(Object.getPrototypeOf(Pdf.prototype), 'constructor', this).call(this, props);
+    console.log('props,src', props.src);
+  }
+
+  _createClass(Pdf, [{
+    key: 'onTouch',
+    value: function onTouch(e) {
+      /**
+       * track touch swipes
+       */
+
+      var self = this;
+
+      this.touchPos = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+
+      var onTouchEnd = function onTouchEnd(e) {
+        self.swipeStarted = false;
+
+        var offsetX = self.touchPos.x - e.changedTouches[0].clientX;
+        var offsetY = self.touchPos.y - e.changedTouches[0].clientY;
+
+        if (Math.abs(offsetX) > 3.0 * Math.abs(offsetY) && Math.abs(offsetX) > MIN_SWIPE_LENGTH) {
+          if (offsetX < 0) {
+            // swipe left
+            if (self.props.onSwipeLeft) self.props.onSwipeLeft();
+          } else {
+            // swipe right
+            if (self.props.onSwipeRight) self.props.onSwipeRight();
+          }
+        }
+
+        window.removeEventListener("touchend", onTouchEnd);
+      };
+      window.addEventListener("touchend", onTouchEnd);
+    }
+  }, {
+    key: 'render',
+    value: function render() {
+      return _react2['default'].createElement(
+        'div',
+        { className: (0, _aphroditeNoImportant.css)(classes.pdfContainer), onTouchStart: this.onTouch.bind(this) },
+        _react2['default'].createElement('img', { src: this.props.thumbnail }),
+        _react2['default'].createElement('br', null),
+        _react2['default'].createElement(
+          'a',
+          { className: (0, _aphroditeNoImportant.css)(classes.downloadLink), href: this.props.src, target: '_blank' },
+          _react2['default'].createElement('i', { className: 'fa fa-file-pdf-o' }),
+          ' Download PDF'
+        )
+      );
+    }
+  }]);
+
+  return Pdf;
+})(_react.Component);
+
+exports['default'] = Pdf;
+
+Pdf.propTypes = {
+  src: _react.PropTypes.string.isRequired,
+  thumbnail: _react.PropTypes.string.isRequired,
+  onSwipeLeft: _react.PropTypes.func,
+  onSwipeRight: _react.PropTypes.func
+};
+
+var classes = _aphroditeNoImportant.StyleSheet.create({
+  pdfContainer: {
+    textAlign: 'center'
+  },
+  downloadLink: {
+    color: '#DDD',
+    fontSize: '1.4em',
+    padding: '10px'
+  }
+});
+module.exports = exports['default'];
+
+},{"aphrodite/no-important":6,"react":undefined}],49:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -3913,7 +4021,7 @@ Portal.contextTypes = {
 };
 module.exports = exports['default'];
 
-},{"./PassContext":47,"prop-types":undefined,"react":undefined,"react-dom":undefined,"react-transition-group/CSSTransitionGroup":34}],49:[function(require,module,exports){
+},{"./PassContext":47,"prop-types":undefined,"react":undefined,"react-dom":undefined,"react-transition-group/CSSTransitionGroup":34}],50:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -3993,7 +4101,7 @@ var defaultStyles = {
 exports['default'] = Thumbnail;
 module.exports = exports['default'];
 
-},{"../theme":58,"../utils":62,"aphrodite/no-important":6,"prop-types":undefined,"react":undefined}],50:[function(require,module,exports){
+},{"../theme":59,"../utils":63,"aphrodite/no-important":6,"prop-types":undefined,"react":undefined}],51:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -4166,7 +4274,7 @@ var classes = _aphroditeNoImportant.StyleSheet.create({
 });
 module.exports = exports['default'];
 
-},{"../icons/playButton":56,"aphrodite/no-important":6,"react":undefined}],51:[function(require,module,exports){
+},{"../icons/playButton":57,"aphrodite/no-important":6,"react":undefined}],52:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -4179,7 +4287,7 @@ exports["default"] = function (fill) {
 
 module.exports = exports["default"];
 
-},{}],52:[function(require,module,exports){
+},{}],53:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -4192,7 +4300,7 @@ exports["default"] = function (fill) {
 
 module.exports = exports["default"];
 
-},{}],53:[function(require,module,exports){
+},{}],54:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -4205,7 +4313,7 @@ exports["default"] = function (fill) {
 
 module.exports = exports["default"];
 
-},{}],54:[function(require,module,exports){
+},{}],55:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -4214,7 +4322,7 @@ module.exports = {
 	close: require('./close')
 };
 
-},{"./arrowLeft":51,"./arrowRight":52,"./close":53}],55:[function(require,module,exports){
+},{"./arrowLeft":52,"./arrowRight":53,"./close":54}],56:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -4257,7 +4365,7 @@ MinusIcon.propTypes = {
 exports["default"] = MinusIcon;
 module.exports = exports["default"];
 
-},{"react":undefined}],56:[function(require,module,exports){
+},{"react":undefined}],57:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -4293,7 +4401,7 @@ PlayButton.propTypes = {
 exports["default"] = PlayButton;
 module.exports = exports["default"];
 
-},{"react":undefined}],57:[function(require,module,exports){
+},{"react":undefined}],58:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -4341,7 +4449,7 @@ PlusIcon.propTypes = {
 exports["default"] = PlusIcon;
 module.exports = exports["default"];
 
-},{"react":undefined}],58:[function(require,module,exports){
+},{"react":undefined}],59:[function(require,module,exports){
 // ==============================
 // THEME
 // ==============================
@@ -4399,7 +4507,7 @@ theme.arrow = {
 
 module.exports = theme;
 
-},{}],59:[function(require,module,exports){
+},{}],60:[function(require,module,exports){
 /**
 	Bind multiple component methods:
 
@@ -4422,14 +4530,14 @@ module.exports = function bindFunctions(functions) {
 	});
 };
 
-},{}],60:[function(require,module,exports){
+},{}],61:[function(require,module,exports){
 // Return true if window + document
 
 'use strict';
 
 module.exports = !!(typeof window !== 'undefined' && window.document && window.document.createElement);
 
-},{}],61:[function(require,module,exports){
+},{}],62:[function(require,module,exports){
 'use strict';
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
@@ -4456,7 +4564,7 @@ function deepMerge(target) {
 
 module.exports = deepMerge;
 
-},{}],62:[function(require,module,exports){
+},{}],63:[function(require,module,exports){
 'use strict';
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
@@ -4479,7 +4587,7 @@ module.exports = {
 	deepMerge: _deepMerge2['default']
 };
 
-},{"./bindFunctions":59,"./canUseDom":60,"./deepMerge":61}],"react-images":[function(require,module,exports){
+},{"./bindFunctions":60,"./canUseDom":61,"./deepMerge":62}],"react-images":[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -4541,6 +4649,10 @@ var _componentsPortal2 = _interopRequireDefault(_componentsPortal);
 var _componentsVideo = require('./components/Video');
 
 var _componentsVideo2 = _interopRequireDefault(_componentsVideo);
+
+var _componentsPdf = require('./components/Pdf');
+
+var _componentsPdf2 = _interopRequireDefault(_componentsPdf);
 
 var _componentsImage = require('./components/Image');
 
@@ -4796,7 +4908,13 @@ var Lightbox = (function (_Component) {
 
 			if (!image.srcset) image.srcset = [];
 
-			if (image.src && image.src.toLowerCase().lastIndexOf('.mp4') > -1) {
+			if (image.src && image.src.toLowerCase().lastIndexOf('.pdf') > -1) {
+				renderImageOrVideo = _react2['default'].createElement(_componentsPdf2['default'], { src: image.src,
+					thumbnail: image.thumbnail,
+					onSwipeLeft: this.gotoPrev.bind(this),
+					onSwipeRight: this.gotoNext.bind(this)
+				});
+			} else if (image.src && image.src.toLowerCase().lastIndexOf('.mp4') > -1) {
 				renderImageOrVideo = _react2['default'].createElement(_componentsVideo2['default'], {
 					src: image.src,
 					className: (0, _aphroditeNoImportant.css)(classes.image),
@@ -4946,4 +5064,4 @@ var classes = _aphroditeNoImportant.StyleSheet.create({
 exports['default'] = Lightbox;
 module.exports = exports['default'];
 
-},{"./components/Arrow":40,"./components/Container":41,"./components/Footer":42,"./components/Header":43,"./components/Image":45,"./components/PaginatedThumbnails":46,"./components/Portal":48,"./components/Video":50,"./theme":58,"./utils":62,"aphrodite/no-important":6,"prop-types":undefined,"react":undefined,"react-scrolllock":undefined}]},{},[]);
+},{"./components/Arrow":40,"./components/Container":41,"./components/Footer":42,"./components/Header":43,"./components/Image":45,"./components/PaginatedThumbnails":46,"./components/Pdf":48,"./components/Portal":49,"./components/Video":51,"./theme":59,"./utils":63,"aphrodite/no-important":6,"prop-types":undefined,"react":undefined,"react-scrolllock":undefined}]},{},[]);

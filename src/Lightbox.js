@@ -11,6 +11,7 @@ import Header from './components/Header';
 import PaginatedThumbnails from './components/PaginatedThumbnails';
 import Portal from './components/Portal';
 import Video from './components/Video';
+import Pdf from './components/Pdf';
 import Image from './components/Image';
 
 import { bindFunctions, canUseDom, deepMerge } from './utils';
@@ -239,7 +240,15 @@ class Lightbox extends Component {
 		if (!image.srcset)
 			image.srcset = [];
 
-		if(image.src && image.src.toLowerCase().lastIndexOf('.mp4') > -1) {
+    if (image.src && image.src.toLowerCase().lastIndexOf('.pdf') > -1) {
+      renderImageOrVideo = (
+				<Pdf src={image.src}
+					thumbnail={image.thumbnail}
+					onSwipeLeft={this.gotoPrev.bind(this)}
+					onSwipeRight={this.gotoNext.bind(this)}
+				/>
+      );
+    } else if(image.src && image.src.toLowerCase().lastIndexOf('.mp4') > -1) {
 			renderImageOrVideo = (
 				<Video
 					src={image.src}
