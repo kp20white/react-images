@@ -10,6 +10,8 @@ function Footer ({
 	countSeparator,
 	countTotal,
 	showCount,
+	pdf,
+	src,
 	...props,
 }, {
 	theme,
@@ -30,9 +32,12 @@ function Footer ({
 		<div className={css(classes.footer)} {...props}>
 			{caption ? (
 				<figcaption className={css(classes.footerCaption)}>
-					{caption}
+					{ pdf
+						? <div><a className={css(classes.downloadLink)}  href={src} target="_blank"><i className="fa fa-file-pdf-o" />&nbsp;Download&nbsp;</a>({caption})</div>
+						: caption }
 				</figcaption>
-			) : <span />}
+			) : (pdf ? <a className={css(classes.downloadLink)}  href={src} target="_blank"><i className="fa fa-file-pdf-o" />&nbsp;Download</a>
+        : <span />)}
 			{imageCount}
 		</div>
 	);
@@ -44,6 +49,8 @@ Footer.propTypes = {
 	countSeparator: PropTypes.string,
 	countTotal: PropTypes.number,
 	showCount: PropTypes.bool,
+	pdf: PropTypes.bool,
+	src: PropTypes.string,
 };
 Footer.contextTypes = {
 	theme: PropTypes.object.isRequired,
@@ -70,6 +77,10 @@ const defaultStyles = {
 	},
 	footerCaption: {
 		flex: '1 1 0',
+	},
+  downloadLink: {
+    color: '#DDD',
+		fontSize: '18px',
 	},
 };
 

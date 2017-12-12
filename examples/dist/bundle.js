@@ -2767,7 +2767,7 @@ var defaultStyles = {
 
 module.exports = Arrow;
 
-},{"../theme":59,"../utils":63,"./Icon":44,"aphrodite/no-important":6,"prop-types":undefined,"react":undefined}],41:[function(require,module,exports){
+},{"../theme":56,"../utils":60,"./Icon":44,"aphrodite/no-important":6,"prop-types":undefined,"react":undefined}],41:[function(require,module,exports){
 'use strict';
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
@@ -2831,7 +2831,7 @@ var defaultStyles = {
 
 module.exports = Container;
 
-},{"../theme":59,"../utils":63,"aphrodite/no-important":6,"prop-types":undefined,"react":undefined}],42:[function(require,module,exports){
+},{"../theme":56,"../utils":60,"aphrodite/no-important":6,"prop-types":undefined,"react":undefined}],42:[function(require,module,exports){
 'use strict';
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
@@ -2862,8 +2862,10 @@ function Footer(_ref, _ref2) {
 	var countSeparator = _ref.countSeparator;
 	var countTotal = _ref.countTotal;
 	var showCount = _ref.showCount;
+	var pdf = _ref.pdf;
+	var src = _ref.src;
 
-	var props = _objectWithoutProperties(_ref, ['caption', 'countCurrent', 'countSeparator', 'countTotal', 'showCount']);
+	var props = _objectWithoutProperties(_ref, ['caption', 'countCurrent', 'countSeparator', 'countTotal', 'showCount', 'pdf', 'src']);
 
 	var theme = _ref2.theme;
 
@@ -2885,7 +2887,24 @@ function Footer(_ref, _ref2) {
 		caption ? _react2['default'].createElement(
 			'figcaption',
 			{ className: (0, _aphroditeNoImportant.css)(classes.footerCaption) },
-			caption
+			pdf ? _react2['default'].createElement(
+				'div',
+				null,
+				_react2['default'].createElement(
+					'a',
+					{ className: (0, _aphroditeNoImportant.css)(classes.downloadLink), href: src, target: '_blank' },
+					_react2['default'].createElement('i', { className: 'fa fa-file-pdf-o' }),
+					' Download '
+				),
+				'(',
+				caption,
+				')'
+			) : caption
+		) : pdf ? _react2['default'].createElement(
+			'a',
+			{ className: (0, _aphroditeNoImportant.css)(classes.downloadLink), href: src, target: '_blank' },
+			_react2['default'].createElement('i', { className: 'fa fa-file-pdf-o' }),
+			' Download'
 		) : _react2['default'].createElement('span', null),
 		imageCount
 	);
@@ -2896,7 +2915,9 @@ Footer.propTypes = {
 	countCurrent: _propTypes2['default'].number,
 	countSeparator: _propTypes2['default'].string,
 	countTotal: _propTypes2['default'].number,
-	showCount: _propTypes2['default'].bool
+	showCount: _propTypes2['default'].bool,
+	pdf: _propTypes2['default'].bool,
+	src: _propTypes2['default'].string
 };
 Footer.contextTypes = {
 	theme: _propTypes2['default'].object.isRequired
@@ -2923,12 +2944,16 @@ var defaultStyles = {
 	// add a small gutter for the caption
 	footerCaption: {
 		flex: '1 1 0'
+	},
+	downloadLink: {
+		color: '#DDD',
+		fontSize: '18px'
 	}
 };
 
 module.exports = Footer;
 
-},{"../theme":59,"../utils":63,"aphrodite/no-important":6,"prop-types":undefined,"react":undefined}],43:[function(require,module,exports){
+},{"../theme":56,"../utils":60,"aphrodite/no-important":6,"prop-types":undefined,"react":undefined}],43:[function(require,module,exports){
 'use strict';
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
@@ -3022,7 +3047,7 @@ var defaultStyles = {
 
 module.exports = Header;
 
-},{"../theme":59,"../utils":63,"./Icon":44,"aphrodite/no-important":6,"prop-types":undefined,"react":undefined}],44:[function(require,module,exports){
+},{"../theme":56,"../utils":60,"./Icon":44,"aphrodite/no-important":6,"prop-types":undefined,"react":undefined}],44:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -3071,7 +3096,7 @@ Icon.defaultProps = {
 exports['default'] = Icon;
 module.exports = exports['default'];
 
-},{"../icons":55,"prop-types":undefined,"react":undefined}],45:[function(require,module,exports){
+},{"../icons":52,"prop-types":undefined,"react":undefined}],45:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -3515,241 +3540,7 @@ Image.propTypes = {
 };
 module.exports = exports['default'];
 
-},{"../icons/minus":56,"../icons/plus":58,"react":undefined}],46:[function(require,module,exports){
-'use strict';
-
-Object.defineProperty(exports, '__esModule', {
-	value: true
-});
-
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
-var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-
-var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var _propTypes = require('prop-types');
-
-var _propTypes2 = _interopRequireDefault(_propTypes);
-
-var _react = require('react');
-
-var _react2 = _interopRequireDefault(_react);
-
-var _aphroditeNoImportant = require('aphrodite/no-important');
-
-var _Thumbnail = require('./Thumbnail');
-
-var _Thumbnail2 = _interopRequireDefault(_Thumbnail);
-
-var _Arrow = require('./Arrow');
-
-var _Arrow2 = _interopRequireDefault(_Arrow);
-
-var _theme = require('../theme');
-
-var _theme2 = _interopRequireDefault(_theme);
-
-var classes = _aphroditeNoImportant.StyleSheet.create({
-	paginatedThumbnails: {
-		bottom: _theme2['default'].container.gutter.vertical,
-		height: _theme2['default'].thumbnail.size,
-		padding: '0 50px',
-		position: 'absolute',
-		textAlign: 'center',
-		whiteSpace: 'nowrap'
-	}
-});
-
-var arrowStyles = {
-	height: _theme2['default'].thumbnail.size + _theme2['default'].thumbnail.gutter * 2,
-	width: 40
-};
-
-var PaginatedThumbnails = (function (_Component) {
-	_inherits(PaginatedThumbnails, _Component);
-
-	function PaginatedThumbnails(props) {
-		_classCallCheck(this, PaginatedThumbnails);
-
-		_get(Object.getPrototypeOf(PaginatedThumbnails.prototype), 'constructor', this).call(this, props);
-
-		this.state = {
-			hasCustomPage: false
-		};
-
-		this.gotoPrev = this.gotoPrev.bind(this);
-		this.gotoNext = this.gotoNext.bind(this);
-	}
-
-	_createClass(PaginatedThumbnails, [{
-		key: 'componentWillReceiveProps',
-		value: function componentWillReceiveProps(nextProps) {
-			// Component should be controlled, flush state when currentImage changes
-			if (nextProps.currentImage !== this.props.currentImage) {
-				this.setState({
-					hasCustomPage: false
-				});
-			}
-		}
-
-		// ==============================
-		// METHODS
-		// ==============================
-
-	}, {
-		key: 'getFirst',
-		value: function getFirst() {
-			var _props = this.props;
-			var currentImage = _props.currentImage;
-			var offset = _props.offset;
-
-			if (this.state.hasCustomPage) {
-				return this.clampFirst(this.state.first);
-			}
-			return this.clampFirst(currentImage - offset);
-		}
-	}, {
-		key: 'setFirst',
-		value: function setFirst(event, newFirst) {
-			var first = this.state.first;
-
-			if (event) {
-				event.preventDefault();
-				event.stopPropagation();
-			}
-
-			if (first === newFirst) return;
-
-			this.setState({
-				hasCustomPage: true,
-				first: newFirst
-			});
-		}
-	}, {
-		key: 'gotoPrev',
-		value: function gotoPrev(event) {
-			this.setFirst(event, this.getFirst() - this.props.offset);
-		}
-	}, {
-		key: 'gotoNext',
-		value: function gotoNext(event) {
-			this.setFirst(event, this.getFirst() + this.props.offset);
-		}
-	}, {
-		key: 'clampFirst',
-		value: function clampFirst(value) {
-			var _props2 = this.props;
-			var images = _props2.images;
-			var offset = _props2.offset;
-
-			var totalCount = 2 * offset + 1; // show $offset extra thumbnails on each side
-
-			if (value < 0) {
-				return 0;
-			} else if (value + totalCount > images.length) {
-				// Too far
-				return images.length - totalCount;
-			} else {
-				return value;
-			}
-		}
-
-		// ==============================
-		// RENDERERS
-		// ==============================
-
-	}, {
-		key: 'renderArrowPrev',
-		value: function renderArrowPrev() {
-			if (this.getFirst() <= 0) return null;
-
-			return _react2['default'].createElement(_Arrow2['default'], {
-				direction: 'left',
-				size: 'small',
-				icon: 'arrowLeft',
-				onClick: this.gotoPrev,
-				style: arrowStyles,
-				title: 'Previous (Left arrow key)',
-				type: 'button'
-			});
-		}
-	}, {
-		key: 'renderArrowNext',
-		value: function renderArrowNext() {
-			var _props3 = this.props;
-			var offset = _props3.offset;
-			var images = _props3.images;
-
-			var totalCount = 2 * offset + 1;
-			if (this.getFirst() + totalCount >= images.length) return null;
-
-			return _react2['default'].createElement(_Arrow2['default'], {
-				direction: 'right',
-				size: 'small',
-				icon: 'arrowRight',
-				onClick: this.gotoNext,
-				style: arrowStyles,
-				title: 'Next (Right arrow key)',
-				type: 'button'
-			});
-		}
-	}, {
-		key: 'render',
-		value: function render() {
-			var _props4 = this.props;
-			var images = _props4.images;
-			var currentImage = _props4.currentImage;
-			var onClickThumbnail = _props4.onClickThumbnail;
-			var offset = _props4.offset;
-
-			var totalCount = 2 * offset + 1; // show $offset extra thumbnails on each side
-			var thumbnails = [];
-			var baseOffset = 0;
-			if (images.length <= totalCount) {
-				thumbnails = images;
-			} else {
-				// Try to center current image in list
-				baseOffset = this.getFirst();
-				thumbnails = images.slice(baseOffset, baseOffset + totalCount);
-			}
-
-			return _react2['default'].createElement(
-				'div',
-				{ className: (0, _aphroditeNoImportant.css)(classes.paginatedThumbnails) },
-				this.renderArrowPrev(),
-				thumbnails.map(function (img, idx) {
-					return _react2['default'].createElement(_Thumbnail2['default'], _extends({ key: baseOffset + idx
-					}, img, {
-						index: baseOffset + idx,
-						onClick: onClickThumbnail,
-						active: baseOffset + idx === currentImage }));
-				}),
-				this.renderArrowNext()
-			);
-		}
-	}]);
-
-	return PaginatedThumbnails;
-})(_react.Component);
-
-exports['default'] = PaginatedThumbnails;
-
-PaginatedThumbnails.propTypes = {
-	currentImage: _propTypes2['default'].number,
-	images: _propTypes2['default'].array,
-	offset: _propTypes2['default'].number,
-	onClickThumbnail: _propTypes2['default'].func.isRequired
-};
-module.exports = exports['default'];
-
-},{"../theme":59,"./Arrow":40,"./Thumbnail":50,"aphrodite/no-important":6,"prop-types":undefined,"react":undefined}],47:[function(require,module,exports){
+},{"../icons/minus":53,"../icons/plus":55,"react":undefined}],46:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -3809,124 +3600,7 @@ PassContext.childContextTypes = {
 exports['default'] = PassContext;
 module.exports = exports['default'];
 
-},{"prop-types":undefined,"react":undefined}],48:[function(require,module,exports){
-'use strict';
-
-Object.defineProperty(exports, '__esModule', {
-  value: true
-});
-
-var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-
-var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var _react = require('react');
-
-var _react2 = _interopRequireDefault(_react);
-
-var _aphroditeNoImportant = require('aphrodite/no-important');
-
-var MIN_SWIPE_LENGTH = 40.0;
-
-var Pdf = (function (_Component) {
-  _inherits(Pdf, _Component);
-
-  function Pdf(props) {
-    _classCallCheck(this, Pdf);
-
-    _get(Object.getPrototypeOf(Pdf.prototype), 'constructor', this).call(this, props);
-  }
-
-  _createClass(Pdf, [{
-    key: 'onTouch',
-    value: function onTouch(e) {
-      /**
-       * track touch swipes
-       */
-
-      var self = this;
-
-      this.touchPos = { x: e.touches[0].clientX, y: e.touches[0].clientY };
-
-      var onTouchEnd = function onTouchEnd(e) {
-        self.swipeStarted = false;
-
-        var offsetX = self.touchPos.x - e.changedTouches[0].clientX;
-        var offsetY = self.touchPos.y - e.changedTouches[0].clientY;
-
-        if (Math.abs(offsetX) > 3.0 * Math.abs(offsetY) && Math.abs(offsetX) > MIN_SWIPE_LENGTH) {
-          if (offsetX < 0) {
-            // swipe left
-            if (self.props.onSwipeLeft) self.props.onSwipeLeft();
-          } else {
-            // swipe right
-            if (self.props.onSwipeRight) self.props.onSwipeRight();
-          }
-        }
-
-        window.removeEventListener("touchend", onTouchEnd);
-      };
-      window.addEventListener("touchend", onTouchEnd);
-    }
-  }, {
-    key: 'render',
-    value: function render() {
-      return _react2['default'].createElement(
-        'div',
-        { className: (0, _aphroditeNoImportant.css)(classes.pdfContainer), onTouchStart: this.onTouch.bind(this) },
-        _react2['default'].createElement(
-          'div',
-          null,
-          _react2['default'].createElement('img', { src: this.props.thumbnail })
-        ),
-        _react2['default'].createElement(
-          'div',
-          { className: (0, _aphroditeNoImportant.css)(classes.downloadBlock) },
-          _react2['default'].createElement(
-            'a',
-            { className: (0, _aphroditeNoImportant.css)(classes.downloadLink), href: this.props.src, target: '_blank' },
-            _react2['default'].createElement('i', { className: 'fa fa-file-pdf-o' }),
-            ' Download PDF'
-          )
-        )
-      );
-    }
-  }]);
-
-  return Pdf;
-})(_react.Component);
-
-exports['default'] = Pdf;
-
-Pdf.propTypes = {
-  src: _react.PropTypes.string.isRequired,
-  thumbnail: _react.PropTypes.string.isRequired,
-  onSwipeLeft: _react.PropTypes.func,
-  onSwipeRight: _react.PropTypes.func
-};
-
-var classes = _aphroditeNoImportant.StyleSheet.create({
-  pdfContainer: {
-    textAlign: 'center'
-  },
-  downloadBlock: {
-    display: 'inline-block',
-    padding: '10px'
-  },
-  downloadLink: {
-    color: '#DDD',
-    fontSize: '1.4em'
-  }
-});
-module.exports = exports['default'];
-
-},{"aphrodite/no-important":6,"react":undefined}],49:[function(require,module,exports){
+},{"prop-types":undefined,"react":undefined}],47:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -4030,87 +3704,7 @@ Portal.contextTypes = {
 };
 module.exports = exports['default'];
 
-},{"./PassContext":47,"prop-types":undefined,"react":undefined,"react-dom":undefined,"react-transition-group/CSSTransitionGroup":34}],50:[function(require,module,exports){
-'use strict';
-
-Object.defineProperty(exports, '__esModule', {
-	value: true
-});
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
-var _propTypes = require('prop-types');
-
-var _propTypes2 = _interopRequireDefault(_propTypes);
-
-var _react = require('react');
-
-var _react2 = _interopRequireDefault(_react);
-
-var _aphroditeNoImportant = require('aphrodite/no-important');
-
-var _theme = require('../theme');
-
-var _theme2 = _interopRequireDefault(_theme);
-
-var _utils = require('../utils');
-
-function Thumbnail(_ref, _ref2) {
-	var index = _ref.index;
-	var src = _ref.src;
-	var thumbnail = _ref.thumbnail;
-	var active = _ref.active;
-	var onClick = _ref.onClick;
-	var theme = _ref2.theme;
-
-	var url = thumbnail ? thumbnail : src;
-	var classes = _aphroditeNoImportant.StyleSheet.create((0, _utils.deepMerge)(defaultStyles, theme));
-
-	return _react2['default'].createElement('div', {
-		className: (0, _aphroditeNoImportant.css)(classes.thumbnail, active && classes.thumbnail__active),
-		onClick: function (e) {
-			e.preventDefault();
-			e.stopPropagation();
-			onClick(index);
-		},
-		style: { backgroundImage: 'url("' + url + '")' }
-	});
-}
-
-Thumbnail.propTypes = {
-	active: _propTypes2['default'].bool,
-	index: _propTypes2['default'].number,
-	onClick: _propTypes2['default'].func.isRequired,
-	src: _propTypes2['default'].string,
-	thumbnail: _propTypes2['default'].string
-};
-
-Thumbnail.contextTypes = {
-	theme: _propTypes2['default'].object.isRequired
-};
-
-var defaultStyles = {
-	thumbnail: {
-		backgroundPosition: 'center',
-		backgroundSize: 'cover',
-		borderRadius: 2,
-		boxShadow: 'inset 0 0 0 1px hsla(0,0%,100%,.2)',
-		cursor: 'pointer',
-		display: 'inline-block',
-		height: _theme2['default'].thumbnail.size,
-		margin: _theme2['default'].thumbnail.gutter,
-		overflow: 'hidden',
-		width: _theme2['default'].thumbnail.size
-	},
-	thumbnail__active: {
-		boxShadow: 'inset 0 0 0 2px ' + _theme2['default'].thumbnail.activeBorderColor
-	}
-};
-
-exports['default'] = Thumbnail;
-module.exports = exports['default'];
-
-},{"../theme":59,"../utils":63,"aphrodite/no-important":6,"prop-types":undefined,"react":undefined}],51:[function(require,module,exports){
+},{"./PassContext":46,"prop-types":undefined,"react":undefined,"react-dom":undefined,"react-transition-group/CSSTransitionGroup":34}],48:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -4283,7 +3877,7 @@ var classes = _aphroditeNoImportant.StyleSheet.create({
 });
 module.exports = exports['default'];
 
-},{"../icons/playButton":57,"aphrodite/no-important":6,"react":undefined}],52:[function(require,module,exports){
+},{"../icons/playButton":54,"aphrodite/no-important":6,"react":undefined}],49:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -4296,7 +3890,7 @@ exports["default"] = function (fill) {
 
 module.exports = exports["default"];
 
-},{}],53:[function(require,module,exports){
+},{}],50:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -4309,7 +3903,7 @@ exports["default"] = function (fill) {
 
 module.exports = exports["default"];
 
-},{}],54:[function(require,module,exports){
+},{}],51:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -4322,7 +3916,7 @@ exports["default"] = function (fill) {
 
 module.exports = exports["default"];
 
-},{}],55:[function(require,module,exports){
+},{}],52:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -4331,7 +3925,7 @@ module.exports = {
 	close: require('./close')
 };
 
-},{"./arrowLeft":52,"./arrowRight":53,"./close":54}],56:[function(require,module,exports){
+},{"./arrowLeft":49,"./arrowRight":50,"./close":51}],53:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -4374,7 +3968,7 @@ MinusIcon.propTypes = {
 exports["default"] = MinusIcon;
 module.exports = exports["default"];
 
-},{"react":undefined}],57:[function(require,module,exports){
+},{"react":undefined}],54:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -4410,7 +4004,7 @@ PlayButton.propTypes = {
 exports["default"] = PlayButton;
 module.exports = exports["default"];
 
-},{"react":undefined}],58:[function(require,module,exports){
+},{"react":undefined}],55:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -4458,7 +4052,7 @@ PlusIcon.propTypes = {
 exports["default"] = PlusIcon;
 module.exports = exports["default"];
 
-},{"react":undefined}],59:[function(require,module,exports){
+},{"react":undefined}],56:[function(require,module,exports){
 // ==============================
 // THEME
 // ==============================
@@ -4516,7 +4110,7 @@ theme.arrow = {
 
 module.exports = theme;
 
-},{}],60:[function(require,module,exports){
+},{}],57:[function(require,module,exports){
 /**
 	Bind multiple component methods:
 
@@ -4539,14 +4133,14 @@ module.exports = function bindFunctions(functions) {
 	});
 };
 
-},{}],61:[function(require,module,exports){
+},{}],58:[function(require,module,exports){
 // Return true if window + document
 
 'use strict';
 
 module.exports = !!(typeof window !== 'undefined' && window.document && window.document.createElement);
 
-},{}],62:[function(require,module,exports){
+},{}],59:[function(require,module,exports){
 'use strict';
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
@@ -4573,7 +4167,7 @@ function deepMerge(target) {
 
 module.exports = deepMerge;
 
-},{}],63:[function(require,module,exports){
+},{}],60:[function(require,module,exports){
 'use strict';
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
@@ -4596,7 +4190,7 @@ module.exports = {
 	deepMerge: _deepMerge2['default']
 };
 
-},{"./bindFunctions":60,"./canUseDom":61,"./deepMerge":62}],"react-images":[function(require,module,exports){
+},{"./bindFunctions":57,"./canUseDom":58,"./deepMerge":59}],"react-images":[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -4647,10 +4241,6 @@ var _componentsHeader = require('./components/Header');
 
 var _componentsHeader2 = _interopRequireDefault(_componentsHeader);
 
-var _componentsPaginatedThumbnails = require('./components/PaginatedThumbnails');
-
-var _componentsPaginatedThumbnails2 = _interopRequireDefault(_componentsPaginatedThumbnails);
-
 var _componentsPortal = require('./components/Portal');
 
 var _componentsPortal2 = _interopRequireDefault(_componentsPortal);
@@ -4658,10 +4248,6 @@ var _componentsPortal2 = _interopRequireDefault(_componentsPortal);
 var _componentsVideo = require('./components/Video');
 
 var _componentsVideo2 = _interopRequireDefault(_componentsVideo);
-
-var _componentsPdf = require('./components/Pdf');
-
-var _componentsPdf2 = _interopRequireDefault(_componentsPdf);
 
 var _componentsImage = require('./components/Image');
 
@@ -4914,14 +4500,33 @@ var Lightbox = (function (_Component) {
 			var thumbnailsSize = showThumbnails ? this.theme.thumbnail.size : 0;
 			var heightOffset = this.theme.header.height + this.theme.footer.height + thumbnailsSize + this.theme.container.gutter.vertical;
 			var renderImageOrVideo = undefined;
+			var isPdf = false;
 
 			if (!image.srcset) image.srcset = [];
 
 			if (image.src && image.src.toLowerCase().lastIndexOf('.pdf') > -1) {
-				renderImageOrVideo = _react2['default'].createElement(_componentsPdf2['default'], { src: image.src,
-					thumbnail: image.thumbnail,
+				isPdf = true;
+				var srcset = undefined;
+				var sizes = undefined;
+
+				if (image.srcset) {
+					srcset = image.srcset.join();
+					sizes = '100vw';
+				}
+				renderImageOrVideo = _react2['default'].createElement(_componentsImage2['default'], {
+					className: (0, _aphroditeNoImportant.css)(classes.image),
+					onClick: !!onClickImage && onClickImage,
+					sizes: sizes,
+					srcSet: srcset,
+					alt: image.alt,
+					src: image.thumbnail,
+					heightOffset: heightOffset,
 					onSwipeLeft: this.gotoPrev.bind(this),
-					onSwipeRight: this.gotoNext.bind(this)
+					onSwipeRight: this.gotoNext.bind(this),
+					style: {
+						cursor: this.props.onClickImage ? 'pointer' : 'auto',
+						maxHeight: 'calc(100vh - ' + heightOffset + 'px)'
+					}
 				});
 			} else if (image.src && image.src.toLowerCase().lastIndexOf('.mp4') > -1) {
 				renderImageOrVideo = _react2['default'].createElement(_componentsVideo2['default'], {
@@ -4969,24 +4574,17 @@ var Lightbox = (function (_Component) {
 					countCurrent: currentImage + 1,
 					countSeparator: imageCountSeparator,
 					countTotal: images.length,
-					showCount: showImageCount
+					showCount: showImageCount,
+					pdf: isPdf,
+					src: image.src
 				}),
-				this.props.bottomControls ? this.props.bottomControls : null
+				_react2['default'].createElement(
+					'div',
+					{ className: (0, _aphroditeNoImportant.css)(classes.bottomControls) },
+					this.props.bottomControls ? this.props.bottomControls : null
+				)
 			);
 		}
-
-		/*renderThumbnails () {
-  	const { images, currentImage, onClickThumbnail, showThumbnails, thumbnailOffset } = this.props;
-  		if (!showThumbnails) return;
-  		return (
-  		<PaginatedThumbnails
-  			currentImage={currentImage}
-  			images={images}
-  			offset={thumbnailOffset}
-  			onClickThumbnail={onClickThumbnail}
-  		/>
-  	);
-  }*/
 	}, {
 		key: 'render',
 		value: function render() {
@@ -5067,10 +4665,13 @@ var classes = _aphroditeNoImportant.StyleSheet.create({
 		// disable user select
 		WebkitTouchCallout: 'none',
 		userSelect: 'none'
+	},
+	bottomControls: {
+		minHeight: '100px'
 	}
 });
 
 exports['default'] = Lightbox;
 module.exports = exports['default'];
 
-},{"./components/Arrow":40,"./components/Container":41,"./components/Footer":42,"./components/Header":43,"./components/Image":45,"./components/PaginatedThumbnails":46,"./components/Pdf":48,"./components/Portal":49,"./components/Video":51,"./theme":59,"./utils":63,"aphrodite/no-important":6,"prop-types":undefined,"react":undefined,"react-scrolllock":undefined}]},{},[]);
+},{"./components/Arrow":40,"./components/Container":41,"./components/Footer":42,"./components/Header":43,"./components/Image":45,"./components/Portal":47,"./components/Video":48,"./theme":56,"./utils":60,"aphrodite/no-important":6,"prop-types":undefined,"react":undefined,"react-scrolllock":undefined}]},{},[]);

@@ -109,8 +109,9 @@ render(
 		<h3>Videos</h3>
 		<Gallery images={[
 			{
-				thumbnail: "https://s3.amazonaws.com/xoi-content-upload-development/VISION_UPLOAD/2017/12/5670662d0a5ea5f2e665334e-1512751654089-150x200.jpeg",
-				src: "https://s3.amazonaws.com/xoi-content-upload-development/VISION_UPLOAD/2017/12/5670662d0a5ea5f2e665334e-1512751654089.pdf",
+				thumbnail: "https://s3.amazonaws.com/xoi-content-upload-development/VISION_UPLOAD/2017/12/5670662d0a5ea5f2e665334e-1513010047921-558x722.jpeg",
+				src: "https://s3.amazonaws.com/xoi-content-upload-development/VISION_UPLOAD/2017/12/5670662d0a5ea5f2e665334e-1513010047921.pdf",
+				caption: 'PDF title here',
 				useForDemo: true
 			},
 			{

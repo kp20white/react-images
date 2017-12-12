@@ -8,10 +8,8 @@ import Arrow from './components/Arrow';
 import Container from './components/Container';
 import Footer from './components/Footer';
 import Header from './components/Header';
-import PaginatedThumbnails from './components/PaginatedThumbnails';
 import Portal from './components/Portal';
 import Video from './components/Video';
-import Pdf from './components/Pdf';
 import Image from './components/Image';
 
 import { bindFunctions, canUseDom, deepMerge } from './utils';
@@ -236,16 +234,35 @@ class Lightbox extends Component {
 		const thumbnailsSize = showThumbnails ? this.theme.thumbnail.size : 0;
 		const heightOffset = this.theme.header.height + this.theme.footer.height + thumbnailsSize + (this.theme.container.gutter.vertical);
 		let renderImageOrVideo;
+		let isPdf = false;
 
 		if (!image.srcset)
 			image.srcset = [];
 
     if (image.src && image.src.toLowerCase().lastIndexOf('.pdf') > -1) {
+      isPdf = true;
+      let srcset;
+      let sizes;
+
+      if (image.srcset) {
+        srcset = image.srcset.join();
+        sizes = '100vw';
+      }
       renderImageOrVideo = (
-				<Pdf src={image.src}
-					thumbnail={image.thumbnail}
+				<Image
+					className={css(classes.image)}
+					onClick={!!onClickImage && onClickImage}
+					sizes={sizes}
+					srcSet={srcset}
+					alt={image.alt}
+					src={image.thumbnail}
+					heightOffset={heightOffset}
 					onSwipeLeft={this.gotoPrev.bind(this)}
 					onSwipeRight={this.gotoNext.bind(this)}
+					style={{
+            cursor: this.props.onClickImage ? 'pointer' : 'auto',
+            maxHeight: `calc(100vh - ${heightOffset}px)`,
+          }}
 				/>
       );
     } else if(image.src && image.src.toLowerCase().lastIndexOf('.mp4') > -1) {
@@ -295,25 +312,16 @@ class Lightbox extends Component {
 					countSeparator={imageCountSeparator}
 					countTotal={images.length}
 					showCount={showImageCount}
+					pdf={isPdf}
+					src={image.src}
 				/>
+				<div className={css(classes.bottomControls)}>
 				{ this.props.bottomControls ? this.props.bottomControls : null }
+				</div>
 			</figure>
 		);
 	}
-	/*renderThumbnails () {
-		const { images, currentImage, onClickThumbnail, showThumbnails, thumbnailOffset } = this.props;
 
-		if (!showThumbnails) return;
-
-		return (
-			<PaginatedThumbnails
-				currentImage={currentImage}
-				images={images}
-				offset={thumbnailOffset}
-				onClickThumbnail={onClickThumbnail}
-			/>
-		);
-	}*/
 	render () {
 		return (
 			<Portal>
@@ -391,6 +399,9 @@ const classes = StyleSheet.create({
 		// disable user select
 		WebkitTouchCallout: 'none',
 		userSelect: 'none',
+	},
+  bottomControls: {
+		minHeight: '100px',
 	},
 });
 

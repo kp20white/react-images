@@ -150,8 +150,9 @@ var theme = {
 		'Videos'
 	),
 	_react2['default'].createElement(_componentsGallery2['default'], { images: [{
-			thumbnail: "https://s3.amazonaws.com/xoi-content-upload-development/VISION_UPLOAD/2017/12/5670662d0a5ea5f2e665334e-1512751654089-150x200.jpeg",
-			src: "https://s3.amazonaws.com/xoi-content-upload-development/VISION_UPLOAD/2017/12/5670662d0a5ea5f2e665334e-1512751654089.pdf",
+			thumbnail: "https://s3.amazonaws.com/xoi-content-upload-development/VISION_UPLOAD/2017/12/5670662d0a5ea5f2e665334e-1513010047921-558x722.jpeg",
+			src: "https://s3.amazonaws.com/xoi-content-upload-development/VISION_UPLOAD/2017/12/5670662d0a5ea5f2e665334e-1513010047921.pdf",
+			caption: 'PDF title here',
 			useForDemo: true
 		}, {
 			thumbnail: "https://s3.amazonaws.com/xoi-content-upload-development/M0010006D5/2017/11/M0010006D5-1509622353279-113x200.jpeg",
