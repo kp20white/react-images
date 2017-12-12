@@ -28,15 +28,26 @@ function Footer ({
 		</div>)
 		: <span />;
 
+	let _caption = caption;
+	let _pdfFileName = 'Download';
+
+	if (pdf) {
+		let captionsParts = caption.split('\n'); // for PDF content content should be in format `${filename}\n${formatted date}`
+		if (captionsParts.length === 2) {
+      _pdfFileName = captionsParts[0];
+      _caption = captionsParts[1];
+		}
+	}
+
 	return (
 		<div className={css(classes.footer)} {...props}>
-			{caption ? (
+			{_caption ? (
 				<figcaption className={css(classes.footerCaption)}>
 					{ pdf
-						? <div><a className={css(classes.downloadLink)}  href={src} target="_blank"><i className="fa fa-file-pdf-o" />&nbsp;Download&nbsp;</a>({caption})</div>
+						? <div><a className={css(classes.downloadLink)}  href={src} target="_blank"><i className="fa fa-file-pdf-o" />&nbsp;{_pdfFileName}&nbsp;</a>({_caption})</div>
 						: caption }
 				</figcaption>
-			) : (pdf ? <a className={css(classes.downloadLink)}  href={src} target="_blank"><i className="fa fa-file-pdf-o" />&nbsp;Download</a>
+			) : (pdf ? <a className={css(classes.downloadLink)}  href={src} target="_blank"><i className="fa fa-file-pdf-o" />&nbsp;{_pdfFileName}</a>
         : <span />)}
 			{imageCount}
 		</div>

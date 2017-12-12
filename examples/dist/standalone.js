@@ -3372,10 +3372,21 @@ function Footer(_ref, _ref2) {
 		countTotal
 	) : _react2['default'].createElement('span', null);
 
+	var _caption = caption;
+	var _pdfFileName = 'Download';
+
+	if (pdf) {
+		var captionsParts = caption.split('\n'); // for PDF content content should be in format `${filename}\n${formatted date}`
+		if (captionsParts.length === 2) {
+			_pdfFileName = captionsParts[0];
+			_caption = captionsParts[1];
+		}
+	}
+
 	return _react2['default'].createElement(
 		'div',
 		_extends({ className: (0, _aphroditeNoImportant.css)(classes.footer) }, props),
-		caption ? _react2['default'].createElement(
+		_caption ? _react2['default'].createElement(
 			'figcaption',
 			{ className: (0, _aphroditeNoImportant.css)(classes.footerCaption) },
 			pdf ? _react2['default'].createElement(
@@ -3385,17 +3396,20 @@ function Footer(_ref, _ref2) {
 					'a',
 					{ className: (0, _aphroditeNoImportant.css)(classes.downloadLink), href: src, target: '_blank' },
 					_react2['default'].createElement('i', { className: 'fa fa-file-pdf-o' }),
-					' Download '
+					' ',
+					_pdfFileName,
+					' '
 				),
 				'(',
-				caption,
+				_caption,
 				')'
 			) : caption
 		) : pdf ? _react2['default'].createElement(
 			'a',
 			{ className: (0, _aphroditeNoImportant.css)(classes.downloadLink), href: src, target: '_blank' },
 			_react2['default'].createElement('i', { className: 'fa fa-file-pdf-o' }),
-			' Download'
+			' ',
+			_pdfFileName
 		) : _react2['default'].createElement('span', null),
 		imageCount
 	);

@@ -111,7 +111,7 @@ render(
 			{
 				thumbnail: "https://s3.amazonaws.com/xoi-content-upload-development/VISION_UPLOAD/2017/12/5670662d0a5ea5f2e665334e-1513010047921-558x722.jpeg",
 				src: "https://s3.amazonaws.com/xoi-content-upload-development/VISION_UPLOAD/2017/12/5670662d0a5ea5f2e665334e-1513010047921.pdf",
-				caption: 'PDF title here',
+				caption: 'PDF file.pdf\nWednesday, October 7 2017, 17:30PM',
 				useForDemo: true
 			},
 			{
